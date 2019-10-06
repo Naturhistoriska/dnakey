@@ -16,7 +16,8 @@ public class IdleMonitorController {
     public void idleListener() throws IOException {
         FacesContext ctx = FacesContext.getCurrentInstance();
      
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        HttpServletRequest request = (HttpServletRequest) 
+                FacesContext.getCurrentInstance().getExternalContext().getRequest();
         HttpSession session = request.getSession(false);
         session.invalidate();
 
