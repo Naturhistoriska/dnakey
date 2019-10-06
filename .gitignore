@@ -8,6 +8,12 @@ certs/*.key
 /dina-dnakey-portal/audit.log
 /dina-dnakey-portal/nb-configuration.xml
 /dina-dnakey-logic/nb-configuration.xml
+/docker-compose.local.yml
+/project-initdata-local.yml
+/project-initdata.yml
 
+/dina-dnakey-portal/.DS_Store
+*DS_Store
 *.tar
+
 
