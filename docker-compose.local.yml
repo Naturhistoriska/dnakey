@@ -3,12 +3,19 @@ version: '3.1'
 services:
 
   ui:
-    image: dina/dnakey:v0.2
+    image: dina/dnakey:v0.3
     environment:
-      - VIRTUAL_HOST=beta.dnakey.se
+      - VIRTUAL_HOST=local-dnakey.nrm.se
       - VIRTUAL_PORT=8080
-    extra_hosts:
-      - "dina-db.nrm.se:172.16.0.86"
+    volumes:
+      - ./project-initdata-local.yml:/usr/src/myapp/project-initdata.yml
+    # extra_hosts:
+    #   - "dina-db.nrm.se:172.16.0.86"
+
+# networks:
+#   default:
+#     external:
+#       name: dwproxy_default
 
   proxy:
     image: jwilder/nginx-proxy:alpine
