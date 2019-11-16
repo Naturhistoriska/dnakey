@@ -20,7 +20,7 @@
                 <!-- ************************************** blast column ************************************* --> 
                 <h:panelGroup styleClass="column2" layout="block" id="column2panel"> 
                   <h:panelGroup styleClass="text" layout="block" > 
-                                        #{msg.starttext1}
+                    #{msg.starttext1}
                     <h:commandLink action="#{navigate.scrollToClientId('streckkodsgen')}"  title="#{msg.starttitle1}"  
                                    styleClass="linktext" rendered="#{languages.isSwedish}">    
                       <h:outputText value="#{msg.startlink1}" />    
@@ -29,7 +29,7 @@
                                    styleClass="linktext" rendered="#{!languages.isSwedish}">    
                       <h:outputText value="#{msg.startlink1}" />    
                     </h:commandLink> 
-                                        #{msg.starttext2}
+                    #{msg.starttext2}
                     <h:commandLink action="#{navigate.scrollToClientId('genbank')}"  title="Genbank" styleClass="linktext" >    
                       <h:outputText value="Genbank" />     
                     </h:commandLink> #{msg.starttext3}
@@ -38,7 +38,7 @@
                     </h:commandLink>.
                     <br />
                     <br />
-                                        #{msg.starttext4}
+                    #{msg.starttext4}
                     <h:commandLink action="#{navigate.dnakey()}"  title="#{msg.starttitle2}" styleClass="linktext">    
                       <h:outputText value="#{msg.startlink2}" />    
                     </h:commandLink>.  
@@ -387,7 +387,7 @@
                     <br />
                     <br />
                     <h:panelGroup styleClass="text" layout="block" style="float: left; font-size: 11px;">
-                     #{msg.tablenotes}
+                      #{msg.tablenotes}
                     </h:panelGroup> 
                   </h:panelGroup>  
                 </p:cache>
