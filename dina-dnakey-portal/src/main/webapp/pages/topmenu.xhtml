@@ -34,11 +34,13 @@
             <h:panelGrid style="text-align: right; " columns="2"  cellpadding="0" cellspacing="0"  >   
               <h:panelGrid columns="2"  rendered="#{languages.isSwedish}" cellpadding="0" cellspacing="0"  >
                 <p:graphicImage value="/resources/images/icons/icons_en.png" styleClass="img" title="#{msg.languageen}" /> 
-                <h:commandLink action="#{languages.changelanguage('en')}" value="#{languages.language}" style="border: none; " />   
+                <p:commandLink actionListener="#{languages.changelanguage('en')}" 
+                           value="#{languages.language}" process="@this" global="false" style="border: none; "  />   
               </h:panelGrid>
               <h:panelGrid columns="2" rendered="#{!languages.isSwedish}" cellpadding="0" cellspacing="0"  >
                 <p:graphicImage value="/resources/images/icons/icons_sv.png" styleClass="img" title="#{msg.languagesv}" /> 
-                <h:commandLink action="#{languages.changelanguage('sv')}" value="#{languages.language}"  style="border: none; " />   
+                <p:commandLink actionListener="#{languages.changelanguage('sv')}" 
+                           value="#{languages.language}" process="@this" global="false" style="border: none; "  />      
               </h:panelGrid> 
             </h:panelGrid> 
           </h:panelGrid>   
