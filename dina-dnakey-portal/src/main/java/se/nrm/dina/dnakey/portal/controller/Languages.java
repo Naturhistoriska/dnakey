@@ -1,9 +1,12 @@
 package se.nrm.dina.dnakey.portal.controller;
 
-import java.io.Serializable;  
-import javax.enterprise.context.SessionScoped;    
-import javax.inject.Named; 
-import lombok.extern.slf4j.Slf4j; 
+import java.io.Serializable;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import lombok.extern.slf4j.Slf4j;
+import org.primefaces.context.RequestContext;
+
 /**
  *
  * @author idali
@@ -11,33 +14,40 @@ import lombok.extern.slf4j.Slf4j;
 @SessionScoped
 @Named
 @Slf4j
-public class Languages implements Serializable { 
-    
-    private String locale = "sv";  
+public class Languages implements Serializable {
 
-    public Languages() {
-        log.info("Languages");
-    } 
+  private String locale = "sv";
+  private RequestContext requestContext;
  
-    public String getLocale() {
-        return locale;
-    }
+  public Languages() {
+    log.info("Languages");
+  }
 
-    public void setLocale(String locale) {
-        this.locale = locale;
-    }
-      
-    public void changelanguage(String locale) { 
-        log.info("changelanguage - locale: {}", locale);
-         
-        setLocale(locale);
-    }
-  
-    public String getLanguage() {
-        return locale.equals("sv") ? "English" : "Svenska";
-    }
-      
-    public boolean isIsSwedish() {
-        return locale.equals("sv");
-    }
+  public String getLocale() {
+    return locale;
+  }
+
+  public void setLocale(String locale) {
+    this.locale = locale;
+  }
+
+  public void changelanguage(String locale) {
+    log.info("changelanguage - locale: {}", locale);
+
+    setLocale(locale); 
+    requestContext = RequestContext.getCurrentInstance();
+    requestContext.update("topMenuForm:topmenupanel");
+    requestContext.update("headerPanel");
+    requestContext.update("footerPanel");
+    requestContext.update("footerPanel");
+    requestContext.update("mainpanel"); 
+  }
+
+  public String getLanguage() {
+    return locale.equals("sv") ? "English" : "Svenska";
+  }
+
+  public boolean isIsSwedish() {
+    return locale.equals("sv");
+  }
 }
