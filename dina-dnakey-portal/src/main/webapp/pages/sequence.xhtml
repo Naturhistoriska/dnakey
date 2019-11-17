@@ -8,17 +8,18 @@
     <ui:composition  template="/templates/masterLayout.xhtml">    
       <ui:define name="content"  >   
         <p:growl id="messages" autoUpdate="true" showDetail="true" showSummary="true" escape="false" sticky="true" />
-        <h:form id="sequenceform"  enctype="multipart/form-data" prependId="false">  
-          <h:panelGroup layout="block" styleClass="text" > 
+         
+          <h:panelGroup id="sequencePanel" layout="block" styleClass="text" > 
+            <h:form id="sequenceform"  enctype="multipart/form-data" prependId="false"> 
             <!-- ************************************** main panel ************************************* -->  
-            <h:panelGroup styleClass="main" layout="block" id="mainpanel" >
+            <h:panelGroup styleClass="main" layout="block"   >
 
               <!-- ************************************** start panel ************************************* --> 
               <h:panelGroup styleClass="columns" layout="block" id="startpanel"  >
 
 
                 <!-- ************************************** blast column ************************************* --> 
-                <h:panelGroup styleClass="column2" layout="block" id="column2panel"> 
+                <h:panelGroup styleClass="column2" layout="block" id="mainpanel"> 
                   <h:panelGroup styleClass="text" layout="block" > 
                     #{msg.starttext1}
                     <h:commandLink action="#{navigate.scrollToClientId('streckkodsgen')}"  title="#{msg.starttitle1}"  
@@ -391,11 +392,11 @@
                     </h:panelGroup> 
                   </h:panelGroup>  
                 </p:cache>
-              </h:panelGroup>
-
+              </h:panelGroup> 
             </h:panelGroup> 
+            </h:form> 
           </h:panelGroup> 
-        </h:form> 
+        
       </ui:define>
     </ui:composition>
   </body>
