@@ -12,6 +12,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.primefaces.context.RequestContext;
 import se.nrm.dina.dnakey.portal.beans.StyleBean;
@@ -26,7 +27,7 @@ import se.nrm.dina.dnakey.portal.beans.StyleBean;
 public class Navigator implements Serializable {
 
   private RequestContext requestContext;
-  private ExternalContext externalContext;
+  private ExternalContext externalContext; 
 
   private static final String HOME_PATH = "/faces/pages/sequence.xhtml";
   private static final String DNAKEY_PATH = "/faces/pages/dnakey.xhtml";
@@ -34,14 +35,21 @@ public class Navigator implements Serializable {
   private static final String EXTERNAL_LINK_PATH = "/faces/pages/externalLinks.xhtml";
   private static final String CONTACT_PATH = "/faces/pages/contact.xhtml";
   private static final String RESULT_PATH = "/faces/pages/result.xhtml";
-
+  
+  private static final String DNAKEY_SV_PATH = "/pages/dnakeysv.xhtml";
+  private static final String DNAKEY_EN_PATH = "/pages/dnakeyen.xhtml";
+  private static final String ABOUT_SV_PATH = "/pages/aboutsv.xhtml";
+  private static final String ABOUT_EN_PATH = "/pages/abouten.xhtml";
+   
   private String clientId;
 
   @Inject
-  private StyleBean style;
-
+  private StyleBean style; 
+  @Inject
+  private Languages language;
+  
   public Navigator() {
-    log.info("Navigator");
+    log.info("Navigator"); 
   }
 
   private void redirectPage(String path) {
@@ -112,5 +120,13 @@ public class Navigator implements Serializable {
     style.resetTabStyle(tabIndex);
     requestContext = RequestContext.getCurrentInstance();
     requestContext.update("topMenuForm:topmenupanel");
-  }
+  } 
+   
+  public String getDnakeyIncludePage() {
+    return language.isIsSwedish() ? DNAKEY_SV_PATH : DNAKEY_EN_PATH;
+  } 
+  
+  public String getAboutIncludePage() {
+    return language.isIsSwedish() ? ABOUT_SV_PATH : ABOUT_EN_PATH;
+  } 
 }
