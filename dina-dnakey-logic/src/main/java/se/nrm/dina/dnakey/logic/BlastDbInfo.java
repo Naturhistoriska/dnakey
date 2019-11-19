@@ -7,6 +7,7 @@ package se.nrm.dina.dnakey.logic;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -16,77 +17,89 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import se.nrm.dina.dnakey.logic.config.ConfigProperties;
-import se.nrm.dina.dnakey.logic.vo.BlastDBVo;
+import se.nrm.dina.dnakey.logic.util.HelpClass; 
 
 /**
  *
  * @author idali
  */
 @ApplicationScoped
-@Startup 
+@Startup
 @Slf4j
 public class BlastDbInfo implements Serializable {
-    
-    private BlastDBVo blastDbVo;
-    private final String NRM_DB = "nrm";
-    private final String BOLD_DB = "bold";
-    private final String GENBANK_DB = "genbank";
-    
-    @Inject
-    private ConfigProperties config;
-    
-    public BlastDbInfo() { 
-    } 
-    
-    @PostConstruct
-    public void init() {
-        log.info("init");
-        
-        if(blastDbVo == null) {
-            String nrmCount = getTotal(NRM_DB);
-            String boldCount = getTotal(BOLD_DB);
-            String genbankCount = getTotal(GENBANK_DB);
 
-            blastDbVo = new BlastDBVo(nrmCount, boldCount, genbankCount);
-        } 
-    } 
+  private final String NRM_DB = "nrm";
+  private final String BOLD_DB = "bold";
+  private final String GENBANK_DB = "genbank";
 
-    public BlastDBVo getBlastDbVo() {
-        return blastDbVo;
-    }
-     
-    private String getTotal(String db) {
-       
-        Process process = null;
-        Runtime runtime = Runtime.getRuntime();
+  private final String sequences = "sequences";
+  private final String sequencesWithSpace = " sequences";
+  private final String emptyString = "";
+
+  private String dbPath;
+  private String dbInfoPath;
+
+  private String nrmCount;
+  private String boldCount;
+  private String genbankCount;
+
+  @Inject
+  private ConfigProperties config;
+
+  public BlastDbInfo() {
+  }
+
+  @PostConstruct
+  public void init() {
+    log.info("init");
+
+    dbPath = config.getDbPath();
+    dbInfoPath = config.getDbinfoPath();
+    nrmCount = getTotal(NRM_DB);
+    boldCount = getTotal(BOLD_DB);
+    genbankCount = getTotal(GENBANK_DB);
+  }
+
+  public String getNrmDbTotal() {
+    return nrmCount == null ? getTotal(NRM_DB) : nrmCount;
+  }
+  
+  public String getBoldDbTotal() {
+    return boldCount == null ? getTotal(BOLD_DB) : boldCount;
+  }
+  
+  public String getGenbankDbTotal() {
+    return genbankCount == null ? getTotal(GENBANK_DB) : genbankCount;
+  }
+ 
+  private String getTotal(String db) {
+
+    InputStream is = null;
+    Process process = null;
+    Runtime runtime = Runtime.getRuntime();
+    try {
+      process = runtime.exec(HelpClass.getInstance().buildExecDbInfoCommand(dbInfoPath, dbPath, db));
+      is = process.getInputStream();
+      String line = new BufferedReader(new InputStreamReader(is))
+              .lines()
+              .filter(l -> l.contains((sequences)))
+              .findFirst().orElse(emptyString);
+      return StringUtils.substringBefore(line, sequencesWithSpace).trim();
+
+    } catch (IOException ex) {
+      log.error(ex.getMessage());
+    } finally {
+      if (is != null) {
         try {
-            process = runtime.exec(buildDbInfoCommand(db));
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));) {
-                String line;
-                while ((line = in.readLine()) != null) {
-                    if (line.contains("sequences")) {
-                        return StringUtils.substringBefore(line, " sequences").trim();
-                    }
-                }
-            }
+          is.close();
         } catch (IOException ex) {
-            log.error(ex.getMessage());
-        } finally {
-            if (process != null && process.isAlive()) {
-                process.destroy();
-            }
+          log.error(ex.getMessage());
         }
-        return null; 
-    } 
-    
-    private String buildDbInfoCommand(String db) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(config.getDbinfoPath());
-        sb.append(" -db ");
-        sb.append(config.getDbPath());
-        sb.append(db);
-        sb.append(" -info");
-        return sb.toString().trim();
+      }
+      if (process != null && process.isAlive()) {
+        process.destroy();
+      }
     }
-    
+    return null;
+  }
 }
