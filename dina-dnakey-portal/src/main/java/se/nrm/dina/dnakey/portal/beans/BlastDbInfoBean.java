@@ -10,6 +10,8 @@ import se.nrm.dina.dnakey.logic.BlastDbInfo;
 
 /**
  *
+ * Controller for fetch blaster database information
+ * 
  * @author idali
  */
 @Named("dbInfo")
@@ -27,6 +29,9 @@ public class BlastDbInfoBean implements Serializable {
   public BlastDbInfoBean() {
   }
 
+  /**
+   * init method runs after this controller has initialized
+   */ 
   @PostConstruct
   public void init() {
     nrmTotal = dbInfo.getNrmDbTotal();
@@ -34,14 +39,29 @@ public class BlastDbInfoBean implements Serializable {
     genbankTotal = dbInfo.getGenbankDbTotal();
   }
  
+  /**
+   * This method returns total sequences in bold blastdb as string
+   * 
+   * @return String
+   */
   public String getBoldTotalSequence() {
     return boldTotal;
   }
 
+  /**
+   * This method returns total sequences in genbank blastdb as string
+   * 
+   * @return String
+   */
   public String getGenBankTotalSequence() {
     return genbankTotal;
   }
 
+  /**
+   * This method returns total sequences in nrm blastdb as string
+   * 
+   * @return String
+   */
   public String getNrmTotalSequence() {
     return nrmTotal;
   } 
