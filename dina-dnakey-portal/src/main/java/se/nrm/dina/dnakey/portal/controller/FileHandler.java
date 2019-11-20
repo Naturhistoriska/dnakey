@@ -1,63 +1,75 @@
 package se.nrm.dina.dnakey.portal.controller;
-
-import java.io.File; 
-import java.io.FileNotFoundException; 
-import java.io.PrintWriter;  
-import java.io.Serializable; 
-import java.util.List;
+ 
+import java.io.IOException;
+import java.io.Serializable;
+import java.nio.file.Files; 
+import java.nio.file.Paths;
+import java.util.List;  
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;  
+import lombok.extern.slf4j.Slf4j;
 import se.nrm.dina.dnakey.logic.config.ConfigProperties;
 import se.nrm.dina.dnakey.portal.util.UUIDGenerator;
 
 /**
+ * This class handles test fasta files It creates fasta file and save it into
+ * temp directory
  *
  * @author idali
  */
 @Slf4j
 public class FileHandler implements Serializable {
-  
-    private String fastaTempPath;
-    private final String FASTA_FILE_TYPE = ".fa";
-    
-    @Inject
-    private ConfigProperties config;
-    
-    public FileHandler() { 
-        log.info("FileHandler");
-    }
-    
-    @PostConstruct
-    public void init() {  
-        fastaTempPath = config.getFastaFilePath();
-    }
-    
 
-    public String createFastaFile(String sequence)  { 
-        log.info("createFastaFile");
+  private String fastaTempPath;
+  private final String FASTA_FILE_TYPE = ".fa"; 
+  private StringBuilder sb;
+  private final String fileSeparator = "/";
 
-        String tempFileName = String.valueOf(UUIDGenerator.generateUUID()) + FASTA_FILE_TYPE; 
-        File fastaFile = new File(fastaTempPath, tempFileName);
- 
-        try (PrintWriter out = new PrintWriter(fastaFile)) {
-            out.println(sequence);
-            out.flush();
-        } catch (FileNotFoundException ex) {
-            log.error(ex.getMessage());
-        }  
-        return fastaFile.getPath();
-    }
+  @Inject
+  private ConfigProperties config;
 
-    public void deleteTempFiles(List<String> filesPath) {
-        if (!filesPath.isEmpty()) {
-            filesPath.stream()
-                    .forEach(path -> {
-                        File file = new File(path); 
-                        if (file.exists()) {
-                            file.delete();
-                        } 
-                    });
-        }
+  public FileHandler() {
+    log.info("FileHandler");
+  }
+
+  @PostConstruct
+  public void init() {
+    fastaTempPath = config.getFastaFilePath();
+  }
+
+  /**
+   * Create fasta file and save to temp directory
+   * 
+   * @param sequence -String
+   * @return String - file path
+   */
+  public String createFastaFile(String sequence) { 
+    log.info("createFastaFile");
+    sb = new StringBuilder();
+    sb.append(fastaTempPath);
+    sb.append(fileSeparator);
+    sb.append(String.valueOf(UUIDGenerator.generateUUID()));
+    sb.append(FASTA_FILE_TYPE); 
+    try {
+      Files.write(Paths.get(sb.toString().trim()), sequence.getBytes()); 
+    } catch (IOException ex) { 
+      log.error(ex.getMessage());
     }
+    return sb.toString().trim(); 
+  }
+
+  /**
+   * Delete fasta files in temp directory
+   * @param filesPath - List
+   */
+  public void deleteTempFiles(List<String> filesPath) { 
+    filesPath.stream()
+            .forEach(f -> {
+                try { 
+                  Files.deleteIfExists(Paths.get(f));
+                } catch (IOException ex) {
+                  log.error(ex.getMessage());
+                }
+            }); 
+  }
 }
