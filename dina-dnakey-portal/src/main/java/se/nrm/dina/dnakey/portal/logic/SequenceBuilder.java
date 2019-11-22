@@ -1,21 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.nrm.dina.dnakey.portal.logic;
-
-import java.io.BufferedReader; 
-import java.io.Serializable;
-import java.io.StringReader;
-import java.time.LocalDateTime;
+  
+import java.io.IOException;
+import java.io.Serializable; 
+import java.nio.charset.StandardCharsets; 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import se.nrm.dina.dnakey.portal.util.ConstantString;
+import org.primefaces.model.UploadedFile;
+import se.nrm.dina.dnakey.portal.util.SequencesBuilderHelper;
 
 /**
  *
@@ -23,111 +19,95 @@ import se.nrm.dina.dnakey.portal.util.ConstantString;
  */
 @Slf4j
 public class SequenceBuilder implements Serializable {
+ 
+  private final String HEADER_TAG = ">"; 
 
-    private LocalDateTime timestamp;
-    private final String REGEX = "[\r\n]+";
-    private final String HEADER_TAG = ">";
-    private final String NEW_LINE = "\n";
-
-    public SequenceBuilder() { 
-        log.info("SequenceBuilder");
+  public SequenceBuilder() {
+    log.info("SequenceBuilder");
+  }
+  
+  public boolean isEmptySequences(String sequence) {
+    return StringUtils.isEmpty(sequence.trim());
+  }
+  
+  /**
+   * This method build one sequence string into list of sequences
+   * 
+   * @param sequence
+   * @return List
+   */
+  public List<String> prepareSequenceList(String sequence) {
+    
+    if (StringUtils.isEmpty(sequence.trim())) {
+      return null;
+    }  
+     
+    StringTokenizer tokens = new StringTokenizer(sequence, HEADER_TAG, true);
+    if (tokens.countTokens() <= 1) {                                            // sequences without header
+      return SequencesBuilderHelper.getInstance().buildSequenceList(sequence);
     }
-
-    private int getMaxCount(String... strings) {
-        return strings.length > 100 ? 99 : strings.length;
-    }
-
-    private List<String> buildSequenceList(String sequence) {
-        String[] strings = sequence.split(REGEX);
-        List<String> sequences = new ArrayList<>();
-        Arrays.stream(strings, 0, getMaxCount(strings))
-                .filter(string -> !isEmpty(string))
-                .forEach(string -> {
-                    sequences.add(addSequenceHeader(string.trim()));
-                });
-        return sequences;
-    }
-
-    public List<String> prepareSequenceList(String sequence) {
-
-        List<String> sequences = new ArrayList<>();
-        StringTokenizer tokens = new StringTokenizer(sequence, HEADER_TAG, true);
-        if (tokens.countTokens() <= 1) {                                            // sequences without header
-            return buildSequenceList(sequence);
-        }
-
-        // multiple sequences
-        StringBuilder sb = new StringBuilder();
-        List<String> strings;
-        while (tokens.hasMoreTokens()) {
-            String string = tokens.nextToken();
-            if (string.contains(HEADER_TAG)) {
-                sb.append(string);
-                sb.append(tokens.nextToken());
-                strings = buildStringList(sb.toString());
-
-                sb = new StringBuilder();
-                for (String s : strings) {
-
-                    if (!StringUtils.isEmpty(s.trim())) {
-                        if (!s.contains(HEADER_TAG)) {                         // if sequence has no head 
-                            s = addSequenceHeader(s);
-                        }
-                        sequences.add(s);
-                    }
-                }
-            } else {
-                sequences = buildSequenceList(string);
-            }
-        }
-        return sequences;
-    }
-
-    private String addSequenceHeader(String string) {
-        log.info("addSequenceHeader");
-        timestamp = LocalDateTime.now();
-        StringBuilder sb = new StringBuilder(HEADER_TAG);
-        sb.append(timestamp);
-        sb.append(NEW_LINE);
+       
+    List<String> sequences = new ArrayList<>();
+    StringBuilder sb = new StringBuilder();
+    List<String> strings; 
+    while (tokens.hasMoreTokens()) {
+      String string = tokens.nextToken(); 
+      if (string.contains(HEADER_TAG)) {
         sb.append(string);
-        return sb.toString().trim();
-    }
+        sb.append(tokens.nextToken()); 
+        strings = SequencesBuilderHelper.getInstance().buildStringList(sb.toString());
 
-    private List<String> buildStringList(String string) {
-//        log.info("buildStringList : {}", string);
+        sb = new StringBuilder();
+        for (String s : strings) {
 
-        List<String> strings = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-        new BufferedReader(new StringReader(string))
-                .lines().forEach(s -> {
-                    if (!isEmpty(s)) {
-                        sb.append(s);
-                        if (s.contains(HEADER_TAG)) {
-                            sb.append(NEW_LINE);
-                        }
-                    } else {
-                        if (!isEmpty(sb.toString())) {
-                            strings.add(sb.toString());
-                        }
-                        sb.setLength(0);
-                    }
-                });
-        if (!isEmpty(sb.toString().trim())) {
-            strings.add(sb.toString());
-        }
-        return strings;
-    }
-
-    private static boolean isEmpty(String line) {
-
-        int start = 0;
-        while (start < line.length()) {
-            if (ConstantString.getInstance().getWhiteSpaceChars().indexOf(line.charAt(start)) == -1) {
-                break;
+          if (!StringUtils.isEmpty(s.trim())) {
+            if (!s.contains(HEADER_TAG)) {                         // if sequence has no head 
+              s = SequencesBuilderHelper.getInstance().addSequenceHeader(s);
             }
-            start++;
+            sequences.add(s);
+          }
         }
-        line = line.substring(start);
-        return line.length() == 0;
+      } else {
+        sequences = SequencesBuilderHelper.getInstance().buildSequenceList(string);
+      }
+    }
+    return sequences;
+  }
+  
+  /**
+   * Convert map to list 
+   * 
+   * @param sequencesMap
+   * @return List
+   */
+  public List<String> convertSequencesMapToList(Map<String, List<String>> sequencesMap) {
+    final List<String> sequences = new ArrayList<>();
+    if (sequencesMap == null || sequencesMap.isEmpty()) {
+      return null;
     } 
+    sequencesMap.entrySet().stream()
+            .forEach((entry) -> {
+              sequences.addAll(entry.getValue());
+            });
+    if (sequences.size() > 100) {
+      return sequences.subList(0, 99);
+    }
+    return sequences;
+  }
+  
+  /**
+   * Build sequences from uploaded file
+   * 
+   * @param uploadedFile - UploadedFile
+   * @return List
+   */
+  public List<String> buildSequencesFromUploadFile(UploadedFile uploadedFile) {
+    String seq = null;
+    try {
+      seq = IOUtils.toString(uploadedFile.getInputstream(), StandardCharsets.UTF_8.name());  
+    } catch (IOException ex) {
+      log.error(ex.getMessage());
+    } 
+    return prepareSequenceList(seq); 
+  } 
 }

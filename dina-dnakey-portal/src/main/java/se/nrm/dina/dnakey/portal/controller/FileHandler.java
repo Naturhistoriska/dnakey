@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Files; 
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;  
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +59,25 @@ public class FileHandler implements Serializable {
     }
     return sb.toString().trim(); 
   }
-
+  
+  
+  /**
+   * Create fasta files and save to temp directory
+   * 
+   * @param sequences -String
+   * @return String - file path
+   */
+  public List<String> createFastaFiles(List<String> sequences) { 
+//    List<String> fastaFilesPath = new ArrayList<>();
+    return sequences.stream()
+            .map(s -> createFastaFile(s))
+            .collect(Collectors.toList());
+//            .forEach(seq -> {
+//              fastaFilesPath.add(createFastaFile(seq)); 
+//            });
+//    return fastaFilesPath;
+  }
+    
   /**
    * Delete fasta files in temp directory
    * @param filesPath - List

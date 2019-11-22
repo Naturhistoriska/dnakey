@@ -11,8 +11,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import lombok.extern.slf4j.Slf4j;
-import se.nrm.dina.dnakey.logic.config.ConfigProperties;
+import lombok.extern.slf4j.Slf4j; 
 import se.nrm.dina.dnakey.logic.geomap.GeoMapDataSource;
 import se.nrm.dina.dnakey.logic.vo.GeoMapData;
 
@@ -20,7 +19,7 @@ import se.nrm.dina.dnakey.logic.vo.GeoMapData;
  *
  * @author idali
  */
-@Named("map")
+@Named("geoMap")
 @ApplicationScoped
 @Slf4j
 public class GeoMap implements Serializable {
@@ -36,7 +35,7 @@ public class GeoMap implements Serializable {
 
   @PostConstruct
   public void init() {
-    log.info("init: {}", geoMap == null);
+    log.info("init");
     if (geoMap == null) {
       geoMap = geo.getGeoMapData();
     }

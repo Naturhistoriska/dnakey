@@ -11,8 +11,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.inject.Named;
-import javax.servlet.http.HttpServletRequest;
+import javax.inject.Named; 
 import lombok.extern.slf4j.Slf4j;
 import org.primefaces.context.RequestContext;
 import se.nrm.dina.dnakey.portal.beans.StyleBean;
@@ -40,7 +39,17 @@ public class Navigator implements Serializable {
   private static final String DNAKEY_EN_PATH = "/pages/dnakeyen.xhtml";
   private static final String ABOUT_SV_PATH = "/pages/aboutsv.xhtml";
   private static final String ABOUT_EN_PATH = "/pages/abouten.xhtml";
-   
+  
+  private static final String ALIGNMENT_VIEW_PATH = "/pages/alignment.xhtml";
+  private static final String MAP_VIEW_PATH = "/pages/mapview.xhtml";
+  private static final String IMAGE_VIEW_PATH = "/pages/imageview.xhtml";
+  private static final String EXPORT_PATH = "/pages/export.xhtml"; 
+  private static final String STATISTIC_VIEW_PATH = "/pages/statistic.xhtml"; 
+  private static final String NO_HITS_VIEW_PATH = "/pages/nohits.xhtml"; 
+  private static final String NO_HIGH_MATCH_VIEW_PATH = "/pages/nohighmatch.xhtml"; 
+  private static final String HIGH_HITS_VIEW_PATH = "/pages/highhits.xhtml"; 
+  private static final String LOW_HITS_VIEW_PATH = "/pages/lowhits.xhtml"; 
+  
   private String clientId;
 
   @Inject
@@ -129,4 +138,40 @@ public class Navigator implements Serializable {
   public String getAboutIncludePage() {
     return language.isIsSwedish() ? ABOUT_SV_PATH : ABOUT_EN_PATH;
   } 
+  
+  public String getAlignmentView() {
+    return ALIGNMENT_VIEW_PATH;
+  }
+  
+  public String getMapView() {
+    return MAP_VIEW_PATH;
+  }
+  
+  public String getImageView() {
+    return IMAGE_VIEW_PATH;
+  }
+  
+  public String getExport() {
+    return EXPORT_PATH;
+  }
+  
+  public String getStatistic() {
+    return STATISTIC_VIEW_PATH;
+  }
+  
+  public String getNoHits() {
+    return NO_HITS_VIEW_PATH;
+  }
+  
+  public String getNoHighMatch() {
+    return NO_HIGH_MATCH_VIEW_PATH;
+  }
+  
+  public String getHighHits() {
+    return HIGH_HITS_VIEW_PATH;
+  }
+  
+  public String getLowHits() {
+    return LOW_HITS_VIEW_PATH;
+  }
 }
