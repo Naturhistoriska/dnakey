@@ -9,12 +9,9 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import se.nrm.dina.dnakey.logic.config.ConfigProperties; 
-import se.nrm.dina.dnakey.logic.metadata.BlastSubjectMetadata;
+import se.nrm.dina.dnakey.logic.config.ConfigProperties;  
 import se.nrm.dina.dnakey.logic.vo.MorphBankImage;
-import se.nrm.dina.dnakey.logic.vo.NrmData;
-import se.nrm.dina.dnakey.portal.controller.BlastBean;
-import se.nrm.dina.dnakey.portal.vo.SolrRecord;
+import se.nrm.dina.dnakey.logic.vo.NrmData; 
 
 /**
  *
@@ -34,9 +31,7 @@ public class GalleriaBean implements Serializable {
    
   @Inject
   private ConfigProperties config;
-  @Inject
-  private BlastBean blast;
-
+  
   public GalleriaBean() {
   }
 

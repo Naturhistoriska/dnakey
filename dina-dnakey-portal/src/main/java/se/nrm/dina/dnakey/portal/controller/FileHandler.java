@@ -3,8 +3,7 @@ package se.nrm.dina.dnakey.portal.controller;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Files; 
-import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.nio.file.Paths; 
 import java.util.List;  
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
@@ -67,15 +66,10 @@ public class FileHandler implements Serializable {
    * @param sequences -String
    * @return String - file path
    */
-  public List<String> createFastaFiles(List<String> sequences) { 
-//    List<String> fastaFilesPath = new ArrayList<>();
+  public List<String> createFastaFiles(List<String> sequences) {  
     return sequences.stream()
             .map(s -> createFastaFile(s))
-            .collect(Collectors.toList());
-//            .forEach(seq -> {
-//              fastaFilesPath.add(createFastaFile(seq)); 
-//            });
-//    return fastaFilesPath;
+            .collect(Collectors.toList()); 
   }
     
   /**

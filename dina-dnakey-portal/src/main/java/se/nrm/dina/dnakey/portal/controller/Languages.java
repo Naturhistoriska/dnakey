@@ -1,8 +1,7 @@
 package se.nrm.dina.dnakey.portal.controller;
 
 import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
+import javax.enterprise.context.SessionScoped; 
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import org.primefaces.context.RequestContext;
