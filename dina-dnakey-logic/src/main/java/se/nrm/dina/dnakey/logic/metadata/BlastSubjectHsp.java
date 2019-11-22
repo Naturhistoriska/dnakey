@@ -1,246 +1,186 @@
 package se.nrm.dina.dnakey.logic.metadata;
 
 import java.util.ArrayList;
-import java.util.List; 
-import org.apache.commons.lang.StringUtils; 
+import java.util.List;  
+import se.nrm.dina.dnakey.logic.util.MetadataHelper;
 
 /**
  *
  * @author idali
  */
 public final class BlastSubjectHsp implements Comparable {
+
+  private static final String TEXT_BLACK = "blacktext";
+  private static final String TEXT_GRAY = "graytext";
+  private final String plus = "Plus";
+  private final String minus = "Minus";
+  private final String strand = "Strand = ";
+  private final String separator = "/";
+  private final String percentageString = "%"; 
+  private final String emptyString = ""; 
+
+  private final double hspScore;
+  private final double hspBitScore;
+  private final double hspEvalue;
+  private final int hspQueryFrom;
+  private final int hspQueryTo;
+  private final int hspHitFrom;
+  private final int hspHitTo;
+  private final int hspIdentity;
+  private final int hspPositive;
+  private final int hspGaps;
+  private final int hspAlignLen;
+  private final String hspQseq;
+  private final String hspHseq;
+  private final String hspMidline;
+  private final int hspQueryFrame;
+  private final int hspHitFrame;
+  private final long percentage;
+
+  private StringBuilder hspStrandSb;
   
-    public static final String TEXT_BLACK = "blacktext";
-    public static final String TEXT_GRAY = "graytext";
-    
-    private final double hspScore;
-    private final double hspBitScore;
-    private final double hspEvalue;
-    private final int hspQueryFrom;
-    private final int hspQueryTo;
-    private final int hspHitFrom;
-    private final int hspHitTo;
-    private final int hspIdentity;
-    private final int hspPositive;
-    private final int hspGaps;
-    private final int hspAlignLen; 
-    private final String hspQseq;
-    private final String hspHseq;
-    private final String hspMidline;
-    private final int hspQueryFrame;
-    private final int hspHitFrame;
-    private long percentage; 
-     
-    private static final String NUMBER_FORMAT_ERROR = "Not available.";
+  private static final String NUMBER_FORMAT_ERROR = "Not available.";
+
+  public BlastSubjectHsp(final double hspScore, final double hspBitScore, final double hspEvalue,
+          final int hspQueryFrom, final int hspQueryTo, final int hspHitFrom,
+          final int hspHitTo, final int hspIdentity, final int hspPositive,
+          final int hspGaps, final int hspAlignLen, final long percentage,
+          final String hspQseq, final String hspHseq, final String hspMidline,
+          final int hspQueryFrame, final int hspHitFrame) {
+    this.hspScore = hspScore;
+    this.hspBitScore = hspBitScore;
+    this.hspEvalue = hspEvalue;
+    this.hspQueryFrom = hspQueryFrom;
+    this.hspQueryTo = hspQueryTo;
+    this.hspHitFrom = hspHitFrom;
+    this.hspHitTo = hspHitTo;
+    this.hspIdentity = hspIdentity;
+    this.hspPositive = hspPositive;
+    this.hspGaps = hspGaps;
+    this.hspAlignLen = hspAlignLen;
+    this.hspQseq = hspQseq;
+    this.hspHseq = hspHseq;
+    this.hspMidline = hspMidline;
+    this.hspQueryFrame = hspQueryFrame;
+    this.hspHitFrame = hspHitFrame;
+    this.percentage = percentage;
+  }
+
+  public static String getNUMBER_FORMAT_ERROR() {
+    return NUMBER_FORMAT_ERROR;
+  }
+
+  public int getHspAlignLen() {
+    return hspAlignLen;
+  }
+
+  public double getHspBitScore() {
+    return hspBitScore;
+  }
+
+  public double getHspEvalue() {
+    return hspEvalue;
+  }
+
+  public int getHspGaps() {
+    return hspGaps;
+  }
+
+  public int getHspHitFrame() {
+    return hspHitFrame;
+  }
+
+  public int getHspHitFrom() {
+    return hspHitFrom;
+  }
+
+  public int getHspHitTo() {
+    return hspHitTo;
+  }
+
+  public String getHspHseq() {
+    return hspHseq;
+  }
+
+  public int getHspIdentity() {
+    return hspIdentity;
+  }
+
+  public String getHspMidline() {
+    return hspMidline;
+  }
+
+  public int getHspPositive() {
+    return hspPositive;
+  }
+
+  public String getHspQseq() {
+    return hspQseq;
+  }
+
+  public int getHspQueryFrame() {
+    return hspQueryFrame;
+  }
+
+  public int getHspQueryFrom() {
+    return hspQueryFrom;
+  }
+
+  public int getHspQueryTo() {
+    return hspQueryTo;
+  }
+
+  public double getHspScore() {
+    return hspScore;
+  }
+
+  public String getTextColor() {
+    return percentage >= 99 ? TEXT_BLACK : TEXT_GRAY;
+  }
+
+  public Long getPercentage() {
+    return percentage;
+  }
+
+  public String getIdentitiesPercentage() {
+    try {
+      return String.valueOf(percentage) + percentageString;
+    } catch (NumberFormatException ex) {
+    }
+    return emptyString;
+  }
+
+  public String getGapsPercentage() {
+    try {
+      return String.valueOf((long) Math.floor((Double.valueOf(hspGaps) / Double.valueOf(hspAlignLen)) * 100)) + percentageString;
+    } catch (NumberFormatException ex) {
+    }
+    return emptyString;
+  }
+
+  public String getHspStrand() {
+    hspStrandSb = new StringBuilder();
+    try {
+      hspStrandSb.append(strand);
+      hspStrandSb.append(hspQueryFrame >= 0 ? plus : minus);
+      hspStrandSb.append(separator);
+      hspStrandSb.append(hspHitFrame >= 0 ? plus : minus);
+    } catch (NumberFormatException ex) {
+    }
+    return hspStrandSb.toString();
+  }
  
-    public BlastSubjectHsp(final double hspScore, final double hspBitScore, final double hspEvalue, 
-                           final int hspQueryFrom, final int hspQueryTo, final int hspHitFrom, 
-                           final int hspHitTo, final int hspIdentity, final int hspPositive, 
-                           final int hspGaps, final int hspAlignLen, final long percentage, 
-                           final String hspQseq, final String hspHseq, final String hspMidline, 
-                           final int hspQueryFrame, final int hspHitFrame) {
-        this.hspScore = hspScore;
-        this.hspBitScore = hspBitScore;
-        this.hspEvalue = hspEvalue;
-        this.hspQueryFrom = hspQueryFrom;
-        this.hspQueryTo = hspQueryTo;
-        this.hspHitFrom = hspHitFrom;
-        this.hspHitTo = hspHitTo;
-        this.hspIdentity = hspIdentity;
-        this.hspPositive = hspPositive;
-        this.hspGaps = hspGaps;
-        this.hspAlignLen = hspAlignLen;
-        this.hspQseq = hspQseq;
-        this.hspHseq = hspHseq;
-        this.hspMidline = hspMidline;
-        this.hspQueryFrame = hspQueryFrame;
-        this.hspHitFrame = hspHitFrame;
-        this.percentage = percentage;
-    }
+  public List<AlignSequence> getSequencesAlignment() {
 
-    public static String getNUMBER_FORMAT_ERROR() {
-        return NUMBER_FORMAT_ERROR;
-    }
-
-    public int getHspAlignLen() {
-        return hspAlignLen;
-    }
-
-    public double getHspBitScore() {
-        return hspBitScore;
-    }
-
-    public double getHspEvalue() {
-        return hspEvalue;
-    }
-
-    public int getHspGaps() {
-        return hspGaps;
-    }
-
-    public int getHspHitFrame() {
-        return hspHitFrame;
-    }
-
-    public int getHspHitFrom() {
-        return hspHitFrom;
-    }
-
-    public int getHspHitTo() {
-        return hspHitTo;
-    }
-
-    public String getHspHseq() {
-        return hspHseq;
-    }
-
-    public int getHspIdentity() {
-        return hspIdentity;
-    }
-
-    public String getHspMidline() {
-        return hspMidline;
-    }
-
-    public int getHspPositive() {
-        return hspPositive;
-    }
-
-    public String getHspQseq() {
-        return hspQseq;
-    }
-
-    public int getHspQueryFrame() {
-        return hspQueryFrame;
-    }
-
-    public int getHspQueryFrom() {
-        return hspQueryFrom;
-    }
-
-    public int getHspQueryTo() {
-        return hspQueryTo;
-    }
-
-    public double getHspScore() {
-        return hspScore;
-    }
+    List<AlignSequence> alignSequences = new ArrayList<>(); 
+    int count = hspAlignLen / 60;
+    int remainder = hspAlignLen % 60; 
+    return count > 0 ? MetadataHelper.getInstance().buildAlignment(count, alignSequences, remainder, this)
+            : MetadataHelper.getInstance().buildNoCountAlignment(alignSequences, this); 
+  }
  
-   
-    public String getTextColor() {   
-        return percentage >= 99 ? TEXT_BLACK : TEXT_GRAY;
-    }
- 
-    
-//    public void setPercentage() {
-//        double identities = Double.valueOf(hspIdentity);
-//        double alignLength = Double.valueOf(hspAlignLen); 
-//        this.percentage = (long) Math.floor((identities / alignLength) * 100 + 0.5d);
-//    }
-    
-    
-    public Long getPercentage() {
-        return percentage;
-    }
-    
-    public String getIdentitiesPercentage() {
-
-        String identitiesPercentage = "";
-        try { 
-            identitiesPercentage = String.valueOf(percentage) + "%";
-        } catch (NumberFormatException e) { 
-        }
-        return identitiesPercentage;
-    }
-
-    public String getGapsPercentage() {
-
-        String gapsPercentage = "";
-        try {
-            double gaps = Double.valueOf(hspGaps);
-            double alignLength = Double.valueOf(hspAlignLen);
-            gapsPercentage = String.valueOf((long) Math.floor((gaps / alignLength) * 100)) + "%";
-        } catch (NumberFormatException e) { 
-        }
-        return gapsPercentage;
-    }
- 
-    public String getHspStrand() { 
-        String qFrame = "";
-        String hFrame = "";
-        try {
-            qFrame = hspQueryFrame >= 0 ? "Plus" : "Minus";
-            hFrame = hspHitFrame >= 0 ? "Plus" : "Minus";
-        } catch (NumberFormatException e) { 
-        }
-        return "Strand = " + qFrame + "/" + hFrame;
-    }
-
-    public List<AlignSequence> getSequencesAlignment() {
-
-        List<AlignSequence> alignSequences = new ArrayList<AlignSequence>();
-
-        String qrySeq = hspQseq;
-        String sbjSeq = hspHseq;
-        String midLine = hspMidline;
-
-
-        int length = hspAlignLen;
-
-        int qstart = hspQueryFrom;
-        int qend = hspHitTo;
-
-        int hstart = hspHitFrom;
-        int hend = hspHitTo;
-
-        int count = length / 60;
-        int remainder = length % 60;
-
-        if (count <= 0) {
-            alignSequences.add(new AlignSequence(String.valueOf(qstart), String.valueOf(qend), qrySeq, "q"));
-            alignSequences.add(new AlignSequence("", "", midLine, "m"));
-            alignSequences.add(new AlignSequence(String.valueOf(hstart), String.valueOf(hend), sbjSeq, "s"));
-        } else {
-            for (int i = 1; i <= count; i++) {
-                String q = StringUtils.substring(qrySeq, 0, 60);
-                String h = StringUtils.substring(sbjSeq, 0, 60);
-                String m = StringUtils.substring(midLine, 0, 60);
-
-                qrySeq = StringUtils.substring(qrySeq, 60);
-                sbjSeq = StringUtils.substring(sbjSeq, 60);
-                midLine = StringUtils.substring(midLine, 60);
-
-                int numOfChartq = getNumOfChart(q);
-                int numOfCharth = getNumOfChart(h);
-
-                int qnumEnd = qstart + 59 - numOfChartq;
-                int hnumEnd = hstart + 59 - numOfCharth;
-
-                alignSequences.add(new AlignSequence(String.valueOf(qstart), String.valueOf(qnumEnd), q, "q"));
-                alignSequences.add(new AlignSequence("", "", m, "m"));
-                alignSequences.add(new AlignSequence(String.valueOf(hstart), String.valueOf(hnumEnd), h, "s"));
-
-                alignSequences.add(new AlignSequence("", "", "", "e"));
-
-                qstart = qnumEnd + 1;
-                hstart = hnumEnd + 1;
-            }
-
-            if (remainder > 0) { 
-                alignSequences.add(new AlignSequence(String.valueOf(qstart), String.valueOf(qend), qrySeq, "q"));
-                alignSequences.add(new AlignSequence("", "", midLine, "m"));
-                alignSequences.add(new AlignSequence(String.valueOf(hstart), String.valueOf(hend), sbjSeq, "s"));
-            }
-        }
-        return alignSequences;
-    }
-
-    private int getNumOfChart(String sequence) {
-        return StringUtils.contains(sequence, "-") ? StringUtils.countMatches(sequence, "-") : 0;
-    }
-
-    @Override
-    public int compareTo(Object o1) {
-        return (this.getIdentitiesPercentage().compareTo(((BlastSubjectHsp) o1).getIdentitiesPercentage()) );
-    }
+  @Override
+  public int compareTo(Object o1) {
+    return (this.getIdentitiesPercentage().compareTo(((BlastSubjectHsp) o1).getIdentitiesPercentage()));
+  }
 }

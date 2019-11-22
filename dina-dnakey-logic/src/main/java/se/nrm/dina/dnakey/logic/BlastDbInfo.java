@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.nrm.dina.dnakey.logic;
 
 import java.io.BufferedReader;
@@ -49,25 +44,41 @@ public class BlastDbInfo implements Serializable {
   public BlastDbInfo() {
   }
 
+  /**
+   * This method runs when application startup
+   */
   @PostConstruct
   public void init() {
     log.info("init");
 
     dbPath = config.getDbPath();
     dbInfoPath = config.getDbinfoPath();
+    
     nrmCount = getTotal(NRM_DB);
     boldCount = getTotal(BOLD_DB);
     genbankCount = getTotal(GENBANK_DB);
   }
 
+  /**
+   * To return total number of sequences in nrm blastDatabase
+   * @return 
+   */
   public String getNrmDbTotal() {
     return nrmCount == null ? getTotal(NRM_DB) : nrmCount;
   }
   
+  /**
+   * To return total number of sequences in bold blastDatabase
+   * @return 
+   */
   public String getBoldDbTotal() {
     return boldCount == null ? getTotal(BOLD_DB) : boldCount;
   }
   
+  /**
+   * To return total number of sequences in genbank blastDatabase
+   * @return 
+   */
   public String getGenbankDbTotal() {
     return genbankCount == null ? getTotal(GENBANK_DB) : genbankCount;
   }

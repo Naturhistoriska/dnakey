@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.nrm.dina.dnakey.logic.geomap;
 
 import java.io.IOException;
@@ -14,6 +9,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
+import javax.ejb.Startup;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import se.nrm.dina.dnakey.logic.config.ConfigProperties;
@@ -23,14 +20,12 @@ import se.nrm.dina.dnakey.logic.vo.GeoMapData;
  *
  * @author idali
  */
-@Slf4j
+@ApplicationScoped
+@Startup
+@Slf4j 
 public class GeoMapDataSource implements Serializable {
-
-//    private final String BASE_COORDINATES_LOCAL_FILE_PATH = "/Users/idali/git-idali/data/dnakey/"; 
-//    private final String BASE_COORDINATES_REMOTE_FILE_PATH = "/opt/data/dnakey/data/";
-  private final String SEPARATOR = "\t";
-
-//    private String coordinates_file_path;
+ 
+  private final String SEPARATOR = "\t"; 
   private List<GeoMapData> list;
 
   @Inject
@@ -45,11 +40,6 @@ public class GeoMapDataSource implements Serializable {
   @PostConstruct
   void init() {
     buildGeoMapData();
-  }
-
-  private GeoMapData mapperToGeoMapData(String value) {
-    String[] geo = value.split(SEPARATOR);
-    return new GeoMapData(Double.parseDouble(geo[2]), Double.parseDouble(geo[1]), Integer.parseInt(geo[0]));
   }
 
   public String getMapKey() {
@@ -69,6 +59,10 @@ public class GeoMapDataSource implements Serializable {
               .collect(Collectors.toList());
     } catch (IOException e) {
     }
-  }
-
+  } 
+   
+  private GeoMapData mapperToGeoMapData(String value) {
+    String[] geo = value.split(SEPARATOR);
+    return new GeoMapData(Double.parseDouble(geo[2]), Double.parseDouble(geo[1]), Integer.parseInt(geo[0]));
+  } 
 }
