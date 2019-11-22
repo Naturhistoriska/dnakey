@@ -13,7 +13,7 @@
       #{msg.headername} 
     </title>   
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=#{map.mapKey}" type="text/javascript"></script>  
+    <script src="https://maps.googleapis.com/maps/api/js?key=#{geoMap.mapKey}" type="text/javascript"></script>  
 
     <script type='text/javascript' src='https://www.google.com/jsapi'></script> 
     <script type='text/javascript'>
@@ -23,7 +23,7 @@
       function drawVisualizationMap() {
         var data = google.visualization.arrayToDataTable([
           ['Latitude', 'Longitude', 'Value'],
-          <c:forEach var = "geoMapData" items = "${map.geoMap}" > 
+          <c:forEach var = "geoMapData" items = "${geoMap.geoMap}" > 
             [${geoMapData.latitude},${geoMapData.longitude},${geoMapData.count}],
           </c:forEach>
         ]);
