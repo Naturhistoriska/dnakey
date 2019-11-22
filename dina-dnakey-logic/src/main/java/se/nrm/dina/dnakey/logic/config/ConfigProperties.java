@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.nrm.dina.dnakey.logic.config;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -11,7 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.wildfly.swarm.spi.runtime.annotations.ConfigurationValue;
 
 /**
- *
+ * Environment properties
+ * 
+ * 
  * @author idali
  */
 @ApplicationScoped
@@ -29,6 +26,8 @@ public class ConfigProperties {
   private String fastaFilePath;
   private String solrPath;
   private String mapKey;
+  private String thumbPath;
+  private String imagePath;
 
   public ConfigProperties() {
   }
@@ -42,6 +41,8 @@ public class ConfigProperties {
           @ConfigurationValue("swarm.blast.base.bin.blastn") String blastnPath,
           @ConfigurationValue("swarm.blast.tempfile.path") String fastaFilePath,
           @ConfigurationValue("swarm.solr.path") String solrPath,
+          @ConfigurationValue("swarm.images.morphbank.thumb") String thumbPath,
+          @ConfigurationValue("swarm.images.morphbank.image") String imagePath,
           @ConfigurationValue("swarm.map.key") String mapKey) {
     this.geoDataFilePath = geoDataFilePath;
     this.blastBasePath = blastBasePath;
@@ -52,6 +53,8 @@ public class ConfigProperties {
     this.fastaFilePath = fastaFilePath;
     this.solrPath = solrPath;
     this.mapKey = mapKey;
+    this.thumbPath = thumbPath;
+    this.imagePath = imagePath;
     log.info("test injection : {}", solrPath);
   }
 
@@ -116,5 +119,19 @@ public class ConfigProperties {
       throw new RuntimeException(CONFIG_INITIALLISING_ERROR);
     }
     return mapKey;
+  }
+
+  public String getThumbPath() {
+    if (thumbPath == null) {
+      throw new RuntimeException(CONFIG_INITIALLISING_ERROR);
+    }
+    return thumbPath;
+  }
+
+  public String getImagePath() {
+    if (imagePath == null) {
+      throw new RuntimeException(CONFIG_INITIALLISING_ERROR);
+    }
+    return imagePath;
   }
 }
