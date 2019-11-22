@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui">
+
+  <body>
+    <ui:composition>      
+      <h:panelGroup style="width:  100%; float: left; padding-bottom: 10px; padding-left: 30px; "  rendered="#{!blastMetada.hasHighMatach}" >
+        
+        no high hits
+        <h:panelGroup  layout="black" style="width:  100%; float: left;" rendered="#{blast.ridByMetadata(blastMetada) == null}">
+          <h:outputText value="#{msg.nohighmatch}" style=" font-size: 16px; color: #D00000; "  />
+          <p:spacer width="5" />  
+          <p:commandLink actionListener="#{blast.remotBlast(blastMetada)}"  
+                         title="#{msg.genbank}"  
+                         update=":resultform:resultpanel"  global="true"  >  
+            <h:outputText value="#{msg.genbank}" style="color: #D00000; font-size: 16px;" />
+          </p:commandLink>  
+        </h:panelGroup>
+
+        <h:panelGroup id="genbankNoHighMatchRidPanel" layout="black" rendered="#{blast.ridByMetadata(blastMetada) != null}">
+          <h:outputLink value="#{blast.genbankRidUrl}#{blast.ridByMetadata(blastMetada)}"  target="_blank" >
+            <h:outputText value="#{msg.genbankrid} #{blast.ridByMetadata(blastMetada)} #{msg.genbankridsearch}" style="color: #D00000; font-size: 16px;" />
+          </h:outputLink> 
+        </h:panelGroup>
+
+        <h:panelGroup  layout="black" style="width:  100%; float: left;"   >
+          <h:outputText value="#{msg.searchinbold}" style=" font-size: 16px; color: #D00000;"  />
+          <p:spacer width="5" />  
+          <h:outputLink value="http://www.boldsystems.org/index.php/IDS_OpenIdEngine"  target="_blank" >
+            <h:outputText value="BOLD" style="color: #D00000; font-size: 16px;" />
+          </h:outputLink>  
+          <p:spacer width="5" /> 
+          <h:outputText value="#{msg.boldsearch}" style=" font-size: 16px; color: #D00000;"  />
+        </h:panelGroup>
+        <h:panelGroup  layout="black"  style="width:  100%; float: left;">
+          <p:spacer width="20" />
+        </h:panelGroup> 
+      </h:panelGroup>
+    </ui:composition>
+  </body>
+</html>

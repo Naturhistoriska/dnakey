@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui">
+
+  <body>
+    <ui:composition>      
+      <h:panelGroup  layout="black" rendered="#{!blastMetada.hasHit}" 
+                     style="float: left; width: 100%; padding-left: 30px; color: #D00000; ">
+         
+        <h:panelGroup  layout="black" style="width:  100%; float: left;" rendered="#{blast.ridByMetadata(blastMetada) == null}">
+          <h:outputText value="#{msg.noresult}" style=" font-size: 16px;"  />
+          <p:spacer width="5" />  
+          <p:commandLink actionListener="#{blast.remotBlast(blastMetada)}"  
+                         title="#{msg.searchingenbank}"   
+                         update="genbankRidPanel"  global="true" >
+            <h:outputText value="#{msg.searchingenbank}" style="color: #D00000; font-size: 16px;" />
+          </p:commandLink>   
+        </h:panelGroup>
+        
+        <h:panelGroup id="genbankRidPanel"  layout="black" > 
+          <h:panelGroup  layout="black" rendered="#{blast.ridByMetadata(blastMetada) != null}">
+            <h:outputLink value="#{blast.genbankRidUrl}#{blast.ridByMetadata(blastMetada)}"  target="_blank" >
+              <h:outputText value="#{msg.genbankrid} #{blast.ridByMetadata(blastMetada)} #{msg.genbankridsearch}" style="color: #D00000; font-size: 16px;" />
+            </h:outputLink> 
+          </h:panelGroup>
+        </h:panelGroup>  
+        <h:panelGroup  layout="black" style="width:  100%; float: left;"   >
+          <h:outputText value="#{msg.searchinbold}" style=" font-size: 16px;"  />
+          <p:spacer width="5" />  
+          <h:outputLink value="http://www.boldsystems.org/index.php/IDS_OpenIdEngine"  target="_blank" >
+            <h:outputText value="BOLD" style="color: #D00000; font-size: 16px;" />
+          </h:outputLink>  
+          <p:spacer width="5" /> 
+          <h:outputText value="#{msg.boldsearch}" style=" font-size: 16px;"  />
+        </h:panelGroup>
+        <h:panelGroup  layout="black"  style="width:  100%; float: left;">
+          <p:spacer width="20" />
+        </h:panelGroup> 
+      </h:panelGroup>
+      <h:panelGroup styleClass="resultseparator"  rendered="#{!blastMetada.hasHit}" >
+        <hr />
+      </h:panelGroup>
+    </ui:composition>
+  </body>
+</html>

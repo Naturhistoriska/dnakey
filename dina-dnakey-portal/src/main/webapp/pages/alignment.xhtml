@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui">
+
+  <body>
+    <ui:composition>      
+      <p:dialog  header="#{msg.btnalignment}" widgetVar="alignmentdlg"  width="750" height="650" 
+                 modal="true" id="alignment" position="center, 200" draggable="false">    
+        <p:scrollPanel styleClass="alignmentPanel" id="alignmentPanel">  
+          <h:panelGrid columns="2" cellpadding="0" cellspacing="0" >
+            <h:outputText value=">#{blast.selectedSubMetadata.genbankAccession}&amp;nbsp;&amp;nbsp;" escape="false"   /> 
+            <h:outputText value="#{blast.selectedSubMetadata.scientificName}" escape="false"  />    
+          </h:panelGrid>
+
+          <p:dataTable value="#{blast.selectedHsps}" var="subHsp" styleClass="hide-column-names " > 
+            <p:column> 
+              <h:panelGrid style="background: transparent;" cellpadding="0" cellspacing="0" >
+                <h:outputText value="Length = #{blast.selectedSubMetadata.hitLen}" escape="false"  styleClass="resulttextfont1" /> 
+                <h:outputText value="Score = #{subHsp.hspBitScore} bits (#{subHsp.hspScore}), Expect = #{subHsp.hspEvalue}, E value = #{subHsp.hspEvalue}" 
+                              escape="false" styleClass="resulttextfont1" /> 
+                <h:outputText value="Identity = #{subHsp.hspIdentity}/#{subHsp.hspAlignLen} (#{subHsp.identitiesPercentage}), 
+                              Gaps = #{subHsp.hspGaps}/#{subHsp.hspAlignLen} (#{subHsp.gapsPercentage})" 
+                              escape="false" styleClass="resulttextfont1" />  
+                <h:outputText value="#{subHsp.hspStrand}"  escape="false" styleClass="resulttextfont1" /> 
+              </h:panelGrid> 
+              <br /> 
+              <h:dataTable value="#{subHsp.sequencesAlignment}" id="alignmentTable" var="align"  
+                           columnClasses="aligncol1, aligncol2, aligncol3" cellpadding="0" cellspacing="0" > 
+                <h:column> 
+                  <h:outputText value="#{align.start}" styleClass="resulttextfont1"  /><br /> 
+                </h:column>  
+                <h:column>
+                  <h:outputText value="#{align.seq}" styleClass="resulttextfont1"  /><br /> 
+                </h:column>
+                <h:column>
+                  <h:outputText value="#{align.end}" styleClass="resulttextfont1"  /><br />  
+                </h:column>
+              </h:dataTable>  
+            </p:column>   
+          </p:dataTable> 
+          <br /> 
+        </p:scrollPanel>     
+      </p:dialog>  
+    </ui:composition>
+  </body>
+</html>

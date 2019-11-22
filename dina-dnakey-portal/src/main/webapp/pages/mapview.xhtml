@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+  <body>
+    <ui:composition>      
+      <p:dialog id="singleMapdlgId"  header="#{msg.btnmap}" widgetVar="singleMap"  
+                width="820" height="410" modal="true"  draggable="false" position="center, 200">     
+        <f:view contentType="text/html">
+          <p:gmap center="#{map.centLat},  #{map.centLnt}" 
+                  zoom="#{map.zoom}" type="HYBRID" model="#{map.advancedModel}"
+                  style="width:800px; height:400px" fitBounds="false" >  
+
+            <p:ajax event="overlaySelect" listener="#{map.onMarkerSelect}" global="false" />   
+            <p:gmapInfoWindow  rendered="#{map.hasData}" >  
+              <p:outputPanel  styleClass="gmapinfowindow" >  
+
+                <h:panelGroup layout="black" style="width: 80px; padding-right: 20px;">
+                  <h:graphicImage library="images" name="pin_1.png" alt="pin"  />
+                </h:panelGroup>
+
+                <h:panelGroup layout="black" style="font-size: 10px;">
+                  <h:outputText value="#{map.nameAndCatalogNumber}" />   
+                  <br />
+                  <h:outputText value="#{map.locality}" />   
+                  <br />
+                  <h:outputText value="#{map.country}, #{map.continent}" />    
+                  <br />
+                  <br />
+                  <h:outputText value="#{map.coordinates}" />
+                </h:panelGroup>  
+              </p:outputPanel>  
+            </p:gmapInfoWindow>  
+          </p:gmap>  
+        </f:view> 
+      </p:dialog>  
+    </ui:composition>
+  </body>
+</html>
