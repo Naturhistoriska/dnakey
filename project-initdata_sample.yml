@@ -1,0 +1,24 @@
+## YAML Template.
+---
+swarm:
+  geodata: /usr/geo_coords.tsv
+  map:
+    key: mapkey
+  blast:
+    base:
+      path: /usr/local/blast/
+      db: /usr/local/nbci/blast/db/
+      bin:
+        path: /usr/local/blast/bin/
+        dbinfo: /usr/local/blast/bin/blastdbcmd
+        blastn: /usr/local/blast/bin/blastn
+    tempfile:
+      path: /usr/local/blast/tempfastafiles
+  solr:
+    # path: https://local-solr.nrm.se/solr
+    path: http://solr:8983/solr/nrm
+  images:
+    morphbank:
+      thumb: "http://images.morphbank.nrm.se/?id="
+      image: "http://morphbank.nrm.se/Browse/ByImage/?specimenId="
+

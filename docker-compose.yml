@@ -8,7 +8,8 @@ services:
       - VIRTUAL_HOST=beta.dnakey.se
       - VIRTUAL_PORT=8080
     volumes:
-      - ./project-initdata.yml:/usr/src/myapp/project-initdata.yml
+      - ./project-initdata_sample.yml:/usr/src/myapp/project-initdata.yml
+      - ./logs/dnakey.log:/usr/src/myapp/logs/dnakey.log
     extra_hosts:
       - "solr.nrm.se:193.10.57.89"
 
