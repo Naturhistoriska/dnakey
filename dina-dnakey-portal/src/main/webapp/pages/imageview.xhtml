@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"  
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:h="http://java.sun.com/jsf/html">
+
+  <body>
+    <ui:composition>      
+      <p:dialog id="imgswitchdialog" closable="true"  widgetVar="imgswitchdlg"   
+                draggable="false" header="#{msg.imageswitcher} (#{msg.imgmouseover})" >
+
+        <p:panel id="imageSwitch">
+          <p:galleria id="images" widgetVar="gallery" value="#{galleriaBean.groupImages}" 
+                      panelWidth="420" panelHeight="500"   autoPlay="false"
+                      var="mbimg"  showCaption="false" >    
+            
+            <h:outputText value="#{galleriaBean.nameAndCatalogNumber}"  /> 
+            <p:graphicImage value="#{mbimg.thumb}" alt="#{mbimg.catalogNumber}" 
+                            title="#{mbimg.name}"  styleClass="imageswithpedding" />    
+          </p:galleria>    
+
+          <p:contextMenu for="images" style="z-index:50; font-size: 10px;">  
+            <p:menuitem value="Morphbank" url="http://morphbank.nrm.se/Browse/ByImage/?specimenId=#{galleriaBean.mbid}"   
+                        target="_blank"   icon="ui-icon-extlink"/>    
+            <p:menuitem value="Naturav" url="http://naturarv.se/?#{blast.urlEncode}#{galleriaBean.catalogNumber}" 
+                        target="_blank"   icon="ui-icon-extlink"/>   
+            <p:menuitem value="Naturforskaren" url="http://naturforskaren.se/search/#{galleriaBean.scientificName}"    
+                        target="_blank"   icon="ui-icon-extlink"/>   
+            <ui:remove>
+              <p:menuitem value="GIBF.se" url="http://old.gbif.se/search/#{galleriaBean.scientificName}"    
+                          target="_blank"   icon="ui-icon-extlink"/>  
+            </ui:remove> 
+            <p:menuitem value="GIBF" url="http://data.gbif.org/search/#{galleriaBean.scientificName}"    
+                        target="_blank"   icon="ui-icon-extlink"/>  
+            <p:menuitem value="#{msg.btnclose}" url="javascript:void(0)" onclick="PF('imgswitchdlg').hide();" icon="ui-icon-close"/>    
+          </p:contextMenu> 
+        </p:panel> 
+      </p:dialog>
+    </ui:composition>
+  </body>
+</html>

@@ -1,0 +1,274 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html"    
+      xmlns:p="http://primefaces.org/ui" > 
+  <body>  
+    <ui:composition>     
+      <h:panelGroup styleClass="column1" layout="block" >
+        <h:panelGroup  styleClass="header"  layout="block" >
+          <h:outputText value="#{msg.dnatext1}" /> 
+        </h:panelGroup>
+
+        <h:panelGroup  styleClass="subheader text"  layout="block" >
+          <h:outputText value="#{msg.dnatext2}" /> 
+        </h:panelGroup>
+
+        <h:panelGroup  styleClass="text"  layout="block" >
+          Ända sedan metoder för att läsa DNA-sekvenser blev tillgängliga har DNA använts i frågeställningar kring arter, 
+          släktskap och identifiering. Eftersom DNA samlar på sig förändringar (mutationer) med tiden så blir DNA för 
+          olika arter mer och mer annorlunda ju längre arter varit skilda från varandra. Det var först 2003 som några 
+          forskare fick gehör i hela världen för att en specifik standardiserad genregion för djur skulle kunna bli ett 
+          nytt artidentifieringsverktyg. Detta kom att kallas DNA Barcoding på engelska vilket ibland försvenskas till DNA 
+          Barkodning eller ersätts med termen DNA streckkodning. Genregionen man bestämde sig för vad gäller djurriket blev 
+          den mitokondriella genen cytochrome c oxidase subunit I (COI). Då denna gen visat sig inte fungera lika bra på 
+          alla organismgrupper har man senare valt andra gener för växter (kloroplast generna rbcl och matK) och svampar 
+          (nukleära genen ITS).  
+          <br />
+          <br /> 
+          Sedan 2003 har forskare över hela världen testat hur bra de valda genregionerna verkligen fungerar för artidentifiering 
+          i olika organismgrupper och på olika kontinenter. Frågorna man velat ha svar på har varit tex hur stor är variationen 
+          inom arten i genen, är det alltid stor skillnad mellan arter men liten skillnad inom arter, fungerar det lika bra i 
+          alla grupper av djur, hur många individer av varje art bör man ha i ett "referensbibliotek" av sekvenser, hur vanligt 
+          är det med falska gener (s.k. pseudogener), vad händer vid mellanartshybridisering, vilken av flera metoder för att göra 
+          en identifiering av en okänd sekvens mot ett referensbibliotek ger störst säkerhet i bestämningen och är det någon 
+          skillnad på att använda ett regionalt referensbibliotek mot ett globalt? 
+          <br />
+          <br /> 
+          Resultaten av forskningsprojekt för att få svar på frågorna har visat flera intressanta saker. För det första så har man 
+          nu rett ut skillnaden mellan att avgränsa arter (= det vi kallar för taxonomi) och att identifiera prover till artnivå 
+          (=bestämning). De tidiga åren såg en hel del förväxlingar mellan de två, DNA streckkodning skulle kunna ersätta både 
+          det ena och det andra och metoder avsedda för det ena användes för det andra mm. Idag har vi en ganska bra uppfattning 
+          av vad DNA streckkodning är bra på, under vilka förutsättningar, och vilka begränsningar som finns. Tex fungerar COI 
+          genen inte bra för att identifiera närstående arter av de marina djurstammarna svamp- och nässeldjur. Även i andra växt 
+          och djurgrupper händer det att relativt nybildade arter inte går att skilja från närstående arter utan kan ibland vara 
+          mer lika varandra i streckkodgenen än olika individer inom en och samma art.  
+          <br />
+          <br /> 
+          Med denna kunskap i bagaget kan vi nu anpassa metoderna för att identifiera en okänd sekvens mot ett referensbibliotek 
+          så att säkerheten i artbestämningen blir bättre och bättre. En viktig insikt har varit att ett regionalt geografiskt begränsat 
+          referensbibliotek som Svenska DNA nyckeln kan utgöra ett väl fungerande artbestämningsverktyg även för grupper där en global 
+          databas visat sig ha problem. Anledningen är precis densamma som varför en traditionell bestämningsnyckel är enklare att göra 
+          för axplocket av arter som bara finns i Sverige (eller Fennoskandien: Sverige, Norge, Finland) än till världens alla 
+          arter – plockar man bort vartannat löv på livets träd så blir skillnaderna större (de genetiska avstånden längre) mellan de 
+          kvarvarande löven och därmed lättare att identifiera.  
+        </h:panelGroup>
+
+        <p:spacer height="20"/> 
+
+        <h:panelGroup  styleClass="subheader text"  layout="block" >
+          <h:outputText value="#{msg.dnatext3}" />  
+        </h:panelGroup>
+        <h:panelGroup  styleClass="text"  layout="block" >
+          För att kunna artidentifiera ett okänt prov behöver man först sekvensera den standardiserade genregionen som finns representerad 
+          i referensbiblioteket Svenska DNA Nyckeln. Har man inte tillgång till ett eget molekylärt laboratorium för att göra detta så får 
+          man skicka in det till något sådant. Kostnaden för DNA sekvensering har minskat mycket över de senaste åren, särskilt om man kör 
+          många prover samtidigt. DNA sekvensen man sen får tillbaka som en ren textfil är en textsträng med bokstäverna A, C, T, och G i 
+          olika kombinationer och upprepningar genom den ca 650 bokstäver långa textsträngen. Bokstäverna representerar de fyra ämnena, s.k. 
+          kvävebaser (Adenin, Guanin, Cytosin och Tymin), som binder ihop DNA strukturen (den s.k. dubbelhelixen). Textsträngen med bokstäver 
+          kan man kopiera och klistra in i Svenska DNA nyckeln för att sedan be webportalen jämföra med alla sekvenser i referensbiblioteket. 
+          Från detta kan en artbestämning levereras, eller en artlista om det var flera, förutsatt att organismgruppen för din okända sekvens 
+          finns väl representerad i referensdatabasen. 
+        </h:panelGroup>
+
+        <p:spacer height="20"/>
+
+        <h:panelGroup  styleClass="subheader text"  layout="block" >
+          <h:outputText value="#{msg.dnatext4}" /> 
+        </h:panelGroup>
+
+        <h:panelGroup  styleClass="text"  layout="block" > 
+          För att en webportal som svenska DNA nyckeln ska fungera väl så krävs det ett välfyllt referensbibliotek med kända DNA sekvenser 
+          som okända sekvenser kan jämföras med. För det första så krävs att referensbiblioteket innehåller sekvenser av helst alla de arter 
+          i en organismgrupp som en okänd sekvens kan tänkas komma ifrån. Svenska DNA nyckeln startade som ett   
+          <h:outputLink value="http://www.formas.se"   title="Forskningsrådet Formas"  target="_blank" styleClass="linktext">  
+            <h:outputText value="Formas"   /> 
+          </h:outputLink>  
+          -finansierat projekt för att bygga upp ett referensbibliotek över Sveriges ryggradsdjur (fåglar, däggdjur, fiskar, groddjur, kräldjur). 
+          För denna organismgrupp är svenska DNA nyckeln idag relativt heltäckande och har kända referenssekvenser för 75-82% av de i 
+          Sverige vanligt förekommande arterna. Här får man ofta en korrekt träff om man söker i webportalen. För andra grupper av djur, växter 
+          och svampar är Svenska DNA nyckeln idag i uppbyggningsfasen och kommer vara det i flera år framöver. 
+          <br /> 
+          <br />
+          För det andra så ställs det höga kvalitetskrav på sekvenser som läggs in i en referensdatabas. Dessa kvalitetskrav har utarbetats i en 
+          internationell arbetsgrupp tillsatt av det internationella samarbetet inom CBOL (Consortium for the Barcode of Life). Det allra viktigaste 
+          kvalitetskravet, och det som skiljer en streckkoddatabas från  
+          <h:outputLink value="http://www.ncbi.nlm.nih.gov/genbank"  title="Genbanken"  target="_blank" styleClass="linktext" >  
+            <h:outputText value="Genbanken" /> 
+          </h:outputLink> , 
+          är att sekvenser ska vara kopplade till en så kallad "voucher" eller referensexemplar. Referensexemplaret är den djur-, växt- eller 
+          svampindivid som genen sekvenserats ifrån och denna ska sparas, kurateras och tillgängliggöras på någon offentlig institution varifrån 
+          forskare ska kunna gå tillbaka till individen, låna, studera och verifiera eller bestämma om individen. Sekvenserna i svenska DNA nyckeln 
+          är därför kopplade till den svenska webportalen för föremål i naturhistoriska samlingar i Sverige, 
+
+          <h:outputLink value="http://www.naturarv.se/"   title="Naturarv"  target="_blank" styleClass="linktext">  
+            naturarv
+          </h:outputLink> 
+
+          När man får en träff och bestämning mot en sekvens vars referensexemplar finns i svenska naturhistoriska samlingar så kan man klicka sig 
+          fram till denna post på naturarv som förutom insamlingsdata ofta har fotografier på individen. 
+        </h:panelGroup> 
+
+        <p:spacer height="20"/>
+        <h:panelGroup  styleClass="subheader text"  layout="block" >
+          <h:outputText value="#{msg.dnatext5}" /> 
+        </h:panelGroup>
+        <h:panelGroup  styleClass="text"  layout="block" > 
+          #{msg.dnatext6} 
+        </h:panelGroup>
+        <h:panelGroup  styleClass="dnatext"  layout="block" > 
+          CTAATTTTTGGGGCCTGAGCGGGCATGGTTGGAACCGCCCTCAGCCTGCTCATTCGCGCAGAAC
+          TCGGTCAACCAGGAACCCTACTAGGAGACGACCAGATCTACAACGTAATCGTCACTGCCCATGC
+          CTTCGTAATAATCTTCTTTATAGTCATACCAATCATAATCGGGGGCTTTGGAAACTGACTAGTC
+          CCCCTTATAATCGGCGCCCCAGACATAGCGTTCCCCCGTATAAATAACATAAGCTTCTGACTAC
+          TCCCCCCATCCTTCCTTCTCCTACTAGCCTCCTCCACCGTAGAAGCTGGTGCTGGTACAGGGTG
+          AACAGTCTACCCCCCTCTAGCTGGTAATCTGGCCCACGCCGGAGCTTCTGTAGACCTAGCCATC
+          TTCTCCCTACACCTCGCTGGAGTCTCATCAATCCTAGGTGCAATCAACTTCATCACTACTGCCA
+          TTAACATAAAGCCCCCGGCCCTATCTCAATACCAAACCCCCCTATTCGTATGATCCGTACTAAT
+          CACAGCCGTCCTACTATTACTTTCACTGCCCGTCCTCGCTGCCGGCATTACAATGCTCCTCACA
+          GACCGAAACCTAAACACCACATTCTTTGACCCAGCCGGAGGAGGAGACCCAGTCCTATACCAAC
+          ACCTATTC
+        </h:panelGroup>
+        <br /> 
+        <h:panelGroup  styleClass="text"  layout="block" > 
+          #{msg.dnatext7}
+        </h:panelGroup>
+        <h:panelGroup  styleClass="dnatext"  layout="block" > 
+          CTAATCTTCGGTGCATGAGCTGGCATGGTCGGAACCGCCCTCAGCCTGCTTATTCGTGCAGAAC
+          TAGGCCAACCAGGAACCCTCTTGGGAGATGACCAAATCTACAATGTAATCGTTACTGCTCATGC
+          ATTCGTAATAATTTTCTTCATAGTTATACCAATCATGATCGGAGGATTTGGAAATTGACTAGTC
+          CCACTCATAATCGGCGCCCCCGACATAGCATTTCCTCGTATAAACAATATAAGCTTCTGACTAC
+          TCCCCCCATCATTCCTATTATTACTAGCATCCTCTACAGTAGAAGCTGGAGCTGGCACAGGATG
+          AACAGTATATCCACCCCTCGCCGGCAACCTAGCCCACGCAGGAGCCTCAGTAGACCTAGCTATT
+          TTCTCCCTCCATTTAGCAGGTGTCTCCTCCATCCTAGGTGCCATTAACTTTATCACCACTGCCA
+          TTAACATAAAACCACCAGCCCTGTCCCAATACCAAACACCCCTATTTGTATGATCAGTACTCAT
+          TACCGCCGTCTTACTGCTACTCTCACTCCCAGTCCTTGCTGCCGGCATCACCATGCTATTAACA
+          GATCGTAATCTAAACACCACATTCTTTGACCCAGCCGGAGGAGGAGACCCAGTCCTATACCAAC
+          ATCTCTTC
+        </h:panelGroup>
+        <br />
+
+        <h:panelGroup  styleClass="text"  layout="block" > 
+          Man kan visualisera en DNA sekvens på ett sätt som blir mer överskådligt om man låter linjer i fyra olika färger representera 
+          ordningen av kvävebaserna A, C, T och G i genen. Då åskådliggörs också analogin med vanliga streckkoder för tex produkter och 
+          varför det kallas "DNA streckkodning".
+          <br />
+          <br />
+          Blåkråka överst, morkulla nederst: samma sekvenser som ovan. Ser du skillnad? (tips titta t ex alldeles i början av streckkoden)
+          <br />
+          <br /> 
+        </h:panelGroup> 
+        <p:graphicImage value="/resources/images/barplot_blakraka.png"  alt="barplot_blakraka"  
+                        title="barplot_blakraka" styleClass="images" style="padding-left: 12px;"  /> 
+
+        <br />
+        <br /> 
+        <p:graphicImage value="/resources/images/barplot_morkulla.png"  alt="barplot_morkulla" 
+                        title="barplot_morkulla" styleClass="images" style="padding-left: 12px;"   /> 
+        <br />
+        <br /> 
+        <p:graphicImage value="/resources/images/referensexemplar.jpg"  alt="referensexemplar" 
+                        title="referensexemplar" styleClass="images"   /> 
+
+        <h:panelGroup  styleClass="imgtext text"  layout="block" > 
+          #{msg.dnatext8} 
+          <h:outputLink value="https://www.dina-web.net/naturarv/?#{blast.urlEncode}20106015"  
+                        title="Naturarv"  target="_blank" styleClass="linktext" >  
+            <h:outputText  value="(Cat. id. NRM 20106015)"  styleClass="#{metadata.textColor}"  />    
+          </h:outputLink>   
+          #{msg.dnatext9}  
+          <h:outputLink  value="https://www.dina-web.net/naturarv/?#{blast.urlEncode}20046331"  
+                         title="Naturarv"  target="_blank" styleClass="linktext">  
+            <h:outputText  value="(Cat. id. NRM 20046331)"  styleClass="#{metadata.textColor}"  />    
+          </h:outputLink>  
+          #{msg.dnatext10} 
+          <br /> 
+          <br /> 
+        </h:panelGroup>
+
+        <h:panelGroup  styleClass="subheader text"  layout="block" >
+          <h:outputText value="#{msg.dnatext11}" /> 
+        </h:panelGroup>
+
+        <h:panelGroup  styleClass="text"  layout="block" > 
+          Vad kan DNA streckkodning då användas till? Det finns en rad användningsområden för DNA streckkodning i 
+          samhället. Den stora fördelen med DNA-baserad artidentifiering är att den fungerar lika bra oavsett om man 
+          har ägg, larver, nymfer, yngel, juveniler, puppor, eller prover av vuxna individer. Kriminaltekniker kan t ex 
+          behöva artidentifiera olika insekter i ägg eller larvstadiet på en kropp som legat i skogen för att kunna 
+          avgöra när offret dog.
+          <br /> 
+          <br /> 
+          Miljöövervakningsprover kan i många fall utgöras av organismer i larvstadier som är svåra att identifiera till 
+          artnivå. 
+          <br /> 
+          <br />
+
+          DNA-baserad artidentifiering fungerar lika bra oavsett om man har hela eller bara delar av en organism t ex ett blad, 
+          en fjäder, ett frö, ett blodprov, en filé, en biff, eller ett svampmycel utan fruktkropp. Flygplatssäkerhetsansvariga 
+          kan behöva identifiera vilken fågelart som lett till ett tillbud där en motor skadats baserat på blod eller fjäderrester. 
+          I både Nordamerika och i Europa så har DNA identifiering av fiskfiléer gjort att ett utbrett fuskande har upptäckts på 
+          både restauranger och marknader. 
+          <br />
+          <br/>
+
+          DNA-baserad artidentifiering fungerar även på delvis processade produkter som en halvfärdiglagad lasagne, frysta 
+          fiskfiléer, en skinnväska, pälsar, ett avföringsprov, eller maginnehåll. Livsmedelskontroll är ett exempel där man kan 
+          identifiera råvaran som använts även efter det att produkten inte längre går att identifiera med blotta ögat - 
+          hästlasagneskandalen är ett exempel. Likaså kan tullen ha behov av att verifiera om skinn- eller pälsprodukter som kläder, 
+          väskor eller skor, som förs över gränsen är olagliga om de misstänks vara gjorda av CITES skyddade arter. 
+          <br /> 
+          <br />
+          Att även innehållet i avföringsprov eller maginnehåll kan artbestämmas öppnar upp helt nya dörrar för dietanalys, viltförvaltning, 
+          ekosystemforskning, rekonstruera födovävar, biologisk kontroll mm. I ett EU-finansierat projekt har tex gråsälens diet i 
+          Östersjön analyserats med hjälp av DNA sekvensering av maginnehållet. Det går att avgöra vilka växter djur äter genom att 
+          sekvensera maginnehållet om det finns ett referensbibliotek för relevanta växter att jämföra med. Med ett referensbibliotek av 
+          blomväxter kan man ta reda på vilka arter av bin, humlor och flugor som pollinerar vilka grödor och fruktodlingar genom att 
+          sekvensera pollen på deras ben.
+          <br /> 
+          <br />
+
+          DNA-baserad artidentifiering har börjat användas av myndigheter i USA och Kanada för att analysera miljöövervakningsprover, tex i 
+          vattenmiljöer. Det ger en högre taxonomisk upplösning då ofta en större andel av provet kan identifieras till art. Även i Sverige 
+          testas nu DNA baserad identifiering av fjädermyggslarver i miljöövervakningsprover från bottenhugg i Östersjön och Bottenhavet, och 
+          andelen som kan artidentifieras ökar från 10-15% till 90 % vilket leder till en långt mer exakt miljötillståndsbeskrivning. 
+          Man kan tänka sig att DNA baserad identifiering kan öppna upp för miljöövervakning av en bredare representation av Sveriges 
+          mångfald, även för grupper som tidigare ansetts för svåra att identifiera.
+          <br /> 
+          <br /> 
+        </h:panelGroup> 
+        <p:graphicImage value="/resources/images/miljoovervakning.jpg"  alt="#{msg.dnatext12}"  
+                        title="referensexemplar" styleClass="images"   />  
+        <h:panelGroup  styleClass="imgtext text"  layout="block" > 
+          #{msg.dnatext13}<br /><br />
+        </h:panelGroup>
+
+        <h:panelGroup  styleClass="text"  layout="block" > 
+          Att organismer avger DNA till sin omgivning, tex i vatten eller jord, gör att man till och med kan upptäcka arters existens utan 
+          att ens ha sett dem, bara genom att ta ett vattenprov eller jordprov. Detta har börjat användas i program för tidig upptäckt av 
+          invasiva arter, kontroll av fartygs ballastvatten, inventering av rödlistade arter mm.  
+          <br /> 
+          <br />
+
+          Det finns en lång rad ytterligare tillämpningar som skulle kunna nämnas. I flera länder har man samarbetat med skolor och här 
+          finns stora möjligheter till inspirerande naturvetenskapliga laborationer med DNA baserad artidentifiering av egeninsamlade prover.
+          <br /> 
+          <br />
+
+          DNA-streckkodning har nu kommit så långt att den är ett tillgängligt instrument för alla slags myndigheter och organisationer. Det är 
+          numera ofta varken svårare eller dyrare att använda DNA för att identifiera arter eller individer än klassiska studier av arternas 
+          utseende.  Dessutom kan DNA-analyser ge information om arter där andra klassiska metoder inte räcker till. 
+          <br /> 
+          <br />
+
+          Det kritiska för att verktyget ska vara användbart för alla dessa tillämpningar är dock att det måste finnas heltäckande referensbibliotek 
+          för de organismgrupper man är intresserad av för olika tillämpningar. Referensbiblioteket i Svenska DNA nyckeln är idag i uppbyggnadsfasen 
+          och har relativt bra täckning för en del grupper, tex svenska ryggradsdjur, men mindre bra för andra grupper tex växter. Det pågår 
+          intensivt arbete för att få finansiering till att bygga upp referensbibliotek för flera andra organismgrupper som är viktiga för 
+          tillämpningar i samhället.
+          <br /> 
+          <br />
+        </h:panelGroup>  
+      </h:panelGroup>  
+    </ui:composition>
+  </body>
+</html>
+

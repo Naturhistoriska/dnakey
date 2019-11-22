@@ -8,19 +8,20 @@
     <ui:composition  template="/templates/masterLayout.xhtml">    
       <ui:define name="content"  >   
         <p:growl id="messages" autoUpdate="true" showDetail="true" showSummary="true" escape="false" sticky="true" />
-        <h:form id="sequenceform"  enctype="multipart/form-data" prependId="false">  
-          <h:panelGroup layout="block" styleClass="text" > 
+         
+          <h:panelGroup id="sequencePanel" layout="block" styleClass="text" > 
+            <h:form id="sequenceform"  enctype="multipart/form-data" prependId="false"> 
             <!-- ************************************** main panel ************************************* -->  
-            <h:panelGroup styleClass="main" layout="block" id="mainpanel" >
+            <h:panelGroup styleClass="main" layout="block"   >
 
               <!-- ************************************** start panel ************************************* --> 
               <h:panelGroup styleClass="columns" layout="block" id="startpanel"  >
 
 
                 <!-- ************************************** blast column ************************************* --> 
-                <h:panelGroup styleClass="column2" layout="block" id="column2panel"> 
+                <h:panelGroup styleClass="column2" layout="block" id="mainpanel"> 
                   <h:panelGroup styleClass="text" layout="block" > 
-                                        #{msg.starttext1}
+                    #{msg.starttext1}
                     <h:commandLink action="#{navigate.scrollToClientId('streckkodsgen')}"  title="#{msg.starttitle1}"  
                                    styleClass="linktext" rendered="#{languages.isSwedish}">    
                       <h:outputText value="#{msg.startlink1}" />    
@@ -29,7 +30,7 @@
                                    styleClass="linktext" rendered="#{!languages.isSwedish}">    
                       <h:outputText value="#{msg.startlink1}" />    
                     </h:commandLink> 
-                                        #{msg.starttext2}
+                    #{msg.starttext2}
                     <h:commandLink action="#{navigate.scrollToClientId('genbank')}"  title="Genbank" styleClass="linktext" >    
                       <h:outputText value="Genbank" />     
                     </h:commandLink> #{msg.starttext3}
@@ -38,14 +39,11 @@
                     </h:commandLink>.
                     <br />
                     <br />
-                                        #{msg.starttext4}
+                    #{msg.starttext4}
                     <h:commandLink action="#{navigate.dnakey()}"  title="#{msg.starttitle2}" styleClass="linktext">    
                       <h:outputText value="#{msg.startlink2}" />    
                     </h:commandLink>.  
-                  </h:panelGroup> 
-
-
-
+                  </h:panelGroup>  
                   <br />
                   <br /> 
                   <!-- ************************************** sequence tab panel ************************************* --> 
@@ -54,8 +52,7 @@
                   </h:panelGroup>
 
                   <h:panelGroup styleClass="tabpanel" layout="block">
-                    <p:tabView id="tabView" activeIndex="#{blast.activeIndex}" >  
-
+                    <p:tabView id="tabView" activeIndex="#{blast.activeIndex}" >  v
                       <p:ajax event="tabChange" listener="#{blast.onTabChange}" update="tabView" global="false" />  
                       <!-- ********************************* tab 1 copy paste fasta files ************************************* --> 
                       <p:tab id="tab1" title="#{msg.tab1title}"  >   
@@ -67,8 +64,7 @@
                         </h:panelGrid>  
                       </p:tab>   
                       <!-- ****************************** tab 2 upload fasta files ************************************* --> 
-                      <p:tab id="tab2" title="#{msg.tab2title}" >   
-
+                      <p:tab id="tab2" title="#{msg.tab2title}" >    
                         <h:panelGrid width="530px" styleClass="tabpading10" id="uploadFilePanel" >  
                           <p:fileUpload fileUploadListener="#{blast.handleFileUpload}"  
                                         mode="advanced" 
@@ -171,231 +167,12 @@
 
 
                 <!-- ************************************** statistic column ************************************* --> 
-                <p:cache region="myCache" key="statisticData">
-                  <h:panelGroup layout="block" id="statisticData" styleClass="column3">    
-                    <h:panelGroup layout="block" id='map_canvas'>  </h:panelGroup>  
-                    <h:panelGroup   layout="block" styleClass="imgtext text" >
-                      <h:outputText value="#{msg.regenmap}" /> 
-                      <br /> 
-                      <p:separator />
-                    </h:panelGroup> 
-                    <br /> 
-                    <h:panelGroup styleClass="text" layout="block">
-                      <h:outputText value="#{msg.mark}: COI" />
-                    </h:panelGroup>
-                    <h:panelGroup layout="block" styleClass="font10"> 
-
-                      <h:panelGroup styleClass="tablestyle1" layout="block">
-                        <h:outputText value="#{msg.group}" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="DNA" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="SWE" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle3" layout="block">
-                        <h:outputText value="%" />
-                      </h:panelGroup>
-                      <br/>
-                      <h:panelGroup styleClass="tablestyle1" layout="block">
-                        <h:outputText value="#{msg.amphibians}" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="3" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="13" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle3" layout="block">
-                        <h:outputText value="23.1" />
-                      </h:panelGroup> 
-                      <br/>
-                      <h:panelGroup styleClass="tablestyle1" layout="block">
-                        <h:outputText value="#{msg.birds}" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="448" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="548" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle3" layout="block">
-                        <h:outputText value="81.8" />
-                      </h:panelGroup> 
-
-                      <br/>
-                      <h:panelGroup styleClass="tablestyle1" layout="block">
-                        <h:outputText value="#{msg.mammal}" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="83" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="103" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle3" layout="block">
-                        <h:outputText value="80.6" />
-                      </h:panelGroup> 
-
-                      <br/>
-                      <h:panelGroup styleClass="tablestyle1" layout="block">
-                        <h:outputText value="#{msg.fish}" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="186" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="256" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle3" layout="block">
-                        <h:outputText value="72.7" />
-                      </h:panelGroup> 
-
-                      <br/>
-                      <h:panelGroup styleClass="tablestyle1" layout="block">
-                        <h:outputText value="#{msg.reptiles}" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="4" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="7" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle3" layout="block">
-                        <h:outputText value="57.1" />
-                      </h:panelGroup> 
-
-                      <p:separator style="width: 100%; float: left; " />
-
-                      <h:panelGroup styleClass="tablestyle1" layout="block">
-                        <h:outputText value="#{msg.total}" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="724" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="927" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle3" layout="block">
-                        <h:outputText value="78.1" />
-                      </h:panelGroup>  
-                    </h:panelGroup> 
-
-                    <p:spacer width="30" />
-                    <h:panelGroup styleClass="text" layout="block">
-                      <h:outputText value="#{msg.mark}: 16S" />
-                    </h:panelGroup>
-                    <h:panelGroup   layout="block" styleClass="font10"> 
-                      <h:panelGroup styleClass="tablestyle1" layout="block">
-                        <h:outputText value="#{msg.group}" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="DNA" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="SWE" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle3" layout="block">
-                        <h:outputText value="%" />
-                      </h:panelGroup>
-                      <br/>
-                      <h:panelGroup styleClass="tablestyle1" layout="block">
-                        <h:outputText value="#{msg.amphibians}" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="4" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="13" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle3" layout="block">
-                        <h:outputText value="30.8" />
-                      </h:panelGroup> 
-                      <br/>
-                      <h:panelGroup styleClass="tablestyle1" layout="block">
-                        <h:outputText value="#{msg.birds}" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="259" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="548" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle3" layout="block">
-                        <h:outputText value="47.3" />
-                      </h:panelGroup> 
-
-                      <br/>
-                      <h:panelGroup styleClass="tablestyle1" layout="block">
-                        <h:outputText value="#{msg.mammal}" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="58" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="103" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle3" layout="block">
-                        <h:outputText value="56.3" />
-                      </h:panelGroup> 
-
-                      <br/>
-                      <h:panelGroup styleClass="tablestyle1" layout="block">
-                        <h:outputText value="#{msg.fish}" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="149" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="256" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle3" layout="block">
-                        <h:outputText value="58.2" />
-                      </h:panelGroup> 
-
-                      <br/>
-                      <h:panelGroup styleClass="tablestyle1" layout="block">
-                        <h:outputText value="#{msg.reptiles}" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="2" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="7" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle3" layout="block">
-                        <h:outputText value="28.6" />
-                      </h:panelGroup> 
-
-                      <p:separator style="width: 100%; float: left; " />
-
-                      <h:panelGroup styleClass="tablestyle1" layout="block">
-                        <h:outputText value="#{msg.total}" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="472" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle2" layout="block">
-                        <h:outputText value="927" />
-                      </h:panelGroup>
-                      <h:panelGroup styleClass="tablestyle3" layout="block">
-                        <h:outputText value="50.9" />
-                      </h:panelGroup>  
-                    </h:panelGroup>
-                    <br />
-                    <br />
-                    <br />
-                    <h:panelGroup styleClass="text" layout="block" style="float: left; font-size: 11px;">
-                     #{msg.tablenotes}
-                    </h:panelGroup> 
-                  </h:panelGroup>  
-                </p:cache>
-              </h:panelGroup>
-
+                <ui:include src="#{navigate.statistic}" /> 
+              </h:panelGroup> 
             </h:panelGroup> 
+            </h:form> 
           </h:panelGroup> 
-        </h:form> 
+        
       </ui:define>
     </ui:composition>
   </body>

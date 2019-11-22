@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.nrm.dina.dnakey.portal.controller;
 
 import java.io.IOException;
@@ -11,7 +6,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.inject.Named;
+import javax.inject.Named; 
 import lombok.extern.slf4j.Slf4j;
 import org.primefaces.context.RequestContext;
 import se.nrm.dina.dnakey.portal.beans.StyleBean;
@@ -26,7 +21,7 @@ import se.nrm.dina.dnakey.portal.beans.StyleBean;
 public class Navigator implements Serializable {
 
   private RequestContext requestContext;
-  private ExternalContext externalContext;
+  private ExternalContext externalContext; 
 
   private static final String HOME_PATH = "/faces/pages/sequence.xhtml";
   private static final String DNAKEY_PATH = "/faces/pages/dnakey.xhtml";
@@ -34,14 +29,31 @@ public class Navigator implements Serializable {
   private static final String EXTERNAL_LINK_PATH = "/faces/pages/externalLinks.xhtml";
   private static final String CONTACT_PATH = "/faces/pages/contact.xhtml";
   private static final String RESULT_PATH = "/faces/pages/result.xhtml";
-
+  
+  private static final String DNAKEY_SV_PATH = "/pages/dnakeysv.xhtml";
+  private static final String DNAKEY_EN_PATH = "/pages/dnakeyen.xhtml";
+  private static final String ABOUT_SV_PATH = "/pages/aboutsv.xhtml";
+  private static final String ABOUT_EN_PATH = "/pages/abouten.xhtml";
+  
+  private static final String ALIGNMENT_VIEW_PATH = "/pages/alignment.xhtml";
+  private static final String MAP_VIEW_PATH = "/pages/mapview.xhtml";
+  private static final String IMAGE_VIEW_PATH = "/pages/imageview.xhtml";
+  private static final String EXPORT_PATH = "/pages/export.xhtml"; 
+  private static final String STATISTIC_VIEW_PATH = "/pages/statistic.xhtml"; 
+  private static final String NO_HITS_VIEW_PATH = "/pages/nohits.xhtml"; 
+  private static final String NO_HIGH_MATCH_VIEW_PATH = "/pages/nohighmatch.xhtml"; 
+  private static final String HIGH_HITS_VIEW_PATH = "/pages/highhits.xhtml"; 
+  private static final String LOW_HITS_VIEW_PATH = "/pages/lowhits.xhtml"; 
+  
   private String clientId;
 
   @Inject
-  private StyleBean style;
-
+  private StyleBean style; 
+  @Inject
+  private Languages language;
+  
   public Navigator() {
-    log.info("Navigator");
+    log.info("Navigator"); 
   }
 
   private void redirectPage(String path) {
@@ -112,5 +124,49 @@ public class Navigator implements Serializable {
     style.resetTabStyle(tabIndex);
     requestContext = RequestContext.getCurrentInstance();
     requestContext.update("topMenuForm:topmenupanel");
+  } 
+   
+  public String getDnakeyIncludePage() {
+    return language.isIsSwedish() ? DNAKEY_SV_PATH : DNAKEY_EN_PATH;
+  } 
+  
+  public String getAboutIncludePage() {
+    return language.isIsSwedish() ? ABOUT_SV_PATH : ABOUT_EN_PATH;
+  } 
+  
+  public String getAlignmentView() {
+    return ALIGNMENT_VIEW_PATH;
+  }
+  
+  public String getMapView() {
+    return MAP_VIEW_PATH;
+  }
+  
+  public String getImageView() {
+    return IMAGE_VIEW_PATH;
+  }
+  
+  public String getExport() {
+    return EXPORT_PATH;
+  }
+  
+  public String getStatistic() {
+    return STATISTIC_VIEW_PATH;
+  }
+  
+  public String getNoHits() {
+    return NO_HITS_VIEW_PATH;
+  }
+  
+  public String getNoHighMatch() {
+    return NO_HIGH_MATCH_VIEW_PATH;
+  }
+  
+  public String getHighHits() {
+    return HIGH_HITS_VIEW_PATH;
+  }
+  
+  public String getLowHits() {
+    return LOW_HITS_VIEW_PATH;
   }
 }

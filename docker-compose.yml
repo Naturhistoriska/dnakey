@@ -3,14 +3,14 @@ version: '3.1'
 services:
 
   ui:
-    image: dina/dnakey:v0.3
+    image: dina/dnakey:v1.0
     environment:
       - VIRTUAL_HOST=beta.dnakey.se
       - VIRTUAL_PORT=8080
     volumes:
       - ./project-initdata.yml:/usr/src/myapp/project-initdata.yml
     extra_hosts:
-      - "dina-db.nrm.se:172.16.0.86"
+      - "solr.nrm.se:193.10.57.89"
 
 
 # running with external proxy (check the network 'docker network ls')

@@ -1,0 +1,96 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"> 
+  <body>
+    <ui:composition>       
+      <p:dataTable id="exportDataTable" var="rtb" value="#{blast.resultBeans}"  rendered="false">  
+          <p:column>  
+            <f:facet name="header">  
+              <h:outputText value="#{msg.query1}" />  
+            </f:facet> 
+            <h:outputText value="#{rtb.query}" />  
+          </p:column>   
+          <p:column>    
+            <f:facet name="header">  
+              <h:outputText value="#{msg.catalognum}" />  
+            </f:facet> 
+            <h:outputText value="#{rtb.catalogNumber}"/>  
+          </p:column>   
+          <p:column>   
+            <f:facet name="header">  
+              <h:outputText value="#{msg.scientificname}" />  
+            </f:facet> 
+            <h:outputText value="#{rtb.scientificName}" />  
+          </p:column>   
+          <p:column> 
+            <f:facet name="header">  
+              <h:outputText value="#{msg.genbankacc}" />  
+            </f:facet> 
+            <h:outputText value="#{rtb.genbankAcc}" />  
+          </p:column>   
+          <p:column> 
+            <f:facet name="header">  
+              <h:outputText value="#{msg.boldid}" />  
+            </f:facet> 
+            <h:outputText value="#{rtb.boldId}" />  
+          </p:column>   
+          <p:column>   
+            <f:facet name="header">  
+              <h:outputText value="#{msg.identity}" />  
+            </f:facet> 
+            <h:outputText value="#{rtb.identity}" />  
+          </p:column>   
+          <p:column>   
+            <f:facet name="header">  
+              <h:outputText value="#{msg.score}" />  
+            </f:facet> 
+            <h:outputText value="#{rtb.score}" />  
+          </p:column>   
+          <p:column>  
+            <f:facet name="header">  
+              <h:outputText value="#{msg.evalue}" />  
+            </f:facet> 
+            <h:outputText value="#{rtb.evalue}" />  
+          </p:column> 
+          <p:column>  
+            <f:facet name="header">  
+              <h:outputText value="#{msg.collection}" />  
+            </f:facet> 
+            <h:outputText value="#{rtb.collection}" />  
+          </p:column> 
+          <p:column>  
+            <f:facet name="header">  
+              <h:outputText value="#{msg.swedishname}" />  
+            </f:facet> 
+            <h:outputText value="#{rtb.swedishName}" />  
+          </p:column> 
+          <p:column>  
+            <f:facet name="header">  
+              <h:outputText value="#{msg.locality}" />  
+            </f:facet> 
+            <h:outputText value="#{rtb.locality}" />  
+          </p:column> 
+          <p:column>  
+            <f:facet name="header">  
+              <h:outputText value="#{msg.coordinates}" />  
+            </f:facet> 
+            <h:outputText value="#{rtb.coordinates}" />  
+          </p:column> 
+          <p:column>  
+            <f:facet name="header">  
+              <h:outputText value="#{msg.date}" />  
+            </f:facet> 
+            <h:outputText value="#{rtb.date}" />  
+          </p:column> 
+          <p:column>  
+            <f:facet name="header">  
+              <h:outputText value="#{msg.collector}" />  
+            </f:facet> 
+            <h:outputText value="#{rtb.collector}" />  
+          </p:column>
+        </p:dataTable>   
+    </ui:composition>
+  </body>
+</html>

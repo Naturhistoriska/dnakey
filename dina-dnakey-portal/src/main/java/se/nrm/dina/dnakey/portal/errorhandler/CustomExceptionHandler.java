@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.nrm.dina.dnakey.portal.errorhandler; 
 
 import java.io.IOException;
-import javax.faces.FacesException;
-import javax.faces.application.NavigationHandler;
+import javax.faces.FacesException; 
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
 import javax.faces.context.FacesContext;
@@ -19,7 +13,9 @@ import javax.faces.context.ExternalContext;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- *
+ * Exception handler. Handles exceptions through from UI.
+ * When exception through, redirect to home page
+ * 
  * @author idali
  */
 @Slf4j
@@ -50,9 +46,8 @@ public class CustomExceptionHandler extends ExceptionHandlerWrapper {
         log.error(throwable.getMessage());
 
         FacesContext context = FacesContext.getCurrentInstance();
-        Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
-//        NavigationHandler nav = context.getApplication().getNavigationHandler();
-//        //        nav.handleNavigation(context, null, "/start.xhtml");
+        Map<String, Object> requestMap = context.getExternalContext().getRequestMap(); 
+        
         requestMap.put("error-message", throwable.getMessage());
         requestMap.put("error-stack", throwable.getStackTrace()); 
         context.renderResponse(); 

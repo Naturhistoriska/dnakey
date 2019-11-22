@@ -1,0 +1,225 @@
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+  <body>
+    <ui:composition>      
+      <p:tooltip for="colScientificname" value="#{msg.keywordscientificname}" 
+                 showEffect="fade" hideEffect="fade" styleClass="resulttabletip250"/>  
+      <p:tooltip for="colMark" value="#{msg.keymark}"
+                 showEffect="fade" hideEffect="fade" style="font-size: 12px; white-space: normal; width: 300px; "/> 
+      <p:tooltip for="colGenbankacc" value="#{msg.keygenbankacc}"
+                 showEffect="fade" hideEffect="fade" styleClass="resulttabletip150"/> 
+      <p:tooltip for="colBoldId" value="#{msg.keywordboldid}"
+                 showEffect="fade" hideEffect="fade" styleClass="resulttabletip150"/> 
+      <p:tooltip for="colCat" value="#{msg.keywordcatalognum}"
+                 showEffect="fade" hideEffect="fade" styleClass="resulttabletip150"/> 
+      <p:tooltip for="colScore" value="#{msg.keywordscore}"
+                 showEffect="fade" hideEffect="fade" styleClass="resulttabletip300"/> 
+      <p:tooltip for="colEvalue" value="#{msg.keywordevalue}"
+                 showEffect="fade" hideEffect="fade" styleClass="resulttabletip250"/> 
+      <p:tooltip for="colIdentity" value="#{msg.keywordidentity}"
+                 showEffect="fade" hideEffect="fade" styleClass="resulttabletip300"/> 
+
+      <h:panelGroup layout="block" styleClass="resulttableheader" >
+        <h:panelGroup layout="block" style="min-width: 25px;  float: left; text-align:  center; padding-top: 5px; " >
+          <p:spacer width="10" />
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" style=" min-width: 80px; float: left; text-align:  center; padding-top: 3px;  " >
+          <h:outputText value="#{msg.catalognum}" id="colCat" />
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" style="  min-width: 240px; float: left;  text-align:  center; padding-top: 5px; ">
+          <h:outputText value="#{msg.scientificname}" id="colScientificname" />
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" style=" min-width: 70px; float: left; text-align:  center; padding-top: 5px; " >
+          <h:outputText value="#{msg.mark}" id="colMark" />
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" style=" min-width: 110px; float: left; text-align:  center; padding-top: 5px; " >
+          <h:outputText value="#{msg.genbankacc}" id="colGenbankacc" />
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" style="  min-width: 155px; float: left; text-align:  center; padding-top: 5px; " >
+          <h:outputText value="#{msg.boldid}" id="colBoldId" />
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" style=" min-width: 75px; float: left; text-align:  center; padding-top: 5px; " >
+          <h:outputText value="#{msg.identity}" id="colIdentity" />
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" style=" min-width: 70px; float: left; text-align:  center; padding-top: 5px; " >
+          <h:outputText value="#{msg.score}" id="colScore" />
+        </h:panelGroup>
+
+        <h:panelGroup layout="block" style=" min-width: 70px;  float: left; text-align:  center; padding-top: 5px; " >
+          <h:outputText value="#{msg.evalue}" id="colEvalue" />
+        </h:panelGroup>
+      </h:panelGroup>
+
+      <p:dataTable value="#{blastMetada.subjectMetadataList}" rowIndexVar="indexCount"   
+                   var="metadata"   styleClass="resulttbl" rendered="#{blastMetada.hasHighMatach}" 
+                   style="padding-left: 5px; padding-right: 5px; width: 920px; ">
+        <p:ajax event="rowToggle" listener="#{blast.onRowToggleSingle}" global="false"   /> 
+
+        <p:column style="width:25px; " >  
+          <p:rowToggler />   
+        </p:column>  
+
+        <p:column   style="min-width: 80px;" >   
+          <h:outputLink id="catalogNumLinkNrmSingle" value="https://naturarv.nrm.se//?#{blast.urlEncode}#{metadata.catalogNumber}"  
+                        title="DINA"  target="_blank" >  
+            <h:outputText  value="#{metadata.catalogNumber}"  styleClass="#{metadata.textColor}"  />    
+          </h:outputLink>  
+
+        </p:column> 
+        <p:column  style="min-width: 240px;" >  
+          <h:outputLink id="scientificNumLinkNrmSingle" value="http://naturforskaren.se/search/#{metadata.scientificName}"  
+                        title="scientificname"  target="_blank" >  
+            <h:outputText value="#{metadata.scientificName}"  styleClass="#{metadata.textColor}"  />
+          </h:outputLink>    
+        </p:column> 
+
+        <p:column  style="min-width: 70px;">   
+          <h:outputText value="#{metadata.targetMarker}"  styleClass="#{metadata.textColor}"  /> 
+        </p:column> 
+
+        <p:column style="min-width: 110px;" >  
+          <h:outputLink id="accessionidNrmSingle" value="http://www.ncbi.nlm.nih.gov/nuccore/#{metadata.genbankAccession}"  
+                        title="NCBI"  target="_blank" >  
+            <h:outputText value="#{metadata.genbankAccession}"  styleClass="#{metadata.textColor}"/> 
+          </h:outputLink> 
+        </p:column>
+
+        <p:column style="min-width: 150px;" >  
+          <h:outputLink value="http://www.boldsystems.org/index.php/Public_RecordView?processid=#{metadata.boldIdWithType}"  
+                        title="BOLD systems" target="_blank" > 
+            <h:outputText value="#{metadata.boldId}"  styleClass="#{metadata.textColor}"/> 
+          </h:outputLink>   
+        </p:column>
+
+        <p:column   style="min-width: 210px;"   >   
+          <h:dataTable value="#{metadata.subjectHspList}"   var="hsp" cellpadding="0" cellspacing="0" columnClasses="subtablecol,subtablecol,subtablecol">  
+            <h:column >
+              <h:outputText value="#{hsp.percentage}"  styleClass="#{hsp.textColor}" />
+            </h:column> 
+            <h:column >
+              <h:outputText value=" #{hsp.hspBitScore}" styleClass="#{hsp.textColor}"   />
+            </h:column> 
+            <h:column >
+              <h:outputText value=" #{hsp.hspEvalue}" styleClass="#{hsp.textColor}"  /> 
+            </h:column>
+          </h:dataTable> 
+        </p:column>  
+
+        <p:rowExpansion> 
+          <h:panelGroup layout="block" styleClass="rowexpansion"  > 
+            <h:panelGrid columns="2">
+              <h:panelGroup layout="block" styleClass="openSubPanel" rendered="#{metadata.nrm}">
+                <h:panelGroup layout="block" >
+                  <h:panelGroup layout="block" style="width: 80px; float: left; ">
+                    <h:outputText value="#{msg.collection}:" style="padding-left: 10px;"  />  
+                  </h:panelGroup>
+                  <h:panelGroup layout="block" style="width: 400px; float: left;  ">
+                    <h:outputText value="#{metadata.nrmData.collectionName}"   />
+                  </h:panelGroup>
+                </h:panelGroup>
+
+                <h:panelGroup layout="block"  rendered="#{metadata.nrmData.commonNames != null}">
+                  <h:panelGroup layout="block" style="width: 80px; float: left;">
+                    <h:outputText value="#{msg.swedishname}:"   />  
+                  </h:panelGroup>
+                  <h:panelGroup layout="block" style="width: 400px; float: left;">
+                    <h:outputText value="#{metadata.nrmData.commonNames}"   />
+                  </h:panelGroup>
+                </h:panelGroup>
+
+                <h:panelGroup layout="block"  rendered="#{metadata.nrmData.locality != null}">
+                  <h:panelGroup layout="block" style="width: 80px; float: left;">
+                    <h:outputText value="#{msg.locality}: "  /> 
+                  </h:panelGroup>
+                  <h:panelGroup layout="block" style="width: 400px; float: left;">
+                    <h:outputText value="#{metadata.nrmData.locality}"  />  
+                  </h:panelGroup>
+                </h:panelGroup>
+
+                <h:panelGroup layout="block"  rendered="#{metadata.nrmData.coordinates != null}">
+                  <h:panelGroup layout="block" style="width: 80px; float: left;">
+                    <h:outputText value="#{msg.coordinates}: " /> 
+                  </h:panelGroup>
+                  <h:panelGroup layout="block" style="width: 400px; float: left;">
+                    <h:outputText value="#{metadata.nrmData.coordinates}"  />  
+                  </h:panelGroup>
+                </h:panelGroup>
+
+                <h:panelGroup layout="block"  rendered="#{metadata.nrmData.startDate != null}">
+                  <h:panelGroup layout="block" style="width: 80px; float: left;">
+                    <h:outputText value="#{msg.date}: " />  
+                  </h:panelGroup>
+                  <h:panelGroup layout="block" style="width: 400px; float: left;">
+                    <h:outputText value="#{metadata.nrmData.startDate}"  > 
+                      <f:convertDateTime pattern="yyyy-MM-dd" timeZone="GMT+3" />
+                    </h:outputText> 
+                  </h:panelGroup>
+                </h:panelGroup>
+
+                <h:panelGroup layout="block"  rendered="#{metadata.nrmData.collectors != null}">
+                  <h:panelGroup layout="block" style="width: 80px; float: left;">
+                    <h:outputText value="#{msg.collector}: " />  
+                  </h:panelGroup>
+                  <h:panelGroup layout="block" style="width: 400px; float: left;">
+                    <h:outputText value="#{metadata.nrmData.collectors}"  /> 
+                  </h:panelGroup>
+                </h:panelGroup>   
+              </h:panelGroup> 
+               
+              <h:panelGroup layout="block" styleClass="openPanel" rendered="#{!metadata.nrm}">   
+                <h:panelGroup layout="block" styleClass="openSubPanel" rendered="#{metadata.hasCoordinates}"   > 
+                  <h:panelGroup layout="block" style="width: 80px; float: left;" >
+                    <h:outputText value="#{msg.coordinates}: " /> 
+                  </h:panelGroup>
+                  <h:panelGroup layout="block" style="width: 400px; float: left;" >
+                    <h:outputText value="#{metadata.formattedCoordinates}"  />  
+                  </h:panelGroup>  
+                </h:panelGroup>
+              </h:panelGroup> 
+
+              <h:panelGroup layout="block" style=" float: right;  ">
+                <h:panelGroup layout="block" rendered="#{metadata.hasCoordinates}"  >
+                  <p:commandButton value="#{msg.btnmap}" actionListener="#{map.getSingleMap(metadata)}" 
+                                   update=":resultform:singleMapdlgId"  oncomplete="PF('singleMap').show();"
+                                   style="margin-right: 10px; width: 80px;" global="false" process="@this"  /> 
+                </h:panelGroup> 
+                <h:panelGroup layout="block" rendered="#{metadata.hasCoordinates}"  >
+                  <h:column /> 
+                </h:panelGroup>
+
+                <h:panelGroup layout="block" rendered="#{metadata.hasImages}" >
+                  <p:commandButton value="#{msg.btnimages}" 
+                                   actionListener="#{galleriaBean.imageSwitch(metadata.nrmData)}"   
+                                   oncomplete="PF('imgswitchdlg').show();"
+                                   update=":resultform:imageSwitch"   
+                                   style="margin-right: 10px; width: 80px;" global="false"  /> 
+                </h:panelGroup>
+                <h:panelGroup layout="block" rendered="#{!metadata.hasImages}" >
+                  <h:column /> 
+                </h:panelGroup>
+
+                <h:panelGroup layout="block" >
+                  <p:commandButton value="#{msg.btnalignment}" actionListener="#{blast.getAlignment(metadata)}"   
+                                   oncomplete="PF('alignmentdlg').show();"
+                                   update=":resultform:alignmentPanel" 
+                                   style="margin-right: 10px; width: 80px;" global="false"  /> 
+                </h:panelGroup> 
+              </h:panelGroup>  
+            </h:panelGrid>  
+          </h:panelGroup>  
+        </p:rowExpansion> 
+      </p:dataTable> 
+    </ui:composition>
+  </body>
+</html>
