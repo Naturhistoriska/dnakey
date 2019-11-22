@@ -22,8 +22,17 @@ public class HelpClass {
 
   private final String db = " -db ";
   private final String dbInfo = " -info";
+  private final String query = " -query ";
+  
+  private final String outputStyle2 = " -task blastn -dust no -outfmt 5 -num_alignments 10 -num_descriptions 10 -parse_deflines";       // xml output
+  
+  private final String genbankQueryUrl = "http://www.ncbi.nlm.nih.gov/blast/Blast.cgi?QUERY=";
+  private final String genbankSearchQuery = "&DATABASE=nr&HITLIST_SIZE=10&FILTER=L&EXPECT=10&FORMAT_TYPE=HTML&PROGRAM=blastn&CLIENT=web&SERVICE=plain&NCBI_GI=on&PAGE=Nucleotides&CMD=Put";
 
+  private StringBuilder genbankSearchSb;
+    
   private StringBuilder execDbInfoCommandSb;
+  private StringBuilder execBlastCommandSb;
 
   private static HelpClass instance = null;
 
@@ -104,5 +113,26 @@ public class HelpClass {
     execDbInfoCommandSb.append(database);
     execDbInfoCommandSb.append(dbInfo);
     return execDbInfoCommandSb.toString().trim();
+  }
+   
+  public String buildBlastCommand(String fastafilePath, String dbName, String blastPath, String blastDbPath) { 
+    execBlastCommandSb = new StringBuilder();
+    execBlastCommandSb.append(blastPath);
+    execBlastCommandSb.append(query);
+    execBlastCommandSb.append(fastafilePath);
+    execBlastCommandSb.append(db);
+    execBlastCommandSb.append(blastDbPath);
+    execBlastCommandSb.append(dbName);
+    execBlastCommandSb.append(outputStyle2);
+
+    return execBlastCommandSb.toString();
+  }
+  
+  public String buildGenbankSearch(String sequence) {
+    genbankSearchSb = new StringBuilder();
+    genbankSearchSb.append(genbankQueryUrl);
+    genbankSearchSb.append(sequence);
+    genbankSearchSb.append(genbankSearchQuery);
+    return genbankSearchSb.toString();
   }
 }
