@@ -1,5 +1,6 @@
 # DINA-Web dnakey portal
 [![Build Status](https://travis-ci.com/Naturhistoriska/dina-dnakey.svg?branch=master)](https://travis-ci.com/Naturhistoriska/dina-dnakey)
+[![codecov](https://codecov.io/gh/Naturhistoriska/dina-dnakey/branch/master/graph/badge.svg)](https://codecov.io/gh/Naturhistoriska/dina-dnakey)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
