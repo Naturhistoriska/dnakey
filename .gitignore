@@ -14,6 +14,7 @@ certs/*.key
 /project-initdata.yml
 
 /dina-dnakey-portal/.DS_Store
+/dina-dnakey-portal/src/main/resources/log4j_disable.properties
 *DS_Store
 *.tar
 
