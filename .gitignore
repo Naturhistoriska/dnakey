@@ -19,3 +19,4 @@ certs/*.key
 *.tar
 
 
+/dina-dnakey-logic/nbproject/
