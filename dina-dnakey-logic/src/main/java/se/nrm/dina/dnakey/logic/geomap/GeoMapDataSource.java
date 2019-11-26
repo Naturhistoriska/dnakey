@@ -34,6 +34,10 @@ public class GeoMapDataSource implements Serializable {
   public GeoMapDataSource() {
   }
 
+  public GeoMapDataSource(ConfigProperties config) {
+    this.config = config;
+  }
+  
   /**
    * Start ejb every time deploy into glassfish or glassfish start
    */
@@ -53,10 +57,10 @@ public class GeoMapDataSource implements Serializable {
   private void buildGeoMapData() {
     log.info("buildGeoMapData");
 
-    list = new ArrayList<>();
+    list = new ArrayList<>(); 
     try (Stream<String> stream = Files.lines(Paths.get(config.getGeoDataFilePath()))) {
       list = stream.map(l -> mapperToGeoMapData(l))
-              .collect(Collectors.toList());
+              .collect(Collectors.toList()); 
     } catch (IOException e) {
     }
   } 
