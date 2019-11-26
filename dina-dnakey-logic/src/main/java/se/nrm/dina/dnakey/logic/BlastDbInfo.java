@@ -31,8 +31,8 @@ public class BlastDbInfo implements Serializable {
   private final String sequencesWithSpace = " sequences";
   private final String emptyString = "";
 
-  private String dbPath;
-  private String dbInfoPath;
+  private static String dbPath;
+  private static String dbInfoPath;
 
   private String nrmCount;
   private String boldCount;
@@ -44,6 +44,9 @@ public class BlastDbInfo implements Serializable {
   public BlastDbInfo() {
   }
 
+  public BlastDbInfo(ConfigProperties config) {
+    this.config = config;
+  }
   /**
    * This method runs when application startup
    */
@@ -53,10 +56,10 @@ public class BlastDbInfo implements Serializable {
 
     dbPath = config.getDbPath();
     dbInfoPath = config.getDbinfoPath();
-    
+     
     nrmCount = getTotal(NRM_DB);
     boldCount = getTotal(BOLD_DB);
-    genbankCount = getTotal(GENBANK_DB);
+    genbankCount = getTotal(GENBANK_DB); 
   }
 
   /**
@@ -83,8 +86,7 @@ public class BlastDbInfo implements Serializable {
     return genbankCount == null ? getTotal(GENBANK_DB) : genbankCount;
   }
  
-  private String getTotal(String db) {
-
+  private String getTotal(String db) { 
     InputStream is = null;
     Process process = null;
     Runtime runtime = Runtime.getRuntime();
@@ -95,8 +97,7 @@ public class BlastDbInfo implements Serializable {
               .lines()
               .filter(l -> l.contains((sequences)))
               .findFirst().orElse(emptyString);
-      return StringUtils.substringBefore(line, sequencesWithSpace).trim();
-
+      return StringUtils.substringBefore(line, sequencesWithSpace).trim(); 
     } catch (IOException ex) {
       log.error(ex.getMessage());
     } finally {
