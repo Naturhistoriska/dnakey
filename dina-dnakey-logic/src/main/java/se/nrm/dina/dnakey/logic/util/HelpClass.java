@@ -12,10 +12,10 @@ import org.apache.commons.lang.math.NumberUtils;
 public class HelpClass {
 
 //    private static final String MB_BASE_URL = "http://morphbank.nrm.se/";
-  private static final String MB_THUMB_URL = "http://images.morphbank.nrm.se";
-  private static final String MB_IMAGE_URL = "http://morphbank.nrm.se/Browse/ByImage/";
-  private static final String QUERY_THUMB = "&imgType=thumb";
-  private static final String QUERY_ID = "?id=";
+//  private static final String MB_THUMB_URL = "http://images.morphbank.nrm.se";
+//  private static final String MB_IMAGE_URL = "http://morphbank.nrm.se/Browse/ByImage/";
+//  private static final String QUERY_THUMB = "&imgType=thumb";
+//  private static final String QUERY_ID = "?id=";
 
   private static final DateFormat DFT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:SSS'Z'");
   private static final DateFormat DF = new SimpleDateFormat("yyyy-MM-dd");
@@ -45,21 +45,21 @@ public class HelpClass {
     return instance;
   }
 
-  public static String getMorphybankImageURLById(String imageid) {
-    StringBuilder sb = new StringBuilder();
-    sb.append(MB_IMAGE_URL);
-    sb.append(imageid);
-    return sb.toString();
-  }
-
-  public static String getMorphybankThumbURLById(String imageid) {
-    StringBuilder sb = new StringBuilder();
-    sb.append(MB_THUMB_URL);
-    sb.append(QUERY_ID);
-    sb.append(imageid);
-    sb.append(QUERY_THUMB);
-    return sb.toString();
-  }
+//  public static String getMorphybankImageURLById(String imageid) {
+//    StringBuilder sb = new StringBuilder();
+//    sb.append(MB_IMAGE_URL);
+//    sb.append(imageid);
+//    return sb.toString();
+//  }
+//
+//  public static String getMorphybankThumbURLById(String imageid) {
+//    StringBuilder sb = new StringBuilder();
+//    sb.append(MB_THUMB_URL);
+//    sb.append(QUERY_ID);
+//    sb.append(imageid);
+//    sb.append(QUERY_THUMB);
+//    return sb.toString();
+//  }
 
   public static double intToDouble(int value) {
     return (double) value;
@@ -105,7 +105,7 @@ public class HelpClass {
     }
   }
 
-  public String buildExecDbInfoCommand(String dbInfoPath, String dbPath, String database) {
+  public String buildExecDbInfoCommand(String dbInfoPath, String dbPath, String database) { 
     execDbInfoCommandSb = new StringBuilder();
     execDbInfoCommandSb.append(dbInfoPath);
     execDbInfoCommandSb.append(db);
