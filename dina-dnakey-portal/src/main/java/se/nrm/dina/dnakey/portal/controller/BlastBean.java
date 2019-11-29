@@ -13,7 +13,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import org.primefaces.context.RequestContext;
+//import org.primefaces.context.RequestContext;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.UploadedFile;
@@ -97,13 +97,13 @@ public class BlastBean implements Serializable {
 
   private List<BlastMetadata> listMetadata = new ArrayList<>();
 
-  private final String urlEncode;
+  private String urlEncode;
 
   private SolrRecord selectedRecord;
   private NrmData data;
  
   private FacesContext context;
-  RequestContext requestContext;
+//  RequestContext requestContext;
 
   public BlastBean() {
     log.info("BlastBean");
@@ -116,6 +116,13 @@ public class BlastBean implements Serializable {
 
     totalSequences = 0;
   }
+  
+  public BlastBean(SequenceBuilder sequenceBuilder, MessageBean msg,
+          Languages languages) {
+    this.sequenceBuilder = sequenceBuilder; 
+    this.msg = msg;
+    this.languages = languages;
+  }
 
   @PostConstruct
   public void init() {
@@ -124,7 +131,7 @@ public class BlastBean implements Serializable {
     context = FacesContext.getCurrentInstance();
     boolean isPostBack = context.isPostback();        // false if page is start up or reloaded by browser  
 
-    requestContext = RequestContext.getCurrentInstance();
+//    requestContext = RequestContext.getCurrentInstance();
     log.info("isPostBack : {}", isPostBack);
 
     if (!isPostBack) {
@@ -170,6 +177,7 @@ public class BlastBean implements Serializable {
   public void handleFileUpload(FileUploadEvent event) {
     log.info("handleFileUpload");
     UploadedFile uploadedFile = event.getFile();
+    System.out.println("file : " + uploadedFile);
     if (uploadedFile != null) {
       if (!sequencesMap.containsKey(uploadedFile.getFileName())) {
         uploadedFiles.add(uploadedFile);
@@ -186,8 +194,8 @@ public class BlastBean implements Serializable {
    * changeTestNumber -- event when number of test sequences changed
    */
   public void changeTestNumber() {
-    log.info("changeTestNumber : {}", numOfTestSeqs);
-    testSequences = FastaFiles.getInstance().getSequences(numOfTestSeqs);
+    log.info("changeTestNumber : {}", numOfTestSeqs); 
+    testSequences = FastaFiles.getInstance().getSequences(numOfTestSeqs); 
   }
 
   /**
@@ -466,5 +474,5 @@ public class BlastBean implements Serializable {
 
   public int getTotalSequences() {
     return totalSequences;
-  }
+  } 
 }

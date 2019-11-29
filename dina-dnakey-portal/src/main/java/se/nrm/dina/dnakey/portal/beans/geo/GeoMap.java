@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package se.nrm.dina.dnakey.portal.beans.geo;
 
 import java.io.Serializable;
@@ -31,6 +26,11 @@ public class GeoMap implements Serializable {
 
   public GeoMap() {
     log.info("GeoMap");
+  }
+  
+  public GeoMap(GeoMapDataSource geo) {
+    log.info("GeoMap");
+    this.geo = geo;
   }
 
   @PostConstruct
