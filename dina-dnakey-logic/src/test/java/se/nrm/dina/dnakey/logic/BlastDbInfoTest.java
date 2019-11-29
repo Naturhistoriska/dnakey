@@ -19,27 +19,27 @@ import se.nrm.dina.dnakey.logic.config.ConfigProperties;
 @RunWith(MockitoJUnitRunner.class) 
 public class BlastDbInfoTest {
   
-  private static BlastDbInfo instance;
-  private static String dbPath; 
-  private static String dbInfoPath;  
+  private BlastDbInfo instance;
+  private String dbPath; 
+  private String dbInfoPath;  
   
   @Mock
-  static ConfigProperties config;
-  
-  
-  
+  private ConfigProperties config;
+   
   public BlastDbInfoTest() {
   }
  
   @Before
   public void setUp() { 
-    instance = new BlastDbInfo(config);
+    instance = new BlastDbInfo(config);  
     
-    when(config.getDbPath()).thenReturn("/usr/local/ncbi//blast/db/");
-    when(config.getDbinfoPath()).thenReturn("/usr/local/ncbi//blast/bin/blastdbcmd");
+    when(config.getDbPath()).thenReturn("/usr/local/ncbi/blast/db/");
+    when(config.getDbinfoPath()).thenReturn("/usr/local/ncbi/blast/bin/blastdbcmd");
     
-    dbPath = "/usr/local/ncbi//blast/db/"; 
-    dbInfoPath = "/usr/local/ncbi//blast/bin/blastdbcmd";
+    dbPath = "/usr/local/ncbi/blast/db/"; 
+    dbInfoPath = "/usr/local/ncbi/blast/bin/blastdbcmd";
+    
+    instance.init();  
   }
   
   @After
@@ -53,8 +53,7 @@ public class BlastDbInfoTest {
   @Test
   public void testInit() {
     System.out.println("init");  
-    
-    instance.init(); 
+     
     verify(config, times(1)).getDbPath();
     assertEquals(dbPath, config.getDbPath());
      
@@ -68,6 +67,8 @@ public class BlastDbInfoTest {
   @Test
   public void testGetNrmDbTotal() {
     System.out.println("getNrmDbTotal"); 
+    
+    instance.init(); 
     String expResult = "1,882";
     String result = instance.getNrmDbTotal(); 
     assertEquals(expResult, result); 
@@ -79,6 +80,7 @@ public class BlastDbInfoTest {
   @Test
   public void testGetBoldDbTotal() {
     System.out.println("getBoldDbTotal"); 
+     
     String expResult = "23,269";
     String result = instance.getBoldDbTotal(); 
     assertEquals(expResult, result); 
@@ -90,6 +92,7 @@ public class BlastDbInfoTest {
   @Test
   public void testGetGenbankDbTotal() {
     System.out.println("getGenbankDbTotal"); 
+     
     String expResult = "347,668";
     String result = instance.getGenbankDbTotal(); 
     assertEquals(expResult, result); 
