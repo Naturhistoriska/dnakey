@@ -48,8 +48,7 @@ public class Map implements Serializable {
   public void getSingleMap(BlastSubjectMetadata subMetada) {
     log.info("getSingleMap : {}", subMetada);
      
-    advancedModel = new DefaultMapModel(); 
-     
+    advancedModel = new DefaultMapModel();  
     coordinates  = subMetada.getCoordinates();  
     String lat; 
     String lng; 

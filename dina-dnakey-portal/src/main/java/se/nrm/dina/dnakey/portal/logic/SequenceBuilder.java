@@ -58,8 +58,7 @@ public class SequenceBuilder implements Serializable {
         strings = SequencesBuilderHelper.getInstance().buildStringList(sb.toString());
 
         sb = new StringBuilder();
-        for (String s : strings) {
-
+        for (String s : strings) { 
           if (!StringUtils.isEmpty(s.trim())) {
             if (!s.contains(HEADER_TAG)) {                         // if sequence has no head 
               s = SequencesBuilderHelper.getInstance().addSequenceHeader(s);

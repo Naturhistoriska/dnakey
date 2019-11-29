@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List; 
 import java.util.stream.Collectors; 
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  * @author idali
  */
+@Slf4j
 public class SequencesBuilderHelper {
 
   private LocalDateTime timestamp;
@@ -38,8 +40,10 @@ public class SequencesBuilderHelper {
    * @return List
    */
   public List<String> buildSequenceList(String sequence) {
+    log.info("buildSequenceList : {}", sequence);
+    
     String[] strings = sequence.split(REGEX);
-
+ 
     return Arrays.stream(strings, 0, Util.getInstance().getMaxCount(strings))
             .filter(string -> !Util.getInstance().isEmptyLine(string))
             .map(s -> addSequenceHeader(s.trim()))
