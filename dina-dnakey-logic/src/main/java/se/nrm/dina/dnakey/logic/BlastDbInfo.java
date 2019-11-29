@@ -31,8 +31,8 @@ public class BlastDbInfo implements Serializable {
   private final String sequencesWithSpace = " sequences";
   private final String emptyString = "";
 
-  private static String dbPath;
-  private static String dbInfoPath;
+  private String dbPath;
+  private String dbInfoPath;
 
   private String nrmCount;
   private String boldCount;
@@ -66,7 +66,7 @@ public class BlastDbInfo implements Serializable {
    * To return total number of sequences in nrm blastDatabase
    * @return 
    */
-  public String getNrmDbTotal() {
+  public String getNrmDbTotal() { 
     return nrmCount == null ? getTotal(NRM_DB) : nrmCount;
   }
   

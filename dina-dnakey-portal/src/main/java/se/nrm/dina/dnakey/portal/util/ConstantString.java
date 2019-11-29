@@ -23,8 +23,8 @@ public class ConstantString {
    */
   private final String WHITE_SPACE_CHARS = "[ \t\r\n\f]";
 
-  public final String XML_OUTPUT = "xml";
-  public final String TABULAR_OUTPUT = "tabular";
+//  public final String XML_OUTPUT = "xml";
+//  public final String TABULAR_OUTPUT = "tabular";
   
   private final String nrmDbNameSv = "Svenska ryggradsdjur (COI, 16S)";
   private final String nrmDbNameEn = "Swedish vertebrate animals (COI, 16S)";
@@ -98,7 +98,7 @@ public class ConstantString {
     return instance;
   }
 
-  public String getText(String key) {
+  public String getText(String key) { 
     String text = MAP.get(key);
     if (text == null) {
       return "";

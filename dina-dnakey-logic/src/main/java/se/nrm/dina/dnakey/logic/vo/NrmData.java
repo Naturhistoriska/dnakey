@@ -89,11 +89,7 @@ public class NrmData {
   public String getMorphbankId() {
     return morphbankId;
   } 
-
-  public StringBuilder getNameAndCatlogNumberSb() {
-    return nameAndCatlogNumberSb;
-  }
-
+ 
   public String getCountry() {
     return country;
   }

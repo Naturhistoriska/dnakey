@@ -65,4 +65,8 @@ public class BlastDbInfoBean implements Serializable {
   public String getNrmTotalSequence() {
     return nrmTotal;
   } 
+
+  public void setDbInfo(BlastDbInfo dbInfo) {
+    this.dbInfo = dbInfo;
+  } 
 }

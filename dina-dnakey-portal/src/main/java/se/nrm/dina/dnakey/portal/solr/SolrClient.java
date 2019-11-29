@@ -33,9 +33,14 @@ public class SolrClient implements Serializable {
   public SolrClient() {    
   }
   
+  public SolrClient(ConfigProperties config, HttpSolrClient solr) {
+    this.solr = solr;
+    this.config = config;
+  }
+  
   @PostConstruct
   public void init() {    
-    log.info("init");
+    log.info("init"); 
     solr = new HttpSolrClient.Builder(config.getSolrPath()).build();
     query = new SolrQuery();    
   }

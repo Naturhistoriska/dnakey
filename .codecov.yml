@@ -1,0 +1,13 @@
+codecov:
+  branch: master
+
+comment:
+  layout: header, changes, diff
+
+coverage:
+  ignore:
+  - dina-dnakey-logic/src/main/java/se/nrm/dina/dnakey/logic/vo/*
+  - dina-dnakey-portal/src/main/java/se/nrm/dina/dnakey/portal/vo/*
+
+  status:
+    patch: false

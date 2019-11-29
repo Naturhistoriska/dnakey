@@ -56,6 +56,11 @@ public class Navigator implements Serializable {
     log.info("Navigator"); 
   }
 
+  public Navigator(StyleBean style, Languages language) {
+    this.style = style;
+    this.language = language;
+  }
+  
   private void redirectPage(String path) {
     externalContext = FacesContext.getCurrentInstance().getExternalContext();
     try {
@@ -104,8 +109,7 @@ public class Navigator implements Serializable {
   public void scrollToSection() {
     log.info("scrollToSection : {}", clientId);
 
-    requestContext = RequestContext.getCurrentInstance();
-
+    requestContext = RequestContext.getCurrentInstance(); 
     if (clientId != null) {
       requestContext.scrollTo(clientId);
       clientId = null;
@@ -114,7 +118,7 @@ public class Navigator implements Serializable {
 
   public void scrollToClientId(String id) {
     style.resetTabStyle(2);
-    requestContext = RequestContext.getCurrentInstance();
+    requestContext = RequestContext.getCurrentInstance(); 
     requestContext.update("topMenuForm:topmenupanel");
     clientId = id;
     redirectPage(ABOUT_PATH);
@@ -168,5 +172,5 @@ public class Navigator implements Serializable {
   
   public String getLowHits() {
     return LOW_HITS_VIEW_PATH;
-  }
+  } 
 }

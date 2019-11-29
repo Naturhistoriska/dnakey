@@ -33,13 +33,15 @@ public class Languages implements Serializable {
   public void changelanguage(String locale) {
     log.info("changelanguage - locale: {}", locale);
 
-    setLocale(locale); 
-    requestContext = RequestContext.getCurrentInstance();
-    requestContext.update("topMenuForm:topmenupanel");
-    requestContext.update("headerPanel");
-    requestContext.update("footerPanel");
-    requestContext.update("footerPanel");
-    requestContext.update("mainpanel"); 
+    if(!locale.equals(this.locale)) {
+      setLocale(locale); 
+      requestContext = RequestContext.getCurrentInstance();
+      requestContext.update("topMenuForm:topmenupanel");
+      requestContext.update("headerPanel");
+      requestContext.update("footerPanel");
+      requestContext.update("footerPanel");
+      requestContext.update("mainpanel"); 
+    } 
   }
 
   public String getLanguage() {

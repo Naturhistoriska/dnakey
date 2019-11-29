@@ -34,6 +34,10 @@ public class GalleriaBean implements Serializable {
   
   public GalleriaBean() {
   }
+  
+  public GalleriaBean(ConfigProperties config) {
+    this.config = config;
+  }
 
   /**
    * Build a list of MorphBankImage with morphbank image id and thumb id

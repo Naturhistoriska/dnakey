@@ -32,6 +32,10 @@ public class FileHandler implements Serializable {
   public FileHandler() {
     log.info("FileHandler");
   }
+  
+  public FileHandler(ConfigProperties config) {
+    this.config = config;
+  }
 
   @PostConstruct
   public void init() {
@@ -51,7 +55,7 @@ public class FileHandler implements Serializable {
     sb.append(fileSeparator);
     sb.append(String.valueOf(UUIDGenerator.generateUUID()));
     sb.append(FASTA_FILE_TYPE); 
-    try {
+    try {   
       Files.write(Paths.get(sb.toString().trim()), sequence.getBytes()); 
     } catch (IOException ex) { 
       log.error(ex.getMessage());
