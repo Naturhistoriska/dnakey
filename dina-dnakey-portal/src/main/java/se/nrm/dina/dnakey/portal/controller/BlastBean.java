@@ -118,10 +118,16 @@ public class BlastBean implements Serializable {
   }
   
   public BlastBean(SequenceBuilder sequenceBuilder, MessageBean msg,
-          Languages languages) {
+          Languages languages, BlastQueue serviceQueue, SequenceValidation validation, 
+          Navigator navigator, FileHandler fileHander, GenbankBlaster blaster) {
     this.sequenceBuilder = sequenceBuilder; 
     this.msg = msg;
     this.languages = languages;
+    this.serviceQueue = serviceQueue;
+    this.validation = validation;
+    this.navigator = navigator;
+    this.fileHandler = fileHander;
+    this.blaster = blaster;
   }
 
   @PostConstruct
@@ -176,8 +182,7 @@ public class BlastBean implements Serializable {
    */
   public void handleFileUpload(FileUploadEvent event) {
     log.info("handleFileUpload");
-    UploadedFile uploadedFile = event.getFile();
-    System.out.println("file : " + uploadedFile);
+    UploadedFile uploadedFile = event.getFile(); 
     if (uploadedFile != null) {
       if (!sequencesMap.containsKey(uploadedFile.getFileName())) {
         uploadedFiles.add(uploadedFile);
@@ -203,9 +208,10 @@ public class BlastBean implements Serializable {
    */
   public void submit() {
     log.info("submit : {}", activeIndex); 
+     
     switch (activeIndex) {
       case 0:
-        sequences = sequenceBuilder.prepareSequenceList(sequenceList);
+        sequences = sequenceBuilder.prepareSequenceList(sequenceList); 
         break;
       case 1:
         sequences = sequenceBuilder.convertSequencesMapToList(sequencesMap);
@@ -215,7 +221,7 @@ public class BlastBean implements Serializable {
         break;
       default:
         break;
-    }
+    } 
     if (sequences == null) {
       errorTitle = ConstantString.getInstance().getText("blastfailed_" + languages.getLocale());
       message = ConstantString.getInstance().getText("inputdata_" + languages.getLocale());
@@ -231,9 +237,9 @@ public class BlastBean implements Serializable {
    * @param file
    */
   public void removefile(UploadedFile file) {
-    log.info("removefile : {}", file.getFileName());
+    log.info("removefile : {}", file.getFileName()); 
     uploadedFiles.remove(file);
-    sequencesMap.remove(file.getFileName());
+    sequencesMap.remove(file.getFileName()); 
   }
 
   /**
@@ -467,11 +473,14 @@ public class BlastBean implements Serializable {
   }
 
   public String ridByMetadata(BlastMetadata metadata) {
-    log.info("ridByMetadata : {}", metadata);
-    log.info("isRid ? {}", ridMap.get(metadata));
+    log.info("ridByMetadata" );  
     return ridMap.get(metadata);
   }
 
+  public void setRidMap(Map<BlastMetadata, String> ridMap) {
+    this.ridMap = ridMap;
+  }
+   
   public int getTotalSequences() {
     return totalSequences;
   } 
