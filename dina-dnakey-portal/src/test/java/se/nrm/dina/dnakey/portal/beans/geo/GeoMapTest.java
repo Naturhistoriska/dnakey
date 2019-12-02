@@ -8,6 +8,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
 import se.nrm.dina.dnakey.logic.geomap.GeoMapDataSource;
@@ -44,6 +47,12 @@ public class GeoMapTest {
   public void tearDown() {
     instance = null;
   }
+  
+  @Test(expected = NullPointerException.class)
+  public void testDefaultConstructor() {
+    instance = new GeoMap();
+    instance.getMapKey();
+  }
 
   /**
    * Test of init method, of class GeoMap.
@@ -51,10 +60,12 @@ public class GeoMapTest {
   @Test
   public void testInit() {
     System.out.println("init"); 
-    instance.init(); 
-     
+    instance.init();  
     assertNotNull(instance.getGeoMap());
     assertEquals(instance.getGeoMap(), geoMap); 
+    verify(geo, times(1)).getGeoMapData();
+     
+    instance.init();  
   }
 
   /**
@@ -81,5 +92,6 @@ public class GeoMapTest {
     
     String result = instance.getMapKey();
     assertEquals(result, mapKey); 
+    verify(geo, times(1)).getMapKey();
   } 
 }
