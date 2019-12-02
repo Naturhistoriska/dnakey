@@ -14,8 +14,8 @@ coverage:
 # --------------
 # which folders/files to ignore
 ignore:
-  - dina-dnakey-logic/src/main/java/se/nrm/dina/dnakey/logic/vo/*
-  - dina-dnakey-portal/src/main/java/se/nrm/dina/dnakey/portal/vo/*
+  - "dina-dnakey-logic/src/main/java/se/nrm/dina/dnakey/logic/vo/*"
+  - "dina-dnakey-portal/src/main/java/se/nrm/dina/dnakey/portal/vo/*"
 
 
 
