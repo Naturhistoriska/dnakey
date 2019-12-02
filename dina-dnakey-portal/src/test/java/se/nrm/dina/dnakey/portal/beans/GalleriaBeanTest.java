@@ -47,6 +47,12 @@ public class GalleriaBeanTest {
   public void tearDown() {
     instance = null;
   }
+  
+  @Test(expected = NullPointerException.class)
+  public void testDefaultConstructor() {
+    instance = new GalleriaBean();  
+    instance.imageSwitch(data);  
+  }
 
   /**
    * Test of imageSwitch method, of class GalleriaBean.
