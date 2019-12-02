@@ -1,0 +1,18 @@
+codecov:
+  branch: master
+
+
+coverage:
+  status:
+    patch: false
+
+  range: 40..90     # First number represents red, and second represents green
+                    # (default is 70..100)
+
+
+# Ignoring Paths
+# --------------
+# which folders/files to ignore
+ignore:
+  - "dina-dnakey-logic/src/main/java/se/nrm/dina/dnakey/logic/vo/*"
+  - "dina-dnakey-portal/src/main/java/se/nrm/dina/dnakey/portal/vo/*"
