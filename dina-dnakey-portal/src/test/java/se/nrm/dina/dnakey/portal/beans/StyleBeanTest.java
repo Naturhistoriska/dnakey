@@ -200,10 +200,23 @@ public class StyleBeanTest {
   public void testResetTabStyle() {
     System.out.println("resetTabStyle");
     int tabIndex = 0; 
-    instance.resetTabStyle(tabIndex); 
-    
+    instance.resetTabStyle(tabIndex);  
     assertEquals("current", instance.getTab1());
     assertEquals("", instance.getTab2());
-  }
-  
-}
+    
+    tabIndex = 4;
+    instance.resetTabStyle(tabIndex);  
+    assertEquals("", instance.getTab1());
+    assertEquals("", instance.getTab2());
+    assertEquals("", instance.getTab3());
+    assertEquals("", instance.getTab4());
+    
+    
+    tabIndex = 5;
+    instance.resetTabStyle(tabIndex);  
+    assertEquals("current", instance.getTab1());
+    assertEquals("", instance.getTab2());
+    assertEquals("", instance.getTab3());
+    assertEquals("", instance.getTab4());
+  } 
+} 
