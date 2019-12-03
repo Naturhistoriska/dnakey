@@ -53,7 +53,13 @@ public class SequenceBuilderTest {
           + "AAAAATACAAAAATTAGCCGGGCGTGGTGGCGCATGCCTGTAATCCCAGCTACTCGGGAG\n"
           + "GCTGAGGCAGGAGAATCGxCTTGAACCCGGGAGGCGGAGGTTGCGGTGAGCCGAGATCGCG\n"
           + "CCATTGCACTCCAGCCTGGGCAACAAGAGCGAAACTCCGTCTCAAAAAAAA";
-
+  
+  String seq = "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGA\n"
+          + "TCACCTGAGGTCGGGAGTTCGAGACCAGCCTGACCAACATGGAGAAACCCCGTCTCTACT\n"
+          + "AAAAATACAAAAATTAGCCGGGCGTGGTGGCGCATGCCTGTAATCCCAGCTACTCGGGAG\n"
+          + "GCTGAGGCAGGAGAATCGxCTTGAACCCGGGAGGCGGAGGTTGCGGTGAGCCGAGATCGCG\n"
+          + "CCATTGCACTCCAGCCTGGGCAACAAGAGCGAAACTCCGTCTCAAAAAAAA";
+   
   public SequenceBuilderTest() {
   }
 
@@ -87,6 +93,36 @@ public class SequenceBuilderTest {
     System.out.println("prepareSequenceList");  
     List<String> result = instance.prepareSequenceList(dnaSequence);  
     assertEquals(3, result.size());
+  }
+  
+  /**
+   * Test of prepareSequenceList method, of class SequenceBuilder.
+   */
+  @Test
+  public void testPrepareSequenceListWithOneSequence() {
+    System.out.println("prepareSequenceList");  
+    List<String> result = instance.prepareSequenceList(seq);  
+    assertEquals(5, result.size());
+  }
+  
+  /**
+   * Test of prepareSequenceList method, of class SequenceBuilder.
+   */
+  @Test
+  public void testPrepareSequenceListWithEmtpySequence() {
+    System.out.println("prepareSequenceList");  
+    List<String> result = instance.prepareSequenceList("");  
+    assertEquals(result, null);
+  }
+
+  /**
+   * Test of prepareSequenceList method, of class SequenceBuilder.
+   */
+  @Test
+  public void testPrepareSequenceListWithNullSequence() {
+    System.out.println("prepareSequenceList");  
+    List<String> result = instance.prepareSequenceList(null);  
+    assertEquals(result, null);
   }
 
   /**

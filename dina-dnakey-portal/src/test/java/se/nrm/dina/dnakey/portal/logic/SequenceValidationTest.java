@@ -1,11 +1,11 @@
 package se.nrm.dina.dnakey.portal.logic;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.After; 
 import org.junit.Before; 
 import org.junit.Test;
-import static org.junit.Assert.*;
-import se.nrm.dina.dnakey.portal.util.FastaFiles;
+import static org.junit.Assert.*; 
 
 /**
  *
@@ -13,8 +13,21 @@ import se.nrm.dina.dnakey.portal.util.FastaFiles;
  */
 public class SequenceValidationTest {
   
-  private SequenceValidation instance;
-  private FastaFiles fasta;
+  private final String dnaSequence = ">gnl|alu|HSU14574 ***ALU WARNING: Human Alu-Sx subfamily consensus sequence.\n"
+            + "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGA\n"
+            + "TCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACT\n"
+            + "AAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCAGCTACTCGGGAG\n"
+            + "GCTGAGGCAGGAGAATCGCTTGAACCCGGGAGGCGGAGGTTGCAGTGAGCCGAGATCGCG\n"
+            + "CCACTGCACTCCAGCCTGGGCGACAGAGCGAGACTCCGTCTCAAAAAAAA\n";
+  
+  private final String invalidDnaSequence = ">gnl|alu|HSU14574 ***ALU WARNING: Human Alu-Sx subfamily consensus sequence.\n"
+            + "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGA\n"
+            + "TCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACT\n"
+            + "AAAAATACAAAAATTAGCCGGGCGTGGTGGCGxGCGCCTGTAATCCCAGCTACTCGGGAG\n"
+            + "GCTGAGGCAGGAGAATCGCTTGAACCCGGGAGGCGGAGGTTGCAGTGAGCCGAGATCGCG\n"
+            + "CCACTGCACTCCAGCCTGGGCGACAGAGCGAGACTCCGTCTCAAAAAAAA\n";
+  
+  private SequenceValidation instance; 
   
   public SequenceValidationTest() {
   }
@@ -32,53 +45,73 @@ public class SequenceValidationTest {
   /**
    * Test of validate method, of class SequenceValidation.
    */
-//  @Test
-  public void testValidate() {
+  @Test
+  public void testValidateTrue() {
     System.out.println("validate");
     
-    fasta = FastaFiles.getInstance(); 
-    List<String> seqs = null; 
+    List<String> list = new ArrayList();
+    list.add(dnaSequence);
+      
+    boolean expResult = true;
+    boolean result = instance.validate(list);
+    assertEquals(expResult, result); 
+  }
+  
+  
+  /**
+   * Test of validate method, of class SequenceValidation.
+   */
+  @Test
+  public void testValidateFalse() {
+    System.out.println("validate");
+    
+    List<String> list = new ArrayList();
+    list.add(invalidDnaSequence);
+      
     boolean expResult = false;
-    boolean result = instance.validate(seqs);
+    boolean result = instance.validate(list);
     assertEquals(expResult, result); 
   }
 
   /**
    * Test of getErrorMsgs method, of class SequenceValidation.
    */
-//  @Test
-  public void testGetErrorMsgs() {
+  @Test
+  public void testGetErrorMsgsWithInvalidSequences() {
     System.out.println("getErrorMsgs"); 
     
-    List<String> expResult = null;
-    List<String> result = instance.getErrorMsgs();
-    assertEquals(expResult, result); 
+    List<String> list = new ArrayList();
+    list.add(invalidDnaSequence);
+       
+    instance.validate(list);
+    List<String> result = instance.getErrorMsgs(); 
+    assertFalse(result.isEmpty());
+  }
+  
+  
+  /**
+   * Test of getErrorMsgs method, of class SequenceValidation.
+   */
+  @Test
+  public void testGetErrorMsgsWithValidSequences() {
+    System.out.println("getErrorMsgs"); 
+    
+    List<String> list = new ArrayList();
+    list.add(dnaSequence);
+       
+    instance.validate(list);
+    List<String> result = instance.getErrorMsgs(); 
+    assertTrue(result.isEmpty());
   }
 
   /**
    * Test of getErrorMsg method, of class SequenceValidation.
    */
-//  @Test
+  @Test
   public void testGetErrorMsg() {
-    System.out.println("getErrorMsg");
-    SequenceValidation instance = new SequenceValidation();
-    String expResult = "";
+    System.out.println("getErrorMsg"); 
+    String expResult = null;
     String result = instance.getErrorMsg();
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-  }
-
-  /**
-   * Test of main method, of class SequenceValidation.
-   */
-//  @Test
-  public void testMain() {
-    System.out.println("main");
-    String[] args = null;
-    SequenceValidation.main(args);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
-  }
-  
+    assertEquals(expResult, result); 
+  }  
 }
