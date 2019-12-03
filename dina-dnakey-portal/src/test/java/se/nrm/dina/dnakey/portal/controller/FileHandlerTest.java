@@ -84,8 +84,7 @@ public class FileHandlerTest {
     System.out.println("createFastaFile");
 
     String sequence = "sfasfdasf";
-    PowerMockito.mockStatic(Files.class);
-//    when(Files.write(any(Path.class), any(byte[].class))).thenReturn(any(Path.class));  
+    PowerMockito.mockStatic(Files.class); 
 
     String result = instance.createFastaFile(sequence);
     assertNotNull(result);

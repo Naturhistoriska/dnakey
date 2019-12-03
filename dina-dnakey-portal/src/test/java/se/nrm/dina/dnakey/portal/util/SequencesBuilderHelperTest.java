@@ -12,12 +12,9 @@ import static org.junit.Assert.*;
  */
 public class SequencesBuilderHelperTest {
   
-  private SequencesBuilderHelper instance;
-  private FastaFiles fasta; 
-  private String testSequences;
-  
-  
-   String dnaSequence = ">gnl|alu|HSU14574 ***ALU WARNING: Human Alu-Sx subfamily consensus sequence.\n"
+  private SequencesBuilderHelper instance; 
+   
+  String dnaSequence = ">gnl|alu|HSU14574 ***ALU WARNING: Human Alu-Sx subfamily consensus sequence.\n"
             + "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGA\n"
             + "TCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACT\n"
             + "AAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCAGCTACTCGGGAG\n"
@@ -42,15 +39,12 @@ public class SequencesBuilderHelperTest {
    
   @Before
   public void setUp() {
-    instance = SequencesBuilderHelper.getInstance();
-    fasta = FastaFiles.getInstance();
-    testSequences = fasta.getSequences(3);
+    instance = SequencesBuilderHelper.getInstance(); 
   }
   
   @After
   public void tearDown() {
-    instance = null;
-    fasta = null;
+    instance = null; 
   }
 
   /**

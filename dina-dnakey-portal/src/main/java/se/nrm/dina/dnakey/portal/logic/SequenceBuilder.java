@@ -38,7 +38,7 @@ public class SequenceBuilder implements Serializable {
    */
   public List<String> prepareSequenceList(String sequence) {
     
-    if (StringUtils.isEmpty(sequence.trim())) {
+    if (sequence == null || StringUtils.isEmpty(sequence.trim())) {
       return null;
     }  
      
