@@ -51,12 +51,70 @@ public class MapTest {
    * Test of getSingleMap method, of class Map.
    */
   @Test
-  public void testGetSingleMap() {
+  public void testGetSingleMapNorth() {
     System.out.println("getSingleMap");
     List<BlastSubjectHsp> subjectHspList = new ArrayList<>();
     BlastSubjectMetadata subMetada = new BlastSubjectMetadata(
             1, "gen111", "gen222", "bold123", "target", "56_N_18_E", catalogNumber, taxon,  
             10, subjectHspList, true); 
+    instance.getSingleMap(subMetada); 
+    
+    MapModel model = instance.getAdvancedModel();
+    assertNotNull(model); 
+    assertEquals(model.getMarkers().size(), 1);
+    assertEquals(model.getMarkers().get(0).getIcon(), MAP_MARK_PATH);
+  }
+  
+  
+  /**
+   * Test of getSingleMap method, of class Map.
+   */
+  @Test
+  public void testGetSingleMapSouth() {
+    System.out.println("getSingleMap");
+    List<BlastSubjectHsp> subjectHspList = new ArrayList<>();
+    BlastSubjectMetadata subMetada = new BlastSubjectMetadata(
+            1, "gen111", "gen222", "bold123", "target", "5_S_18_E", catalogNumber, taxon,  
+            10, subjectHspList, true); 
+    instance.getSingleMap(subMetada); 
+    
+    MapModel model = instance.getAdvancedModel();
+    assertNotNull(model); 
+    assertEquals(model.getMarkers().size(), 1);
+    assertEquals(model.getMarkers().get(0).getIcon(), MAP_MARK_PATH);
+  }
+   
+  /**
+   * Test of getSingleMap method, of class Map.
+   */
+  @Test
+  public void testGetSingleMapWest() {
+    System.out.println("getSingleMap");
+    List<BlastSubjectHsp> subjectHspList = new ArrayList<>();
+    BlastSubjectMetadata subMetada = new BlastSubjectMetadata(
+            1, "gen111", "gen222", "bold123", "target", "56_N_18_W", catalogNumber, taxon,  
+            10, subjectHspList, true); 
+    instance.getSingleMap(subMetada); 
+    
+    MapModel model = instance.getAdvancedModel();
+    assertNotNull(model); 
+    assertEquals(model.getMarkers().size(), 1);
+    assertEquals(model.getMarkers().get(0).getIcon(), MAP_MARK_PATH);
+  }
+  
+  /**
+   * Test of getSingleMap method, of class Map.
+   */
+  @Test
+  public void testGetSingleMapWhitNrmData() {
+    System.out.println("getSingleMap");
+    List<BlastSubjectHsp> subjectHspList = new ArrayList<>();
+    BlastSubjectMetadata subMetada = new BlastSubjectMetadata(
+            1, "gen111", "gen222", "bold123", "target", "56_N_18_W", catalogNumber, taxon,  
+            10, subjectHspList, true); 
+    
+    NrmData data = mock(NrmData.class);
+    subMetada.setNrmData(data);
     instance.getSingleMap(subMetada); 
     
     MapModel model = instance.getAdvancedModel();
