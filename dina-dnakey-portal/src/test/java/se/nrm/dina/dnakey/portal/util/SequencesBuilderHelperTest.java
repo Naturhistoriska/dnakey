@@ -23,6 +23,7 @@ public class SequencesBuilderHelperTest {
             + "AAAAATACAAAAATTAGCCGGGCGTGGTGGCGCGCGCCTGTAATCCCAGCTACTCGGGAG\n"
             + "GCTGAGGCAGGAGAATCGCTTGAACCCGGGAGGCGGAGGTTGCAGTGAGCCGAGATCGCG\n"
             + "CCACTGCACTCCAGCCTGGGCGACAGAGCGAGACTCCGTCTCAAAAAAAA\n"
+            + "\n\n             "
             + ">gnl|alu|HSU14573 ***ALU WARNING: Human Alu-Sq subfamily consensus sequence.\n"
             + "GGCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGTGGA\n"
             + "TCACCTGAGGTCAGGAGTTCGAGACCAGCCTGGCCAACATGGTGAAACCCCGTCTCTACT\n"
@@ -70,39 +71,31 @@ public class SequencesBuilderHelperTest {
   @Test
   public void testBuildSequenceList() {
     System.out.println("buildSequenceList");
- 
-    List<String> expResult = null;
-    List<String> result = instance.buildSequenceList(dnaSequence);
-    System.out.println("result : " + result);
-//    assertEquals(expResult, result); 
+  
+    List<String> result = instance.buildSequenceList(dnaSequence); 
+    assertEquals(result.size(), 18);
   }
 
   /**
    * Test of addSequenceHeader method, of class SequencesBuilderHelper.
    */
-//  @Test
+  @Test
   public void testAddSequenceHeader() {
     System.out.println("addSequenceHeader");
-    String string = ""; 
-    
-    String expResult = "";
-    String result = instance.addSequenceHeader(string);
-    assertEquals(expResult, result); 
+    String string = "safsafdsadf"; 
+     
+    String result = instance.addSequenceHeader(string); 
+    assertTrue(result.contains(">")); 
   }
 
   /**
    * Test of buildStringList method, of class SequencesBuilderHelper.
    */
-//  @Test
+ @Test
   public void testBuildStringList() {
-    System.out.println("buildStringList");
-    String string = "";
-    SequencesBuilderHelper instance = new SequencesBuilderHelper();
-    List<String> expResult = null;
-    List<String> result = instance.buildStringList(string);
-    assertEquals(expResult, result);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    System.out.println("buildStringList"); 
+    List<String> result = instance.buildStringList(dnaSequence); 
+    assertNotNull(result); 
   }
   
 }

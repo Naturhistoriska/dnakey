@@ -1,5 +1,6 @@
 package se.nrm.dina.dnakey.portal.errorhandler;
 
+import java.io.IOException;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerFactory;
 import org.junit.After; 
@@ -7,9 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.powermock.api.mockito.PowerMockito;
 
 /**
  *
@@ -30,6 +33,12 @@ public class CustomExceptionHandlerFactoryTest {
   @After
   public void tearDown() {
   }
+  
+  @Test
+  public void testDefaultConstuctor() {
+    instance = new CustomExceptionHandlerFactory();
+    assertNotNull(instance);
+  }
 
   /**
    * Test of getExceptionHandler method, of class CustomExceptionHandlerFactory.
@@ -45,6 +54,6 @@ public class CustomExceptionHandlerFactoryTest {
  
     ExceptionHandler result = instance.getExceptionHandler();
     assertNotNull(result);
-  }
+  } 
   
 }

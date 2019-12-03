@@ -21,6 +21,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner; 
 import se.nrm.dina.dnakey.logic.config.ConfigProperties;
+import se.nrm.dina.dnakey.logic.exception.DinaException;
 import se.nrm.dina.dnakey.portal.vo.SolrRecord;
 
 /**
@@ -54,6 +55,12 @@ public class SolrClientTest {
   @After
   public void tearDown() {
     instance = null;
+  }
+  
+  @Test
+  public void testDefaultConstructor() {
+    instance = new SolrClient();
+    assertNotNull(instance);
   }
 
   /**
@@ -113,5 +120,49 @@ public class SolrClientTest {
   
     SolrRecord result = instance.getRecordByCollectionObjectCatalognumber(catalognumber, database);
     assertEquals(result, null);
+  } 
+  
+  @Test
+  public void testGetRecordByCollectionObjectCatalognumberNotNrmDatabase() throws IOException, SolrServerException {
+    System.out.println("getRecordByCollectionObjectCatalognumber");
+    
+    String catalognumber = "nrm1234567";
+    String database = "bold";  
+    
+    list = new ArrayList<>();
+    SolrRecord record = new SolrRecord();
+    record.setCatalogNumber(catalognumber);
+    list.add(record);
+    
+    when(solr.query(any(SolrQuery.class))).thenReturn(queryResponse); 
+    when(queryResponse.getResults()).thenReturn(documents); 
+    when(documents.getNumFound()).thenReturn(1L); 
+    when(queryResponse.getBeans(SolrRecord.class)).thenReturn(list);
+  
+    SolrRecord result = instance.getRecordByCollectionObjectCatalognumber(catalognumber, database);
+    assertNotNull(result);
+    assertEquals(record, result); 
+  } 
+  
+  @Test(expected = DinaException.class)
+  public void testGetRecordByCollectionObjectCatalognumberThorwException() throws SolrServerException, IOException {
+    System.out.println("getRecordByCollectionObjectCatalognumber");
+    
+    String catalognumber = "nrm1234567";
+    String database = "bold";  
+    
+    list = new ArrayList<>();
+    SolrRecord record = new SolrRecord();
+    record.setCatalogNumber(catalognumber);
+    list.add(record);
+    
+    when(solr.query(any(SolrQuery.class))).thenThrow(IOException.class); 
+    when(queryResponse.getResults()).thenReturn(documents); 
+    when(documents.getNumFound()).thenReturn(1L); 
+    when(queryResponse.getBeans(SolrRecord.class)).thenReturn(list);
+  
+    SolrRecord result = instance.getRecordByCollectionObjectCatalognumber(catalognumber, database);
+    assertNotNull(result);
+    assertEquals(record, result); 
   } 
 }
