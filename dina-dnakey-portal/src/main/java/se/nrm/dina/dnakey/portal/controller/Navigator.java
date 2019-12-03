@@ -63,7 +63,7 @@ public class Navigator implements Serializable {
   
   private void redirectPage(String path) {
     externalContext = FacesContext.getCurrentInstance().getExternalContext();
-    try {
+    try { 
       externalContext.redirect(externalContext.getRequestContextPath() + path);
     } catch (IOException ex) {
     }

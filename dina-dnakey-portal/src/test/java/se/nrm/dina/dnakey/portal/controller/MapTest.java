@@ -122,6 +122,49 @@ public class MapTest {
     assertEquals(model.getMarkers().size(), 1);
     assertEquals(model.getMarkers().get(0).getIcon(), MAP_MARK_PATH);
   }
+  
+    /**
+   * Test of getSingleMap method, of class Map.
+   */
+  @Test
+  public void testGetSingleMapWhitInvalidCoordinateSW() {
+    System.out.println("getSingleMap");
+    List<BlastSubjectHsp> subjectHspList = new ArrayList<>();
+    BlastSubjectMetadata subMetada = new BlastSubjectMetadata(
+            1, "gen111", "gen222", "bold123", "target", "56s_S_18w_W", catalogNumber, taxon,  
+            10, subjectHspList, true); 
+    
+    NrmData data = mock(NrmData.class);
+    subMetada.setNrmData(data);
+    instance.getSingleMap(subMetada); 
+    
+    MapModel model = instance.getAdvancedModel();
+    assertNotNull(model); 
+    assertEquals(model.getMarkers().size(), 1);
+    assertEquals(model.getMarkers().get(0).getIcon(), MAP_MARK_PATH);
+  }
+  
+  /**
+   * Test of getSingleMap method, of class Map.
+   */
+  @Test
+  public void testGetSingleMapWhitInvalidCoordinateNE() {
+    System.out.println("getSingleMap");
+    List<BlastSubjectHsp> subjectHspList = new ArrayList<>();
+    BlastSubjectMetadata subMetada = new BlastSubjectMetadata(
+            1, "gen111", "gen222", "bold123", "target", "56n_N_18e_E", catalogNumber, taxon,  
+            10, subjectHspList, true); 
+    
+    NrmData data = mock(NrmData.class);
+    subMetada.setNrmData(data);
+    instance.getSingleMap(subMetada); 
+    
+    MapModel model = instance.getAdvancedModel();
+    assertNotNull(model); 
+    assertEquals(model.getMarkers().size(), 1);
+    assertEquals(model.getMarkers().get(0).getIcon(), MAP_MARK_PATH);
+  }
+
 
   /**
    * Test of onMarkerSelect method, of class Map.
@@ -139,6 +182,22 @@ public class MapTest {
     when(marker.getData()).thenReturn(data);
     instance.onMarkerSelect(event); 
     assertEquals(instance.getLocality(), locality);
+  }
+  
+    /**
+   * Test of onMarkerSelect method, of class Map.
+   */
+  @Test
+  public void testOnMarkerSelectWithoutData() {
+    System.out.println("onMarkerSelect");
+    OverlaySelectEvent event = mock(OverlaySelectEvent.class);
+    Marker marker = mock(Marker.class);
+     
+    
+    when(event.getOverlay()).thenReturn(marker); 
+    when(marker.getData()).thenReturn(null);
+    instance.onMarkerSelect(event); 
+    assertTrue(instance.getLocality() == null);
   }
 
   /**

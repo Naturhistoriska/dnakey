@@ -14,6 +14,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.runners.MockitoJUnitRunner;  
+import org.powermock.api.mockito.PowerMockito;
 import org.primefaces.context.RequestContext;
 import se.nrm.dina.dnakey.portal.ContextMocker;
 import se.nrm.dina.dnakey.portal.RequestContextMocker;
@@ -54,6 +55,11 @@ public class NavigatorTest {
   public void tearDown() {
     instance = null;
   }
+  
+  public void testDefaultContructor() {
+    instance = new Navigator();
+    assertNotNull(instance);
+  }
 
   /**
    * Test of home method, of class Navigator.
@@ -66,6 +72,22 @@ public class NavigatorTest {
       instance.home(); 
       verify(style, times(1)).resetTabStyle(0);  
       verify(externalContext, times(1)).redirect(any(String.class));  
+    } finally {
+      context.release();
+    } 
+  }
+  
+ /**
+   * Test of home method, of class Navigator.
+   * @throws java.io.IOException
+   */
+  @Test
+  public void testHomeCatchException() throws IOException {
+    System.out.println("home"); 
+    PowerMockito.doThrow(new IOException()).when(externalContext ).redirect(any(String.class)); 
+    try { 
+      instance.home(); 
+      verify(style, times(1)).resetTabStyle(0);   
     } finally {
       context.release();
     } 
