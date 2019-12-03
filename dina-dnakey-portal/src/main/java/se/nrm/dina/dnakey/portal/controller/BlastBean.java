@@ -12,8 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
-import lombok.extern.slf4j.Slf4j;
-//import org.primefaces.context.RequestContext;
+import lombok.extern.slf4j.Slf4j; 
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.UploadedFile;
@@ -119,7 +118,7 @@ public class BlastBean implements Serializable {
   
   public BlastBean(SequenceBuilder sequenceBuilder, MessageBean msg,
           Languages languages, BlastQueue serviceQueue, SequenceValidation validation, 
-          Navigator navigator, FileHandler fileHander, GenbankBlaster blaster) {
+          Navigator navigator, FileHandler fileHander, GenbankBlaster blaster, SolrClient solr) {
     this.sequenceBuilder = sequenceBuilder; 
     this.msg = msg;
     this.languages = languages;
@@ -127,7 +126,8 @@ public class BlastBean implements Serializable {
     this.validation = validation;
     this.navigator = navigator;
     this.fileHandler = fileHander;
-    this.blaster = blaster;
+    this.blaster = blaster; 
+    this.solr = solr;
   }
 
   @PostConstruct
@@ -302,12 +302,9 @@ public class BlastBean implements Serializable {
     selectedRecord = null;
     selectedMetadata = (BlastSubjectMetadata) event.getData();
     String catalognumber = selectedMetadata.getCatalogNumber();
-
-    log.info("catalognumber : {}", catalognumber);
-
+ 
     if (selectedMetadata.isNrm() && selectedMetadata.getNrmData() == null) {
-      selectedRecord = solr.getRecordByCollectionObjectCatalognumber(catalognumber, database);
-      log.info("selected record : {}", selectedRecord);
+      selectedRecord = solr.getRecordByCollectionObjectCatalognumber(catalognumber, database); 
       data = new NrmData(selectedRecord.getCatalogNumber(), selectedRecord.getTxFullName(),
               selectedRecord.getCollectionName(), selectedRecord.getCommonNames(),
               selectedRecord.getLocalityWithCountryAndContinent(), selectedRecord.getCoordinateString(),

@@ -8,6 +8,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent; 
 import org.junit.After; 
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before; 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -18,6 +19,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import org.mockito.Mock; 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -35,6 +37,8 @@ import se.nrm.dina.dnakey.portal.ContextMocker;
 import se.nrm.dina.dnakey.portal.beans.MessageBean;
 import se.nrm.dina.dnakey.portal.logic.SequenceBuilder;
 import se.nrm.dina.dnakey.portal.logic.SequenceValidation;
+import se.nrm.dina.dnakey.portal.solr.SolrClient;
+import se.nrm.dina.dnakey.portal.vo.SolrRecord;
 
 /**
  *
@@ -68,6 +72,8 @@ public class BlastBeanTest {
   private FileHandler fileHandler;
   @Mock
   private GenbankBlaster blaster;
+  @Mock
+  private SolrClient solr;
    
   private static List<BlastMetadata> listMetadata;
   private static BlastMetadata metadata;
@@ -263,7 +269,8 @@ public class BlastBeanTest {
      
     when(sequenceBuilder.prepareSequenceList(any(String.class))).thenReturn(null); 
     instance.submit(); 
-    verify(msg, times(1)).addError(Matchers.anyString(), Matchers.anyString());  
+    verify(msg, times(1)).addError(Matchers.anyString(), Matchers.anyString());   
+    verify(validation, never()).validate(Matchers.anyList()); 
   }
   
   /**
@@ -279,6 +286,7 @@ public class BlastBeanTest {
     when(sequenceBuilder.convertSequencesMapToList(any(HashMap.class))).thenReturn(null); 
     instance.submit(); 
     verify(msg, times(1)).addError(Matchers.anyString(), Matchers.anyString());   
+    verify(validation, never()).validate(Matchers.anyList()); 
   }
   
   /**
@@ -293,7 +301,23 @@ public class BlastBeanTest {
      
     when(sequenceBuilder.prepareSequenceList(any(String.class))).thenReturn(null); 
     instance.submit(); 
+    verify(msg, times(1)).addError(Matchers.anyString(), Matchers.anyString()); 
+    verify(validation, never()).validate(Matchers.anyList()); 
+  }
+  
+  /**
+   * Test of submit method, of class BlastBean.
+   */
+  @Test
+  public void testSubmitWithSwitchDefault() {
+    System.out.println("submit");
+    
+    instance = getInstance();
+    instance.setActiveIndex(6);
+      
+    instance.submit(); 
     verify(msg, times(1)).addError(Matchers.anyString(), Matchers.anyString());   
+    verify(validation, never()).validate(Matchers.anyList());  
   }
   
   @Test
@@ -379,14 +403,42 @@ public class BlastBeanTest {
   /**
    * Test of onRowToggleSingle method, of class BlastBean.
    */
-//  @Test
-  public void testOnRowToggleSingle() {
-    System.out.println("onRowToggleSingle");
-    ToggleEvent event = null;
-    BlastBean instance = new BlastBean();
-    instance.onRowToggleSingle(event);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+  @Test
+  public void testOnRowToggleSingleNotNrm() {
+    System.out.println("onRowToggleSingle"); 
+    
+    BlastSubjectMetadata testMetadata = new BlastSubjectMetadata(1, null, null, 
+            null, null, null, "1234", null, 0, null, false);
+    ToggleEvent event = mock(ToggleEvent.class);
+    
+    when(event.getData()).thenReturn(testMetadata);
+    instance = getInstance();
+    instance.onRowToggleSingle(event); 
+    Assert.assertNull(testMetadata.getNrmData()); 
+  }
+  
+  /**
+   * Test of onRowToggleSingle method, of class BlastBean.
+   */
+  @Test
+  public void testOnRowToggleSingleNrm() {
+    System.out.println("onRowToggleSingle"); 
+    
+    BlastSubjectMetadata testMetadata = new BlastSubjectMetadata(1, null, null, 
+            null, null, null, "1234", null, 0, null, true);
+    String catalogNumber = testMetadata.getCatalogNumber();
+    ToggleEvent event = mock(ToggleEvent.class);
+    
+    when(event.getData()).thenReturn(testMetadata);
+    
+    SolrRecord record = new SolrRecord();
+    when(solr.getRecordByCollectionObjectCatalognumber(eq(catalogNumber), any(String.class))).thenReturn(record);
+    
+    record.setCatalogNumber(catalogNumber);
+    instance = getInstance();
+    instance.onRowToggleSingle(event); 
+    assertNotNull(testMetadata.getNrmData()); 
+    assertEquals(testMetadata.getNrmData().getCatalogNumber(), catalogNumber);
   }
 
   /**
@@ -497,20 +549,18 @@ public class BlastBeanTest {
     instance.setDatabase("genbank");
     expResult = "Barcode sequences from Genbank (COI, matK, rbcL, 16S*)";
     result = instance.getDbFullName();
-    assertEquals(expResult, result); 
+    assertEquals(expResult, result);  
   }
 
   /**
    * Test of openLowMatchList method, of class BlastBean.
    */
-//  @Test
+  @Test
   public void testOpenLowMatchList() {
-    System.out.println("openLowMatchList");
-    BlastMetadata metadata = null;
-    BlastBean instance = new BlastBean();
-    instance.openLowMatchList(metadata);
-    // TODO review the generated test code and remove the default call to fail.
-    fail("The test case is a prototype.");
+    System.out.println("openLowMatchList"); 
+    instance = new BlastBean();
+    instance.openLowMatchList(metadata); 
+    assertTrue(metadata.isOpenLowMatch());
   }
 
   /**
@@ -767,8 +817,7 @@ public class BlastBeanTest {
    */
   @Test
   public void testRidByMetadata() {
-    System.out.println("ridByMetadata");
-    BlastMetadata metadata = new BlastMetadata();
+    System.out.println("ridByMetadata"); 
     java.util.Map<BlastMetadata, String> ridMap = new HashMap<>();
     ridMap.put(metadata, "12345");
    
@@ -794,6 +843,6 @@ public class BlastBeanTest {
   
   private BlastBean getInstance() {
     return new BlastBean(sequenceBuilder, msg, languages, serviceQueue, 
-            validation, navigator, fileHandler, blaster);
+            validation, navigator, fileHandler, blaster, solr);
   }
 }
