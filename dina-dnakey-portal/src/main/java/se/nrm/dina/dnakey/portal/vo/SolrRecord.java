@@ -50,6 +50,7 @@ public class SolrRecord {
   private StringBuilder localitySb;
   private final String emptySpace = " ";
  
+  
   public String getCollectionName() {
     return collectionName;
   }
@@ -66,12 +67,29 @@ public class SolrRecord {
     this.catalogNumber = catalogNumber;
   }
 
+  public void setId(String id) {
+    this.id = id;
+  }
+   
+
   public String getId() {
     return id;
   }
 
   public String getTxFullName() {
     return txFullName;
+  }
+
+  public void setTxFullName(String txFullName) {
+    this.txFullName = txFullName;
+  }
+
+  public void setStartDate(Date startDate) {
+    this.startDate = startDate;
+  }
+
+  public void setLocality(String locality) {
+    this.locality = locality;
   }
 
   public Date getStartDate() {
@@ -177,6 +195,24 @@ public class SolrRecord {
   public boolean getHasCoordinates() {
     return map;
   }
+
+  public void setLatitudeText(String latitudeText) {
+    this.latitudeText = latitudeText;
+  }
+
+  public void setLongitudeText(String longitudeText) {
+    this.longitudeText = longitudeText;
+  }
+
+  public void setMorphbankId(String morphbankId) {
+    this.morphbankId = morphbankId;
+  }
+
+  public void setMorphbankImageId(String[] morphbankImageId) {
+    this.morphbankImageId = morphbankImageId;
+  }
+  
+  
   
   public String getLocalityWithCountryAndContinent() {
     localitySb = new StringBuilder();
