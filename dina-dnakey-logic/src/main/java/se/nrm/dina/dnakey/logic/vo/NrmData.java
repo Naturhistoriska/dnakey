@@ -25,8 +25,7 @@ public class NrmData {
   private StringBuilder nameAndCatlogNumberSb;
   private final String catNr = " [Catalog nr: ";
   private final String endBlacket = " ]";
-
-  
+   
   public NrmData(final String catalogNumber, final String taxonName, final String collectionName,
            final String commonNames, final String locality, final String coordinates, final Date startDate, 
            final String collectors, final boolean hasImages, String[] morphbankImageIds, 

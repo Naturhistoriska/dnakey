@@ -33,6 +33,7 @@ import se.nrm.dina.dnakey.logic.GenbankBlaster;
 import se.nrm.dina.dnakey.logic.metadata.BlastMetadata;
 import se.nrm.dina.dnakey.logic.metadata.BlastSubjectHsp;
 import se.nrm.dina.dnakey.logic.metadata.BlastSubjectMetadata;
+import se.nrm.dina.dnakey.logic.vo.NrmData;
 import se.nrm.dina.dnakey.portal.ContextMocker;
 import se.nrm.dina.dnakey.portal.beans.MessageBean;
 import se.nrm.dina.dnakey.portal.logic.SequenceBuilder;
@@ -417,15 +418,21 @@ public class BlastBeanTest {
     Assert.assertNull(testMetadata.getNrmData()); 
   }
   
+
+  
   /**
    * Test of onRowToggleSingle method, of class BlastBean.
    */
   @Test
-  public void testOnRowToggleSingleNrm() {
+  public void testOnRowToggleSingleNrmWithData() {
     System.out.println("onRowToggleSingle"); 
     
     BlastSubjectMetadata testMetadata = new BlastSubjectMetadata(1, null, null, 
             null, null, null, "1234", null, 0, null, true);
+    
+    NrmData data = new NrmData("1234", null, null, null, null, null, null, null, true, null, null , null, null);
+    testMetadata.setNrmData(data);
+     
     String catalogNumber = testMetadata.getCatalogNumber();
     ToggleEvent event = mock(ToggleEvent.class);
     
@@ -439,6 +446,30 @@ public class BlastBeanTest {
     instance.onRowToggleSingle(event); 
     assertNotNull(testMetadata.getNrmData()); 
     assertEquals(testMetadata.getNrmData().getCatalogNumber(), catalogNumber);
+    verify(solr, times(0)).getRecordByCollectionObjectCatalognumber(eq(catalogNumber), any(String.class));
+  }
+  
+    
+  /**
+   * Test of onRowToggleSingle method, of class BlastBean.
+   */
+  @Test
+  public void testOnRowToggleSingleNrmWithoutData() {
+    System.out.println("onRowToggleSingle"); 
+    
+    BlastSubjectMetadata testMetadata = new BlastSubjectMetadata(1, null, null, 
+            null, null, null, "1234", null, 0, null, true);
+    ToggleEvent event = mock(ToggleEvent.class);
+    String catalogNumber = testMetadata.getCatalogNumber();
+    
+    SolrRecord record = new SolrRecord();
+    when(solr.getRecordByCollectionObjectCatalognumber(eq(catalogNumber), any(String.class))).thenReturn(record);
+    
+    when(event.getData()).thenReturn(testMetadata);
+    instance = getInstance();
+    instance.onRowToggleSingle(event); 
+    assertNotNull(testMetadata.getNrmData()); 
+    verify(solr, times(1)).getRecordByCollectionObjectCatalognumber(eq(catalogNumber), any(String.class));
   }
 
   /**
@@ -530,7 +561,7 @@ public class BlastBeanTest {
    * Test of getDbFullName method, of class BlastBean.
    */
   @Test
-  public void testGetDbFullName() {
+  public void testGetDbFullNameEn() {
     System.out.println("getDbFullName");
      
     when(languages.isIsSwedish()).thenReturn(Boolean.FALSE);
@@ -548,6 +579,33 @@ public class BlastBeanTest {
      
     instance.setDatabase("genbank");
     expResult = "Barcode sequences from Genbank (COI, matK, rbcL, 16S*)";
+    result = instance.getDbFullName();
+    assertEquals(expResult, result);  
+  }
+  
+  
+  /**
+   * Test of getDbFullName method, of class BlastBean.
+   */
+  @Test
+  public void testGetDbFullNameSv() {
+    System.out.println("getDbFullName");
+     
+    when(languages.isIsSwedish()).thenReturn(Boolean.TRUE);
+    instance = getInstance();
+    
+    instance.setDatabase("nrm");
+    String expResult = "Svenska ryggradsdjur (COI, 16S)";
+    String result = instance.getDbFullName();
+    assertEquals(expResult, result); 
+    
+    instance.setDatabase("bold");
+    expResult = "Barkodsekvenser för svenska organismer (COI, matK, rbcL, 16S*)";
+    result = instance.getDbFullName();
+    assertEquals(expResult, result); 
+     
+    instance.setDatabase("genbank");
+    expResult = "Barkodsekvenser från Genbank (COI, matK, rbcL, 16S*)";
     result = instance.getDbFullName();
     assertEquals(expResult, result);  
   }
