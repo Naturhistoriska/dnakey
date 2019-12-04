@@ -55,7 +55,7 @@ public class MetadataDataFactory implements Serializable {
     String program = blastJson.getString(blastProgram);
     String reference = blastJson.getString(blastReference);
     String blastDatabase = blastJson.getString(blastDb);
-    String query = blastJson.getString(blastQueryId) + " " + blastJson.optString(blastQueryDef);;
+    String query = blastJson.getString(blastQueryId) + " " + blastJson.optString(blastQueryDef);
     int queryLength = blastJson.getInt(blastQueryLen);
     JSONObject itrJson = blastJson.getJSONObject(blastOutputItrs).getJSONObject(iteration);
     JSONObject statJson = itrJson.getJSONObject(itrStat).getJSONObject(statistics);
