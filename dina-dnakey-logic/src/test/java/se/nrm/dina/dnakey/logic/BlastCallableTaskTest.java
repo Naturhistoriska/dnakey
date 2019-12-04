@@ -1,51 +1,170 @@
 package se.nrm.dina.dnakey.logic;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.stream.Stream;
 import org.junit.After;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.runner.RunWith; 
+import static org.mockito.Matchers.any;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import se.nrm.dina.dnakey.logic.metadata.BlastMetadata;
+import se.nrm.dina.dnakey.logic.metadata.MetadataDataFactory;
 
 /**
  *
  * @author idali
  */
-//@RunWith(MockitoJUnitRunner.class) 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({BlastCallableTask.class, MetadataDataFactory.class})
+@PowerMockIgnore({"javax.management.*", 
+  "org.apache.http.conn.ssl.*", 
+  "com.amazonaws.http.conn.ssl.*",
+  "javax.net.ssl.*"})
 public class BlastCallableTaskTest {
 
   private BlastCallableTask testInstance;
+  private String fastafilePath;
+  private String dbName;
+  private String blastPath;
+  private String blastDbPath;
 
   public BlastCallableTaskTest() {
   }
 
   @Before
   public void setUp() {
-    testInstance = new BlastCallableTask("src/test/resources/test.fa", "nrm", "/usr/local/ncbi//blast/bin/blastn", "/usr/local/ncbi//blast/"); 
+    fastafilePath = "src/test/resources/test.fa";
+    dbName = "nrm";
+    blastPath = "/usr/local/ncbi//blast/bin/blastn";
+    blastDbPath = "/usr/local/ncbi//blast/";
+    
+    testInstance = new BlastCallableTask(fastafilePath, dbName, blastPath, blastDbPath); 
   }
 
   @After
   public void tearDown() {
+    testInstance = null;
+  }
+  
+  @Test
+  public void testDefaultContructor() {
+    testInstance = new BlastCallableTask();
+    assertNotNull(testInstance);
   }
  
   /**
    * Test of call method, of class BlastCallableTask.
    *
+   * @throws java.io.IOException
    * @throws java.lang.Exception
    */
-//  @Test
-  public void testCall() throws Exception {
+  @Test
+  public void testCall() throws IOException, Exception  {
     System.out.println("call");
     
-    BlastMetadata metadata = testInstance.call();
-    System.out.println("metadata : " + metadata);
+    final Runtime mockRuntime = PowerMockito.mock(Runtime.class);
+    PowerMockito.mockStatic(Runtime.class); 
+    Mockito.when(Runtime.getRuntime()).thenReturn(mockRuntime);
+
+    InputStream in = Mockito.mock(InputStream.class);
+    Process mockProcess = PowerMockito.mock(Process.class);
+    Mockito.when(mockProcess.getInputStream()).thenReturn(in);
+    Mockito.when(mockRuntime.exec(any(String.class))).thenReturn(mockProcess);
+
+    
+    InputStreamReader inr = Mockito.mock(InputStreamReader.class);
+    BufferedReader bufferedReader = Mockito.mock(BufferedReader.class);
+
+    PowerMockito.whenNew(InputStreamReader.class).withArguments(in).thenReturn(inr);
+    PowerMockito.whenNew(BufferedReader.class).withArguments(inr).thenReturn(bufferedReader);
+
+    PowerMockito.when(bufferedReader.lines())
+            .then(i -> Stream.of("AGGADAA\nfsadfasdf\n", "AGGADAA"));
+     
+    MetadataDataFactory mockFactory = PowerMockito.mock(MetadataDataFactory.class); 
+    PowerMockito.mockStatic(MetadataDataFactory.class);
+    when(MetadataDataFactory.getInstance()).thenReturn(mockFactory);
+    
+    BlastMetadata mockMetadata = mock(BlastMetadata.class);
+    Mockito.when(mockFactory.buildBlastMetadataByJson(any(String.class))).thenReturn(mockMetadata);
+             
+    BlastMetadata metadata = testInstance.call(); 
+    assertNotNull(metadata);
+
+    verify(mockRuntime, times(1)).exec(any(String.class));
+    verify(mockProcess, times(1)).getInputStream(); 
+  } 
+  
+  @Test
+  public void testCallThrowException() throws IOException, Exception  {
+    System.out.println("call");
+    
+    final Runtime mockRuntime = PowerMockito.mock(Runtime.class);
+    PowerMockito.mockStatic(Runtime.class); 
+    Mockito.when(Runtime.getRuntime()).thenReturn(mockRuntime);
+
+    InputStream in = Mockito.mock(InputStream.class);
+    Process mockProcess = PowerMockito.mock(Process.class);
+    Mockito.when(mockProcess.getInputStream()).thenReturn(in);
+    Mockito.when(mockRuntime.exec(any(String.class))).thenThrow(new IOException());
  
+    BlastMetadata metadata = testInstance.call();  
+    assertEquals(metadata, null);
+    verify(mockRuntime, times(1)).exec(any(String.class));
+    verify(mockProcess, times(0)).getInputStream(); 
+  } 
+  
+  @Test
+  public void testCallWithInputStreamException() throws IOException, Exception  {
+    System.out.println("call");
+    
+    final Runtime mockRuntime = PowerMockito.mock(Runtime.class);
+    PowerMockito.mockStatic(Runtime.class); 
+    Mockito.when(Runtime.getRuntime()).thenReturn(mockRuntime);
 
-//    BlastCallableTask testInstance = Mockito.mock(BlastCallableTask.class);
-// 
-//    Mockito.verify(testInstance).call();  
-  }
+    InputStream in = Mockito.mock(InputStream.class);
+    doThrow(new IOException()).when(in).close();
+    
+    Process mockProcess = PowerMockito.mock(Process.class);
+    Mockito.when(mockProcess.getInputStream()).thenReturn(in);
+    Mockito.when(mockRuntime.exec(any(String.class))).thenReturn(mockProcess);
 
+    
+    InputStreamReader inr = Mockito.mock(InputStreamReader.class);
+    BufferedReader bufferedReader = Mockito.mock(BufferedReader.class);
+
+    PowerMockito.whenNew(InputStreamReader.class).withArguments(in).thenReturn(inr);
+    PowerMockito.whenNew(BufferedReader.class).withArguments(inr).thenReturn(bufferedReader);
+
+    PowerMockito.when(bufferedReader.lines())
+            .then(i -> Stream.of("AGGADAA\nfsadfasdf\n", "AGGADAA"));
+     
+    MetadataDataFactory mockFactory = PowerMockito.mock(MetadataDataFactory.class); 
+    PowerMockito.mockStatic(MetadataDataFactory.class);
+    when(MetadataDataFactory.getInstance()).thenReturn(mockFactory);
+    
+    BlastMetadata mockMetadata = mock(BlastMetadata.class);
+    Mockito.when(mockFactory.buildBlastMetadataByJson(any(String.class))).thenReturn(mockMetadata);
+             
+    BlastMetadata metadata = testInstance.call(); 
+    assertNotNull(metadata);
+
+    verify(mockRuntime, times(1)).exec(any(String.class));
+    verify(mockProcess, times(1)).getInputStream(); 
+  } 
 }

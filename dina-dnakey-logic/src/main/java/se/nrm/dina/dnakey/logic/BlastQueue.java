@@ -33,8 +33,9 @@ public class BlastQueue implements Serializable {
   public BlastQueue() {
   }
 
-  public BlastQueue(ManagedExecutorService highPriority) {
+  public BlastQueue(ManagedExecutorService highPriority, ConfigProperties config) {
     this.highPriority = highPriority;
+    this.config = config;
   }
 
   @PostConstruct
@@ -58,12 +59,12 @@ public class BlastQueue implements Serializable {
     filePathList
             .parallelStream()
             .forEachOrdered(x -> {
-              list.add(highPriority.submit(new BlastCallableTask(x, dbname, blastPath, blastDbPath)));
+              list.add(highPriority.submit(new BlastCallableTask(x, dbname, blastPath, blastDbPath))); 
             });
 
     boolean finished = false;
     while (!finished) { 
-      finished = list.stream().noneMatch((f) -> (!f.isDone()));
+      finished = list.stream().noneMatch((f) -> (!f.isDone())); 
     }
 
     list.stream().forEach((future) -> {

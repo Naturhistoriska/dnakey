@@ -34,13 +34,13 @@ import se.nrm.dina.dnakey.logic.config.ConfigProperties;
   "javax.net.ssl.*"})
 public class BlastDbInfoTest {
 
-  private static BlastDbInfo instance;
+  private BlastDbInfo instance;
   private String dbPath;
   private String dbInfoPath;
 
   @Mock
   private ConfigProperties config;
-  private static Process mockProcess;
+  private Process mockProcess;
 
   public BlastDbInfoTest() {
   }
