@@ -1,64 +1,108 @@
 package se.nrm.dina.dnakey.logic;
-
+ 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.stream.Stream;
 import org.junit.After; 
-import org.junit.Before; 
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*; 
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
+import org.junit.runner.RunWith; 
+import static org.mockito.Matchers.any;
+import org.mockito.Mock; 
+import org.mockito.Mockito;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import static org.mockito.Mockito.when; 
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore; 
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import se.nrm.dina.dnakey.logic.config.ConfigProperties;
 
 /**
  *
  * @author idali
  */
-@RunWith(MockitoJUnitRunner.class) 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({BlastDbInfo.class})
+@PowerMockIgnore({"javax.management.*", 
+  "org.apache.http.conn.ssl.*", 
+  "com.amazonaws.http.conn.ssl.*",
+  "javax.net.ssl.*"})
 public class BlastDbInfoTest {
-  
-  private BlastDbInfo instance;
-  private String dbPath; 
-  private String dbInfoPath;  
-  
+
+  private static BlastDbInfo instance;
+  private String dbPath;
+  private String dbInfoPath;
+
   @Mock
   private ConfigProperties config;
-   
+  private static Process mockProcess;
+
   public BlastDbInfoTest() {
   }
  
   @Before
-  public void setUp() { 
-    instance = new BlastDbInfo(config);  
+  public void setUp() throws IOException, Exception { 
+
+    dbPath = "dbPath";
+    dbInfoPath = "dbInfoPath";
+
+    when(config.getDbPath()).thenReturn(dbPath);
+    when(config.getDbinfoPath()).thenReturn(dbInfoPath);
+
+    instance = new BlastDbInfo(config);
     
-    when(config.getDbPath()).thenReturn("/usr/local/ncbi/blast/db/");
-    when(config.getDbinfoPath()).thenReturn("/usr/local/ncbi/blast/bin/blastdbcmd");
-    
-    dbPath = "/usr/local/ncbi/blast/db/"; 
-    dbInfoPath = "/usr/local/ncbi/blast/bin/blastdbcmd";
-    
-    instance.init();  
+    final Runtime mockRuntime = PowerMockito.mock(Runtime.class);
+    PowerMockito.mockStatic(Runtime.class); 
+    Mockito.when(Runtime.getRuntime()).thenReturn(mockRuntime);
+
+    InputStream in = Mockito.mock(InputStream.class);
+    mockProcess = PowerMockito.mock(Process.class);
+    Mockito.when(mockProcess.getInputStream()).thenReturn(in);
+    Mockito.when(mockRuntime.exec(any(String.class))).thenReturn(mockProcess);
+
+    InputStreamReader inr = Mockito.mock(InputStreamReader.class);
+    BufferedReader bufferedReader = Mockito.mock(BufferedReader.class);
+
+    PowerMockito.whenNew(InputStreamReader.class).withArguments(in).thenReturn(inr);
+    PowerMockito.whenNew(BufferedReader.class).withArguments(inr).thenReturn(bufferedReader);
+
+    PowerMockito.when(bufferedReader.lines())
+            .then(i -> Stream.of("120 sequences AGGADAA", "AGGADAA"));
   }
-  
+
   @After
-  public void tearDown() { 
+  public void tearDown() {
     instance = null;
+  }
+
+  @Test
+  public void testDefaultConstructor() {
+    BlastDbInfo testInstance = new BlastDbInfo();
+    assertNotNull(testInstance);
   }
 
   /**
    * Test of init method, of class BlastDbInfo.
+   *
+   * @throws java.io.IOException
    */
   @Test
-  public void testInit() {
-    System.out.println("init");  
-     
+  public void testInit() throws Exception {
+    System.out.println("init"); 
+    
+    instance.init();
     verify(config, times(1)).getDbPath();
     assertEquals(dbPath, config.getDbPath());
-     
+
     verify(config, times(1)).getDbinfoPath();
     assertEquals(dbInfoPath, config.getDbinfoPath());
+
+    verify(mockProcess, times(3)).getInputStream();
   }
 
   /**
@@ -66,11 +110,21 @@ public class BlastDbInfoTest {
    */
   @Test
   public void testGetNrmDbTotal() {
-    System.out.println("getNrmDbTotal"); 
+    System.out.println("getNrmDbTotal");
+
+    instance.init();
+    String expResult = "120";
+    String result = instance.getNrmDbTotal();
     
-    instance.init(); 
-    String expResult = "1,882";
-    String result = instance.getNrmDbTotal(); 
+    assertEquals(expResult, result);
+  }
+
+  @Test
+  public void testGetNrmDbTotalNull() {
+    System.out.println("getNrmDbTotal");
+ 
+    String expResult = "120";
+    String result = instance.getNrmDbTotal();
     assertEquals(expResult, result); 
   }
 
@@ -79,11 +133,21 @@ public class BlastDbInfoTest {
    */
   @Test
   public void testGetBoldDbTotal() {
-    System.out.println("getBoldDbTotal"); 
-     
-    String expResult = "23,269";
-    String result = instance.getBoldDbTotal(); 
-    assertEquals(expResult, result); 
+    System.out.println("getBoldDbTotal");
+
+    instance.init();
+    String expResult = "120";
+    String result = instance.getBoldDbTotal();
+    assertEquals(expResult, result);
+  }
+  
+  @Test
+  public void testGetBoldDbTotalNull() {
+    System.out.println("getBoldDbTotal");
+ 
+    String expResult = "120";
+    String result = instance.getBoldDbTotal();
+    assertEquals(expResult, result);
   }
 
   /**
@@ -91,11 +155,21 @@ public class BlastDbInfoTest {
    */
   @Test
   public void testGetGenbankDbTotal() {
-    System.out.println("getGenbankDbTotal"); 
-     
-    String expResult = "347,668";
-    String result = instance.getGenbankDbTotal(); 
-    assertEquals(expResult, result); 
+    System.out.println("getGenbankDbTotal");
+
+    String expResult = "120";
+    String result = instance.getGenbankDbTotal();
+    assertEquals(expResult, result);
   }
   
+  @Test
+  public void testGetGenbankDbTotalNull() {
+    System.out.println("getGenbankDbTotal");
+ 
+    instance.init();
+    String expResult = "120";
+    String result = instance.getGenbankDbTotal();
+    assertEquals(expResult, result);
+  }
+
 }

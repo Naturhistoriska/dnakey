@@ -447,8 +447,24 @@ public class SolrRecordTest {
   public void testGetLocalityWithCountryAndContinent() {
     System.out.println("getLocalityWithCountryAndContinent"); 
     String expResult = locality + " " + country + " " + continent;
+    instance.setContinent(continent);
+    instance.setCountry(country);
     String result = instance.getLocalityWithCountryAndContinent();
     assertEquals(expResult, result); 
+  }
+  
+  
+  /**
+   * Test of getLocalityWithCountryAndContinent method, of class SolrRecord.
+   */
+  @Test
+  public void testGetLocalityWithCountryAndContinentAreNull() {
+    System.out.println("getLocalityWithCountryAndContinent"); 
+ 
+    instance.setContinent(null);
+    instance.setCountry(null);
+    String result = instance.getLocalityWithCountryAndContinent();
+    assertEquals(locality, result); 
   }
 
   /**
