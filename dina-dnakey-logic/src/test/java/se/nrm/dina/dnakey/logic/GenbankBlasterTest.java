@@ -4,6 +4,7 @@ import org.biojava.nbio.ws.alignment.qblast.NCBIQBlastAlignmentProperties;
 import org.biojava.nbio.ws.alignment.qblast.NCBIQBlastService;
 import org.junit.After; 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before; 
 import org.junit.Test; 
 import org.junit.runner.RunWith;
@@ -46,6 +47,12 @@ public class GenbankBlasterTest {
   public void tearDown() {
     instance = null;
   }
+  
+  @Test
+  public void testDefaultConstructor() {
+    GenbankBlaster testInstance = new GenbankBlaster();
+    assertNotNull(testInstance);
+  }
 
   /**
    * Test of remoteGenbankBlast method, of class GenbankBlaster.
@@ -59,6 +66,18 @@ public class GenbankBlasterTest {
     String result = instance.remoteGenbankBlast(fastSequence);
     String expResult = "XUBHAGKN016";
     assertEquals(expResult, result);  
+    
+    verify(service, times(1)).sendAlignmentRequest(any(String.class), eq(props));
+  }  
+  
+  @Test
+  public void testRemoteGenbankBlastWithException() throws Exception {
+    System.out.println("remoteGenbankBlast"); 
+     
+    when(service.sendAlignmentRequest(any(String.class), eq(props))).thenThrow(new Exception());
+    String result = instance.remoteGenbankBlast(fastSequence);
+    
+    assertEquals(null, result);  
     
     verify(service, times(1)).sendAlignmentRequest(any(String.class), eq(props));
   }  

@@ -1,8 +1,8 @@
 package se.nrm.dina.dnakey.logic;
-
-import java.io.BufferedReader; 
+ 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import javax.enterprise.concurrent.ManagedExecutorService;
 import org.junit.After;
@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import static org.mockito.Matchers.any;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -117,4 +118,59 @@ public class BlastQueueTest {
     verify(service, times(2)).submit(mockTask);
   }
 
+  @Test
+  public void testRunWithInterruptedException() throws Exception {
+    System.out.println("run");
+    
+    List<String> list = new ArrayList();
+    list.add("test1");
+    list.add("test2");
+    String dbname = "nrm"; 
+     
+    Future mockFuture = mock(Future.class);
+    when(mockFuture.isDone()).thenReturn(false).thenReturn(true);
+     
+    when(mockFuture.get()).thenThrow(new InterruptedException());
+    
+    BlastCallableTask mockTask = Mockito.mock(BlastCallableTask.class);
+     
+    PowerMockito.whenNew(BlastCallableTask.class)
+            .withArguments(any(String.class), any(String.class), any(String.class), any(String.class))
+            .thenReturn(mockTask); 
+    when(service.submit(mockTask)).thenReturn(mockFuture);
+     
+    List<BlastMetadata> result = instance.run(list, dbname); 
+    assertNotNull(result);
+    assertTrue(result.isEmpty()); 
+    
+    verify(service, times(2)).submit(mockTask);
+  }
+  
+  @Test
+  public void testRunWithExecutionException() throws Exception {
+    System.out.println("run");
+    
+    List<String> list = new ArrayList();
+    list.add("test1");
+    list.add("test2");
+    String dbname = "nrm"; 
+     
+    Future mockFuture = mock(Future.class);
+    when(mockFuture.isDone()).thenReturn(false).thenReturn(true);
+       
+    Throwable ex = new Throwable();
+    doThrow(new ExecutionException(ex)).when(mockFuture).get();
+    BlastCallableTask mockTask = Mockito.mock(BlastCallableTask.class);
+     
+    PowerMockito.whenNew(BlastCallableTask.class)
+            .withArguments(any(String.class), any(String.class), any(String.class), any(String.class))
+            .thenReturn(mockTask); 
+    when(service.submit(mockTask)).thenReturn(mockFuture);
+     
+    List<BlastMetadata> result = instance.run(list, dbname); 
+    assertNotNull(result);
+    assertTrue(result.isEmpty()); 
+    
+    verify(service, times(2)).submit(mockTask);
+  }
 }
