@@ -18,8 +18,7 @@ import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;  
-import static org.mockito.Mockito.mock;
+import static org.mockito.Matchers.eq;   
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,8 +33,7 @@ import se.nrm.dina.dnakey.portal.util.UUIDGenerator;
 /**
  *
  * @author idali
- */
-//@RunWith(MockitoJUnitRunner.class) 
+ */ 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({FileHandler.class, UUIDGenerator.class, UUID.class, Files.class, Paths.class})
 @PowerMockIgnore({"javax.management.*", "org.apache.http.conn.ssl.*", "com.amazonaws.http.conn.ssl.*", "javax.net.ssl.*"})
@@ -118,7 +116,7 @@ public class FileHandlerTest {
     byte[] b = null;
     try { 
       PowerMockito.mockStatic(Files.class);
-      PowerMockito.mock(Paths.class);
+      PowerMockito.mockStatic(Paths.class);
       
       Path path = Paths.get("test"); 
       when(Paths.get(any(String.class))).thenReturn(path);

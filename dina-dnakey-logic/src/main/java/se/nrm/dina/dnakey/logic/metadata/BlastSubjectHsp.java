@@ -39,7 +39,7 @@ public final class BlastSubjectHsp implements Comparable {
 
   private StringBuilder hspStrandSb;
   
-  private static final String NUMBER_FORMAT_ERROR = "Not available.";
+//  private static final String NUMBER_FORMAT_ERROR = "Not available.";
 
   public BlastSubjectHsp(final double hspScore, final double hspBitScore, final double hspEvalue,
           final int hspQueryFrom, final int hspQueryTo, final int hspHitFrom,
@@ -66,9 +66,9 @@ public final class BlastSubjectHsp implements Comparable {
     this.percentage = percentage;
   }
 
-  public static String getNUMBER_FORMAT_ERROR() {
-    return NUMBER_FORMAT_ERROR;
-  }
+//  public static String getNUMBER_FORMAT_ERROR() {
+//    return NUMBER_FORMAT_ERROR;
+//  }
 
   public int getHspAlignLen() {
     return hspAlignLen;

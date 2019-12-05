@@ -47,8 +47,10 @@ public class BlastMetadataTest {
   
   @After
   public void tearDown() {
+    instance = null;
   }
   
+  @Test
   public void testDefaultConstructor() {
     instance = new BlastMetadata();
     assertNotNull(instance);
@@ -208,6 +210,21 @@ public class BlastMetadataTest {
     boolean result = instance.isHasHighMatach();
     assertEquals(expResult, result); 
   }
+  
+  
+  /**
+   * Test of isHasHighMatach method, of class BlastMetadata.
+   */
+  @Test
+  public void testIsHasHighMatachTrue() {
+    System.out.println("isHasHighMatach"); 
+    BlastSubjectMetadata metadata = new BlastSubjectMetadata(0, null, null, null, null, null, null, null, 0, null, true);
+     
+    subjectMetadataList.add(metadata);
+    boolean expResult = true;
+    boolean result = instance.isHasHighMatach();
+    assertEquals(expResult, result); 
+  }
 
   /**
    * Test of isHasLowMatch method, of class BlastMetadata.
@@ -216,6 +233,19 @@ public class BlastMetadataTest {
   public void testIsHasLowMatch() {
     System.out.println("isHasLowMatch"); 
     boolean expResult = false;
+    boolean result = instance.isHasLowMatch();
+    assertEquals(expResult, result); 
+  } 
+  
+  /**
+   * Test of isHasLowMatch method, of class BlastMetadata.
+   */
+  @Test
+  public void testIsHasLowMatchTrue() {
+    System.out.println("isHasLowMatch"); 
+    BlastSubjectMetadata metadata = new BlastSubjectMetadata(0, null, null, null, null, null, null, null, 0, null, true);
+    lowMatchSubjectMetadataList.add(metadata);
+    boolean expResult = true;
     boolean result = instance.isHasLowMatch();
     assertEquals(expResult, result); 
   }
@@ -239,5 +269,16 @@ public class BlastMetadataTest {
     System.out.println("getGenbankUrl");  
     String result = instance.getGenbankUrl();
     assertNotNull(result); 
+  } 
+  
+  @Test
+  public void testGetGenbankUrlHasMetadata() {
+    System.out.println("getGenbankUrl");  
+    
+    BlastSubjectMetadata metadata = new BlastSubjectMetadata(0, null, null, null, null, null, null, null, 0, null, true);
+     
+    subjectMetadataList.add(metadata);
+    String result = instance.getGenbankUrl();
+    assertTrue(result == null); 
   } 
 }

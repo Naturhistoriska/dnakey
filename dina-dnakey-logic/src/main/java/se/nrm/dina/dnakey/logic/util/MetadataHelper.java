@@ -46,7 +46,7 @@ public class MetadataHelper {
 
     int hstart = subject.getHspHitFrom(); 
     int hend = subject.getHspHitTo(); 
-
+ 
     for (int i = 1; i <= count; i++) {
       String qry = StringUtils.substring(qrySeq, 0, 60);
       String seq = StringUtils.substring(sbjSeq, 0, 60);
