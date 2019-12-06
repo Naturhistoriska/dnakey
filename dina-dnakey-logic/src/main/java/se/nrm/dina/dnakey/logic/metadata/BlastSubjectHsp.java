@@ -1,7 +1,7 @@
 package se.nrm.dina.dnakey.logic.metadata;
 
 import java.util.ArrayList;
-import java.util.List;  
+import java.util.List;
 import se.nrm.dina.dnakey.logic.util.MetadataHelper;
 
 /**
@@ -16,8 +16,8 @@ public class BlastSubjectHsp implements Comparable {
   private final String minus = "Minus";
   private final String strand = "Strand = ";
   private final String separator = "/";
-  private final String percentageString = "%"; 
-  private final String emptyString = ""; 
+  private final String percentageString = "%";
+  private final String emptyString = "";
 
   private final double hspScore;
   private final double hspBitScore;
@@ -38,9 +38,8 @@ public class BlastSubjectHsp implements Comparable {
   private final long percentage;
 
   private StringBuilder hspStrandSb;
-  
-//  private static final String NUMBER_FORMAT_ERROR = "Not available.";
 
+//  private static final String NUMBER_FORMAT_ERROR = "Not available.";
   public BlastSubjectHsp(final double hspScore, final double hspBitScore, final double hspEvalue,
           final int hspQueryFrom, final int hspQueryTo, final int hspHitFrom,
           final int hspHitTo, final int hspIdentity, final int hspPositive,
@@ -69,7 +68,6 @@ public class BlastSubjectHsp implements Comparable {
 //  public static String getNUMBER_FORMAT_ERROR() {
 //    return NUMBER_FORMAT_ERROR;
 //  }
-
   public int getHspAlignLen() {
     return hspAlignLen;
   }
@@ -143,42 +141,32 @@ public class BlastSubjectHsp implements Comparable {
   }
 
   public String getIdentitiesPercentage() {
-    try {
-      return String.valueOf(percentage) + percentageString;
-    } catch (NumberFormatException ex) {
-    }
-    return emptyString;
+    return String.valueOf(percentage) + percentageString;
   }
 
   public String getGapsPercentage() {
-    try {
-      return String.valueOf((long) Math.floor((Double.valueOf(hspGaps) / Double.valueOf(hspAlignLen)) * 100)) + percentageString;
-    } catch (NumberFormatException ex) {
-    }
-    return emptyString;
+    return String.valueOf((long) Math.floor(
+            (Double.valueOf(hspGaps) / Double.valueOf(hspAlignLen)) * 100)) + percentageString;
   }
 
   public String getHspStrand() {
     hspStrandSb = new StringBuilder();
-    try {
-      hspStrandSb.append(strand);
-      hspStrandSb.append(hspQueryFrame >= 0 ? plus : minus);
-      hspStrandSb.append(separator);
-      hspStrandSb.append(hspHitFrame >= 0 ? plus : minus);
-    } catch (NumberFormatException ex) {
-    }
+    hspStrandSb.append(strand);
+    hspStrandSb.append(hspQueryFrame >= 0 ? plus : minus);
+    hspStrandSb.append(separator);
+    hspStrandSb.append(hspHitFrame >= 0 ? plus : minus);
     return hspStrandSb.toString();
   }
- 
+
   public List<AlignSequence> getSequencesAlignment() {
 
-    List<AlignSequence> alignSequences = new ArrayList<>(); 
+    List<AlignSequence> alignSequences = new ArrayList<>();
     int count = hspAlignLen / 60;
-    int remainder = hspAlignLen % 60; 
+    int remainder = hspAlignLen % 60;
     return count > 0 ? MetadataHelper.getInstance().buildAlignment(count, alignSequences, remainder, this)
-            : MetadataHelper.getInstance().buildNoCountAlignment(alignSequences, this); 
+            : MetadataHelper.getInstance().buildNoCountAlignment(alignSequences, this);
   }
- 
+
   @Override
   public int compareTo(Object o1) {
     return (this.getIdentitiesPercentage().compareTo(((BlastSubjectHsp) o1).getIdentitiesPercentage()));
