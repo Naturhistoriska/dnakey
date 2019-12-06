@@ -1,5 +1,6 @@
 package se.nrm.dina.dnakey.logic;
  
+import java.io.IOException;
 import org.biojava.nbio.ws.alignment.qblast.NCBIQBlastAlignmentProperties;
 import org.biojava.nbio.ws.alignment.qblast.NCBIQBlastService;
 import org.junit.After; 
@@ -74,11 +75,10 @@ public class GenbankBlasterTest {
   public void testRemoteGenbankBlastWithException() throws Exception {
     System.out.println("remoteGenbankBlast"); 
      
-    when(service.sendAlignmentRequest(any(String.class), eq(props))).thenThrow(new Exception());
+    when(service.sendAlignmentRequest(any(String.class), eq(props))).thenThrow(new IOException());
     String result = instance.remoteGenbankBlast(fastSequence);
     
-    assertEquals(null, result);  
-    
+    assertEquals(null, result);   
     verify(service, times(1)).sendAlignmentRequest(any(String.class), eq(props));
   }  
 }

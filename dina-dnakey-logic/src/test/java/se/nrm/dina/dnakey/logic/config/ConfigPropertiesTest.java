@@ -125,6 +125,13 @@ public class ConfigPropertiesTest {
     
     instance.getImagePath(); 
   }
+  
+  @Test(expected = RuntimeException.class)
+  public void testException11() {
+    instance = new ConfigProperties();
+    
+    instance.getBlastBasePath(); 
+  }
          
          
   /** 
