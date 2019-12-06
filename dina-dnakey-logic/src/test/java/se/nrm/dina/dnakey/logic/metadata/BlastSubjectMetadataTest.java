@@ -59,6 +59,20 @@ public class BlastSubjectMetadataTest {
     String result = instance.getBoldIdWithType();
     assertEquals(expResult, result); 
   }
+  
+  /**
+   * Test of getBoldIdWithType method, of class BlastSubjectMetadata.
+   */
+  @Test
+  public void testGetBoldIdWithType2() {
+    System.out.println("getBoldIdWithType"); 
+    
+    instance = new BlastSubjectMetadata(2, "genbankId","genbankAccession", "boldId",
+          "targetMarker", "58_N_12_E", "catalogNumber", "scientificName", 0, null, true);
+    String expResult = "boldId";
+    String result = instance.getBoldIdWithType();
+    assertEquals(expResult, result); 
+  }
 
   /**
    * Test of getCoordinates method, of class BlastSubjectMetadata.
@@ -80,8 +94,21 @@ public class BlastSubjectMetadataTest {
     String expResult = "58 N 12 E";
     String result = instance.getFormattedCoordinates();
     assertEquals(expResult, result); 
+  } 
+  
+  /**
+   * Test of getFormattedCoordinates method, of class BlastSubjectMetadata.
+   */
+  @Test
+  public void testGetFormattedCoordinatesWithNullValue() {
+    System.out.println("getFormattedCoordinates"); 
+    
+    instance = new BlastSubjectMetadata(2, "genbankId","genbankAccession", "test.boldId",
+          "targetMarker", "", "catalogNumber", "scientificName", 0, null, true); 
+    String result = instance.getFormattedCoordinates();
+    assertEquals(null, result); 
   }
-
+  
   /**
    * Test of isHasCoordinates method, of class BlastSubjectMetadata.
    */

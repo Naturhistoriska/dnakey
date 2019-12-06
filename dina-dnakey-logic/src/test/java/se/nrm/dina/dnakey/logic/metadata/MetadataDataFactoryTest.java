@@ -1,6 +1,5 @@
 package se.nrm.dina.dnakey.logic.metadata;
-
-import java.util.ArrayList;
+ 
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -155,6 +154,17 @@ public class MetadataDataFactoryTest {
     assertTrue(result.isHasHighMatach());
     assertTrue(result.isHasLowMatch());
     assertFalse(result.isOpenLowMatch());
+  }
+  @Test
+  public void testBuildBlastMetadataByJsonThrowException() {
+    System.out.println("buildBlastMetadataByJson");
+    
+    when(iteration.optJSONObject("Iteration_hits")).thenReturn(null);
+    BlastMetadata result = instance.buildBlastMetadataByJson(metadata);
+    assertNotNull(result);
+    assertEquals(result.getDatabase(), blastDb);
+    assertEquals(result.getProgram(), blastProgram);
+    assertFalse(result.isHasHit());
   }
   
 }

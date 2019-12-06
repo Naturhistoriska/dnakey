@@ -3,7 +3,7 @@ package se.nrm.dina.dnakey.logic.metadata;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j; 
+import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,16 +35,16 @@ public class MetadataDataFactory implements Serializable {
   private final String hit = "Hit";
   private final String hitHsps = "Hit_hsps";
   private final String hsp = "Hsp";
-   
+
   private JsonToMetadata jsonToMetadata;
-  
+
   public static MetadataDataFactory getInstance() {
     return new MetadataDataFactory();
   }
 
   public BlastMetadata buildBlastMetadataByJson(String metadata) {
     log.info("buildBlastMetadataByJson");
-    
+
     jsonToMetadata = new JsonToMetadata();
 
     List<BlastSubjectMetadata> subjectMetadataList = new ArrayList<>();
@@ -60,39 +60,33 @@ public class MetadataDataFactory implements Serializable {
     JSONObject itrJson = blastJson.getJSONObject(blastOutputItrs).getJSONObject(iteration);
     JSONObject statJson = itrJson.getJSONObject(itrStat).getJSONObject(statistics);
 
-    try {
+    int statisticDbNumber = statJson.getInt(statisticsDbNum);
+    int statisticDbLength = statJson.getInt(statisticsDbLen);
 
-      int statisticDbNumber = statJson.getInt(statisticsDbNum);
-      int statisticDbLength = statJson.getInt(statisticsDbLen);
+    boolean hasHit = false;
+    JSONObject itrHitsJson = itrJson.optJSONObject(itrHits);
+    if (itrHitsJson != null) {
+      JSONArray hitsJsonArray = itrHitsJson.getJSONArray(hit);
+      hasHit = true;
+      for (int i = 0; i < hitsJsonArray.length(); i++) {
+        JSONObject hitJson = hitsJsonArray.getJSONObject(i);
 
-      boolean hasHit = false;
-      JSONObject itrHitsJson = itrJson.optJSONObject(itrHits);
-      if (itrHitsJson != null) {
-        JSONArray hitsJsonArray = itrHitsJson.getJSONArray(hit);
-        hasHit = true;
-        for (int i = 0; i < hitsJsonArray.length(); i++) {
-          JSONObject hitJson = hitsJsonArray.getJSONObject(i);
+        JSONObject hspJson = hitJson.getJSONObject(hitHsps).getJSONObject(hsp);
 
-          JSONObject hspJson = hitJson.getJSONObject(hitHsps).getJSONObject(hsp);
+        BlastSubjectHsp subHsp = jsonToMetadata.buildSubHits(hspJson);
+        List<BlastSubjectHsp> subjectHspList = new ArrayList<>();
+        subjectHspList.add(subHsp);
 
-          BlastSubjectHsp subHsp = jsonToMetadata.buildSubHits(hspJson);
-          List<BlastSubjectHsp> subjectHspList = new ArrayList<>();
-          subjectHspList.add(subHsp);
+        BlastSubjectMetadata subjectMetadata = jsonToMetadata.buildSubMetadata(hitJson, subjectHspList);
 
-          BlastSubjectMetadata subjectMetadata = jsonToMetadata.buildSubMetadata(hitJson, subjectHspList);
-
-          if (subHsp.getPercentage() < 99) {
-            lowMatchList.add(subjectMetadata);
-          } else {
-            subjectMetadataList.add(subjectMetadata);
-          }
+        if (subHsp.getPercentage() < 99) {
+          lowMatchList.add(subjectMetadata);
+        } else {
+          subjectMetadataList.add(subjectMetadata);
         }
       }
-      return new BlastMetadata(program, version, reference, blastDatabase, query, queryLength, statisticDbNumber,
-              statisticDbLength, subjectMetadataList, lowMatchList, false, hasHit); 
-    } catch (JSONException ex) {
-      log.error(ex.getMessage());
     }
-    return new BlastMetadata();
-  }  
+    return new BlastMetadata(program, version, reference, blastDatabase, query, queryLength, statisticDbNumber,
+            statisticDbLength, subjectMetadataList, lowMatchList, false, hasHit);
+  }
 }
