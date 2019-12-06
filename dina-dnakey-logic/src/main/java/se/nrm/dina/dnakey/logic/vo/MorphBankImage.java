@@ -52,6 +52,6 @@ public class MorphBankImage {
 
   @Override
   public String toString() {
-    return "MorphBankImage : [" + morphybankImageLink + " - " + thumb;
+    return "MorphBankImage : [" + morphybankImageLink + " - " + thumb + "]";
   }
 }
