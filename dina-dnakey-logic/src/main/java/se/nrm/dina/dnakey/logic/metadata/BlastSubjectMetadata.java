@@ -8,7 +8,7 @@ import se.nrm.dina.dnakey.logic.vo.NrmData;
  *
  * @author idali
  */
-public final class BlastSubjectMetadata {
+public class BlastSubjectMetadata {
 
 //    gi|292389084|gb|GU571382|bold|BON074-06.COI-5P|gene|COI|latlon|59.183_N_9.617_E Erithacus rubecula
   private final int hitNumber;

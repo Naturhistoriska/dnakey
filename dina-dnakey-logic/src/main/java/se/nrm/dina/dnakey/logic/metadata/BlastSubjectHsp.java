@@ -8,7 +8,7 @@ import se.nrm.dina.dnakey.logic.util.MetadataHelper;
  *
  * @author idali
  */
-public final class BlastSubjectHsp implements Comparable {
+public class BlastSubjectHsp implements Comparable {
 
   private static final String TEXT_BLACK = "blacktext";
   private static final String TEXT_GRAY = "graytext";
