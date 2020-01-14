@@ -56,6 +56,7 @@ public class NavigatorTest {
     instance = null;
   }
   
+  @Test
   public void testDefaultContructor() {
     instance = new Navigator();
     assertNotNull(instance);
