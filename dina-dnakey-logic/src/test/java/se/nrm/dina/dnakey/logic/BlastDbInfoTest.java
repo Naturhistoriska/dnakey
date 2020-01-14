@@ -209,10 +209,25 @@ public class BlastDbInfoTest {
   }
   
   @Test
-  public void testGetTotalCatchIOException() throws IOException {
+  public void testGetTotalCatchIOException1() throws IOException {
     System.out.println("testGetTotalCatchIOException");
  
     Mockito.when(mockProcess.isAlive()).thenReturn(true);
+    Mockito.when(mockRuntime.exec(any(String.class))).thenThrow(new IOException()); 
+    String result = instance.getGenbankDbTotal();
+    assertEquals(null, result);
+    
+    verify(mockRuntime, times(1)).exec(any(String.class));
+    verify(mockProcess, times(0)).getInputStream(); 
+    verify(mockProcess, times(0)).destroy();
+    verify(in, times(0)).close(); 
+  }
+  
+  @Test
+  public void testGetTotalCatchIOException2() throws IOException {
+    System.out.println("testGetTotalCatchIOException");
+ 
+    Mockito.when(mockProcess.isAlive()).thenReturn(false);
     Mockito.when(mockRuntime.exec(any(String.class))).thenThrow(new IOException()); 
     String result = instance.getGenbankDbTotal();
     assertEquals(null, result);

@@ -96,7 +96,7 @@ public class GeoMapDataSourceTest {
 
     instance.init();  
   }
-
+   
   /**
    * Test of getMapKey method, of class GeoMapDataSource.
    */

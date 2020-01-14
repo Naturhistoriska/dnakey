@@ -138,7 +138,7 @@ public class BlastCallableTaskTest {
  
     doThrow(new IOException()).when(in).close();
     Mockito.when(mockRuntime.exec(any(String.class))).thenReturn(mockProcess);
-// 
+ 
     BlastMetadata metadata = testInstance.call();
     assertNotNull(metadata);
 
@@ -177,9 +177,22 @@ public class BlastCallableTaskTest {
   }
   
   @Test
-  public void testCallProcessIsNull() throws IOException, Exception {
+  public void testCallProcessIsNull1() throws IOException, Exception {
     System.out.println("testCallNotProcessDestroy"); 
     Mockito.when(mockProcess.isAlive()).thenReturn(false); 
+    Mockito.when(mockRuntime.exec(any(String.class))).thenThrow(new IOException()); 
+
+    BlastMetadata metadata = testInstance.call();
+    assertEquals(metadata, null);
+
+    verify(mockRuntime, times(1)).exec(any(String.class)); 
+    verify(mockProcess, times(0)).destroy();
+  }
+  
+  @Test
+  public void testCallProcessIsNull2() throws IOException, Exception {
+    System.out.println("testCallNotProcessDestroy"); 
+    Mockito.when(mockProcess.isAlive()).thenReturn(true); 
     Mockito.when(mockRuntime.exec(any(String.class))).thenThrow(new IOException()); 
 
     BlastMetadata metadata = testInstance.call();

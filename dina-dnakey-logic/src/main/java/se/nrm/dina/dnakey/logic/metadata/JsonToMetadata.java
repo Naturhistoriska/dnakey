@@ -97,10 +97,6 @@ public class JsonToMetadata {
   }
 
   private double calculateEvalue(double dEvalue) {
-    try {
-      return Math.round(dEvalue * 100) / 100.0d;
-    } catch (NumberFormatException e) {
-      return 0;
-    }
+    return Math.round(dEvalue * 100) / 100.0d; 
   }
 }

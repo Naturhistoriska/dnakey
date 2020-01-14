@@ -121,8 +121,7 @@ public class JsonToMetadataTest {
     when(mockJson.getInt(any(String.class))).thenReturn(hspAlignLen); 
     when(mockJson.getInt(any(String.class))).thenReturn(hspQueryFrame); 
     when(mockJson.getInt(any(String.class))).thenReturn(hspHitFrame);
- 
-      
+  
     BlastSubjectHsp result = instance.buildSubHits(mockJson);
     assertNotNull(result);   
   }

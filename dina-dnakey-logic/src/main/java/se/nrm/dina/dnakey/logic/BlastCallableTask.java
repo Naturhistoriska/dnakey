@@ -58,7 +58,7 @@ public class BlastCallableTask implements Callable<BlastMetadata> {
         }
       } catch (IOException ex) {
         log.info(ex.getMessage());
-      }
+      } 
       if(process != null && process.isAlive()) {
         process.destroy();
       }
