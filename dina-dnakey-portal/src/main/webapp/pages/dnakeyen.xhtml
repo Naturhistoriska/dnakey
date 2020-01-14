@@ -92,7 +92,7 @@
           sequenced. This specimen is stored, curated and made available at a public institution where researchers can borrow or go study it in order to reassess the determination. 
           Swedish DNA key sequences are linked to records presented in the Swedish web portal,
 
-          <h:outputLink value="http://www.naturarv.se/"   title="Naturarv"  target="_blank" styleClass="linktext">  
+          <h:outputLink value="#{msg.naturarvUrl}"   title="Naturarv"  target="_blank" styleClass="linktext">  
             naturarv
           </h:outputLink> ,
 
@@ -164,12 +164,12 @@
 
         <h:panelGroup  styleClass="imgtext text"  layout="block" > 
           #{msg.dnatext8} 
-          <h:outputLink value="https://www.dina-web.net/naturarv/?#{blast.urlEncode}20106015"  
+          <h:outputLink value="#{msg.naturarvUrl}?#{blast.urlEncode}20106015"  
                         title="Naturarv"  target="_blank" styleClass="linktext" >  
             <h:outputText  value="(Cat. id. NRM 20106015)"  styleClass="#{metadata.textColor}"  />    
           </h:outputLink>   
           #{msg.dnatext9}  
-          <h:outputLink  value="https://www.dina-web.net/naturarv/?#{blast.urlEncode}20046331"  
+          <h:outputLink  value="#{msg.naturarvUrl}?#{blast.urlEncode}20046331"  
                          title="Naturarv"  target="_blank" styleClass="linktext">  
             <h:outputText  value="(Cat. id. NRM 20046331)"  styleClass="#{metadata.textColor}"  />    
           </h:outputLink>  
