@@ -7,7 +7,7 @@ networks:
 services:
 
   ui:
-    image: dina/dnakey:v1.0
+    image: dina/dnakey:v1.1
     environment:
       - VIRTUAL_HOST=local-dnakey.nrm.se
       - VIRTUAL_PORT=8080

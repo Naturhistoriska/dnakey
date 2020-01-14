@@ -7,7 +7,7 @@
   <parent>
     <artifactId>dina-dnakey</artifactId>
     <groupId>se.nrm.dina</groupId>
-    <version>1.0</version>
+    <version>1.1</version>
   </parent>
  
   <artifactId>dina-dnakey-portal</artifactId> 
