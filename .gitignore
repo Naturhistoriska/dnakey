@@ -21,3 +21,5 @@ certs/*.key
 
 /dina-dnakey-logic/nbproject/
 /dina-dnakey-portal/nbproject/
+
+/notes
