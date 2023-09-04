@@ -9,8 +9,8 @@ import java.util.stream.Stream;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*; 
-import org.junit.runner.RunWith; 
+import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
 import static org.mockito.Mockito.when;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -25,13 +25,15 @@ import se.nrm.dina.dnakey.logic.vo.GeoMapData;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({GeoMapData.class, Files.class, Paths.class})
-@PowerMockIgnore({"javax.management.*", "org.apache.http.conn.ssl.*", "com.amazonaws.http.conn.ssl.*", "javax.net.ssl.*"})
+@PowerMockIgnore({"javax.management.*",
+  "org.apache.http.conn.ssl.*",
+  "com.amazonaws.http.conn.ssl.*", "javax.net.ssl.*"})
 public class GeoMapDataSourceTest {
-     
+
   private GeoMapDataSource instance;
   private String mapKey;
   private String filePath;
- 
+
   private ConfigProperties config;
 
   public GeoMapDataSourceTest() {
@@ -42,8 +44,8 @@ public class GeoMapDataSourceTest {
   public void setUp() {
     mapKey = "APasdfslf";
     filePath = "src/test/resources/geo_coords.tsv";
-     
-    config = PowerMockito.mock(ConfigProperties.class); 
+
+    config = PowerMockito.mock(ConfigProperties.class);
     PowerMockito.when(config.getGeoDataFilePath()).thenReturn(filePath);
     instance = new GeoMapDataSource(config);
   }
@@ -52,7 +54,7 @@ public class GeoMapDataSourceTest {
   public void tearDown() {
     instance = null;
   }
-  
+
   @Test
   public void testDefaultConstructor() {
     instance = new GeoMapDataSource();
@@ -66,27 +68,26 @@ public class GeoMapDataSourceTest {
   @Test
   public void testInit() throws IOException {
     System.out.println("init");
-   
 
     PowerMockito.mockStatic(Files.class);
     PowerMockito.mockStatic(Paths.class);
 
     Path path = Paths.get(filePath);
     when(Paths.get(filePath)).thenReturn(path);
-      
+
     PowerMockito.when(Files.lines(path))
-            .then(i -> Stream.of("AGGADAA\nfsadfasdf\n", "AGGADAA")); 
+            .then(i -> Stream.of("AGGADAA\nfsadfasdf\n", "AGGADAA"));
 
     instance.init();
     List<GeoMapData> result = instance.getGeoMapData();
     assertNotNull(result);
-    assertEquals(736, result.size()); 
+    assertEquals(736, result.size());
   }
-  
+
   @Test
   public void testInitWithException() throws IOException {
     System.out.println("init");
-    
+
     PowerMockito.mockStatic(Files.class);
     PowerMockito.mockStatic(Paths.class);
 
@@ -94,9 +95,9 @@ public class GeoMapDataSourceTest {
     when(Paths.get(filePath)).thenReturn(path);
     when(Files.lines(path)).thenThrow(new IOException());
 
-    instance.init();  
+    instance.init();
   }
-   
+
   /**
    * Test of getMapKey method, of class GeoMapDataSource.
    */
@@ -114,10 +115,10 @@ public class GeoMapDataSourceTest {
    */
   @Test
   public void testGetGeoMapData() {
-    System.out.println("getGeoMapData"); 
- 
+    System.out.println("getGeoMapData");
+
     instance.init();
-    List<GeoMapData> result = instance.getGeoMapData(); 
+    List<GeoMapData> result = instance.getGeoMapData();
     assertNotNull(result);
     assertEquals(736, result.size());
   }
