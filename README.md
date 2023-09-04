@@ -1,10 +1,10 @@
-# DINA-Web dnakey portal
+# dnakey portal
 [![Build Status](https://travis-ci.com/Naturhistoriska/dina-dnakey.svg?branch=master)](https://travis-ci.com/Naturhistoriska/dina-dnakey)
 [![codecov](https://codecov.io/gh/Naturhistoriska/dina-dnakey/branch/master/graph/badge.svg)](https://codecov.io/gh/Naturhistoriska/dina-dnakey)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
-The DINA-Web dnakey portal is a search tool to perform similarity searches between an unknown DNA sequence and a large number of sequences stored in several databases.
+The dnakey portal is a search tool to perform similarity searches between an unknown DNA sequence and a large number of sequences stored in several databases.
 
 # pre-req
 
