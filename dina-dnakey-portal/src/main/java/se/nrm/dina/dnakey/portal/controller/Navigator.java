@@ -43,7 +43,7 @@ public class Navigator implements Serializable {
   private static final String NO_HITS_VIEW_PATH = "/pages/nohits.xhtml"; 
   private static final String NO_HIGH_MATCH_VIEW_PATH = "/pages/nohighmatch.xhtml"; 
   private static final String HIGH_HITS_VIEW_PATH = "/pages/highhits.xhtml"; 
-  private static final String LOW_HITS_VIEW_PATH = "/pages/lowhits.xhtml"; 
+  private static final String LOW_HITS_VIEW_PATH = "/pages/lowhits1.xhtml"; 
   
   private String clientId;
 

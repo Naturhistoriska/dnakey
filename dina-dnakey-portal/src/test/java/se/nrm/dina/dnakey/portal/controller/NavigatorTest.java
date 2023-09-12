@@ -350,7 +350,7 @@ public class NavigatorTest {
   @Test
   public void testGetLowHits() {
     System.out.println("getLowHits"); 
-    String expResult = "/pages/lowhits.xhtml";
+    String expResult = "/pages/lowhits1.xhtml";
     String result = instance.getLowHits();
     assertEquals(expResult, result); 
   } 

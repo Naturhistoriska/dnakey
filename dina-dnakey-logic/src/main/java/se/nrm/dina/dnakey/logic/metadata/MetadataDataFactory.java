@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
-import org.json.JSONException;
+//import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
 
@@ -51,6 +51,10 @@ public class MetadataDataFactory implements Serializable {
     List<BlastSubjectMetadata> lowMatchList = new ArrayList<>();
 
     blastJson = XML.toJSONObject(metadata).getJSONObject(blastOutput);
+    log.info("blast Json : {}", blastJson);
+    
+     
+    
     String version = blastJson.getString(blastVersion);
     String program = blastJson.getString(blastProgram);
     String reference = blastJson.getString(blastReference);
@@ -71,8 +75,19 @@ public class MetadataDataFactory implements Serializable {
       for (int i = 0; i < hitsJsonArray.length(); i++) {
         JSONObject hitJson = hitsJsonArray.getJSONObject(i);
 
-        JSONObject hspJson = hitJson.getJSONObject(hitHsps).getJSONObject(hsp);
-
+        JSONObject hitHspsJson = hitJson.getJSONObject(hitHsps);
+        
+        JSONObject hspJson;
+        Object json = hitHspsJson.get(hsp);
+        if (json instanceof JSONArray) {
+            hspJson = ((JSONArray) json).getJSONObject(0);
+        } else {
+            hspJson = (JSONObject) json;
+        } 
+        
+        
+//        JSONObject hspJson = hitHspsJson.getJSONObject(hsp);
+ 
         BlastSubjectHsp subHsp = jsonToMetadata.buildSubHits(hspJson);
         List<BlastSubjectHsp> subjectHspList = new ArrayList<>();
         subjectHspList.add(subHsp);

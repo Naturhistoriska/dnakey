@@ -2,135 +2,137 @@
       xmlns:ui="http://java.sun.com/jsf/facelets" 
       xmlns:h="http://java.sun.com/jsf/html" 
       xmlns:p="http://primefaces.org/ui"   >
-  <body>
+    <body>
 
-    <ui:composition  template="/templates/masterLayout.xhtml">     
-      <ui:define name="content">  
-        <h:panelGroup id="mainpanel">
-          <h:form id="resultform"> 
-            <!-- ************************************** result page ************************************* -->
-            <h:panelGroup styleClass="columns"  id="singleResultPanel" layout="block">
-  
-              <h:panelGroup layout="block" styleClass="resultheader"> 
-                <h:panelGroup layout="block" styleClass="header paddingleft30"  >
-                  <h:outputText value="#{msg.searchresult}"   />    
-                </h:panelGroup>  
-                <h:panelGroup layout="block" styleClass="text padding30" >
-                  <h:outputText value="#{msg.resultdesc}"   />    
-                </h:panelGroup> 
-                <p:spacer width="40" /> 
-              </h:panelGroup>
+        <ui:composition  template="/templates/masterLayout.xhtml">     
+            <ui:define name="content">  
+                <h:panelGroup id="mainpanel">
+                    <h:form id="resultform"> 
+                        <!-- ************************************** result page ************************************* -->
+                        <h:panelGroup styleClass="columns"  id="singleResultPanel" layout="block">
 
-              <h:panelGroup layout="block" style="float: left; width: 560px; padding-left: 30px;">  
-                <h:panelGroup layout="block" style="float: left; width: 560px;"> 
-                  <h:outputText value="#{msg.searchcontains}" style="padding-right: 5px;"  />   
-                  <h:outputText value="#{blast.totalSequences}"  style="padding-right: 5px;"  />   
-                  <h:outputText value="#{msg.queriesandalgorithm}" style="padding-right: 5px;"  />  
-                  <h:outputText value="#{blast.metadata.version}"   /> 
-                </h:panelGroup> 
-                <h:panelGroup layout="block" style="float: left; width: 560px;"> 
-                  <p:spacer width="10" />
-                </h:panelGroup> 
-                <h:panelGroup layout="block"  style="float: left; width: 560px;"> 
-                  <h:outputText value="#{msg.searchmade}" style="padding-right: 5px;"  />   
-                  <h:outputText value="#{blast.dbFullName} [#{blast.metadata.statisticDbNumber} #{msg.sequences}; 
-                                #{blast.metadata.statisticDbLength} #{msg.totalletters}]"    /> 
+                            <h:panelGroup layout="block" styleClass="resultheader"> 
+                                <h:panelGroup layout="block" styleClass="header paddingleft30"  >
+                                    <h:outputText value="#{msg.searchresult}"   />    
+                                </h:panelGroup>  
+                                <h:panelGroup layout="block" styleClass="text padding30" >
+                                    <h:outputText value="#{msg.resultdesc}"   />    
+                                </h:panelGroup> 
+                                <p:spacer width="40" /> 
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block" style="float: left; width: 560px; padding-left: 30px;">  
+                                <h:panelGroup layout="block" style="float: left; width: 560px;"> 
+                                    <h:outputText value="#{msg.searchcontains}" style="padding-right: 5px;"  />   
+                                    <h:outputText value="#{blast.totalSequences}"  style="padding-right: 5px;"  />   
+                                    <h:outputText value="#{msg.queriesandalgorithm}" style="padding-right: 5px;"  />  
+                                    <h:outputText value="#{blast.metadata.version}"   /> 
+                                </h:panelGroup> 
+                                <h:panelGroup layout="block" style="float: left; width: 560px;"> 
+                                    <p:spacer width="10" />
+                                </h:panelGroup> 
+                                <h:panelGroup layout="block"  style="float: left; width: 560px;"> 
+                                    <h:outputText value="#{msg.searchmade}" style="padding-right: 5px;"  />   
+                                    <h:outputText value="#{blast.dbFullName} [#{blast.metadata.statisticDbNumber} #{msg.sequences}; 
+                                                  #{blast.metadata.statisticDbLength} #{msg.totalletters}]"    /> 
+                                </h:panelGroup>
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block" styleClass="resultbtns"> 
+                                <h:commandLink styleClass="csvbtn"   >      
+                                    <p:commandButton value="#{msg.saveresult} (csv)" global="false" />  
+                                    <p:dataExporter type="csv" target="exportDataTable"  fileName="blast_data"  />  
+                                </h:commandLink>  
+                                <p:commandButton actionListener="#{blast.newblast()}"   immediate="true"
+                                                 title="#{msg.btnewsequence}" value="#{msg.btnewsequence}" global="false" />
+                            </h:panelGroup>  
+                            <h:panelGroup  styleClass="resultseparator">
+                                <hr />
+                            </h:panelGroup>
+
+
+                            <h:panelGroup layout="block" styleClass="resultpanel" id="resultpanel">
+                                <ui:repeat var="blastMetada" value="#{blast.listMetadata}" varStatus="qryStatus" >
+
+                                    <h:panelGroup layout="block" styleClass="resultqryheader">
+                                        <h:panelGroup layout="block" styleClass="resultqryheader1">
+                                            <h:outputText value="#{msg.query1} #{qryStatus.index + 1}"   />  
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block" styleClass="resultqryheader2">
+                                            <h:outputText value=" : " /> 
+                                        </h:panelGroup>    
+                                        <h:panelGroup layout="block" styleClass="resultqryheader3">   
+                                            <h:outputText value="#{blastMetada.query}"  /> 
+                                        </h:panelGroup>
+                                    </h:panelGroup>   
+
+                                    <h:panelGroup layout="block" styleClass="resultqryheader">
+                                        <h:panelGroup layout="block" styleClass="resultqryheader1">
+                                            <h:outputText value="#{msg.length}"  />   
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block" styleClass="resultqryheader2">
+                                            <h:outputText value=" : " /> 
+                                        </h:panelGroup>    
+                                        <h:panelGroup layout="block" styleClass="resultqryheader3">   
+                                            <h:outputText value="#{blastMetada.queryLen}"   /> 
+                                        </h:panelGroup>
+                                    </h:panelGroup>   
+
+                                    <h:panelGroup layout="block" styleClass="resultspacer">
+                                        <p:spacer width="10" />
+                                    </h:panelGroup>   
+
+                                    <h:panelGroup layout="black" styleClass="highmatch"  rendered="#{blastMetada.hasHit}">
+                                        <h:outputText value="#{msg.sequencealignment}:" />  
+                                    </h:panelGroup>
+                                    <h:panelGroup layout="black" styleClass="resultspacer">
+                                        <p:spacer width="10" /> 
+                                    </h:panelGroup>
+
+                                    <!-- ************************************** no hits ************************************* --> 
+                                    <ui:include src="#{navigate.noHits}" />   
+
+                                    <!-- ************************************** has hits ************************************* -->
+                                    <h:panelGroup style="width: 960px; float: left; "  rendered="#{blastMetada.hasHit}" >
+
+                                        <!-- ************************************** no high match ************************************* -->
+                                        <ui:include src="#{navigate.noHighMatch}" />  
+                                        <!-- ************************************** high hits ************************************* -->
+                                        <ui:include src="#{navigate.highHits}" /> 
+
+                                        <ui:remove>
+                                            <!-- ************************************** low hits ************************************* --> 
+                                            <ui:include src="#{navigate.lowHits}" />
+                                        </ui:remove>
+
+                                        <h:panelGroup  style="width: 930px; float: left; padding-bottom: 10px;"  rendered="#{blastMetada.hasHit}">
+                                            <hr />
+                                        </h:panelGroup>  
+                                    </h:panelGroup>
+                                </ui:repeat> 
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block" styleClass="resultbtns"> 
+                                <h:commandLink styleClass="csvbtn"   >      
+                                    <p:commandButton value="#{msg.saveresult} (csv)"  global="false"  />  
+                                    <p:dataExporter type="csv" target="exportDataTable"  fileName="blast_data"   />  
+                                </h:commandLink> 
+
+                                <p:commandButton actionListener="#{blast.newblast()}"   
+                                                 title="#{msg.btnewsequence}" value="#{msg.btnewsequence}" 
+                                                 oncomplete="drawVisualization();"  global="false"  />
+                            </h:panelGroup> 
+                        </h:panelGroup>
+
+                        <ui:include src="#{navigate.export}" />   
+                        <ui:include src="#{navigate.alignmentView}" />   
+                        <ui:include src="#{navigate.mapView}" />   
+                        <ui:include src="#{navigate.imageView}" />   
+                    </h:form> 
                 </h:panelGroup>
-              </h:panelGroup>
-
-              <h:panelGroup layout="block" styleClass="resultbtns"> 
-                <h:commandLink styleClass="csvbtn"   >      
-                  <p:commandButton value="#{msg.saveresult} (csv)" global="false" />  
-                  <p:dataExporter type="csv" target="exportDataTable"  fileName="blast_data"  />  
-                </h:commandLink>  
-                <p:commandButton actionListener="#{blast.newblast()}"   immediate="true"
-                                 title="#{msg.btnewsequence}" value="#{msg.btnewsequence}" global="false" />
-              </h:panelGroup>  
-              <h:panelGroup  styleClass="resultseparator">
-                <hr />
-              </h:panelGroup>
-
-
-              <h:panelGroup layout="block" styleClass="resultpanel" id="resultpanel">
-                <ui:repeat var="blastMetada" value="#{blast.listMetadata}" varStatus="qryStatus" >
-
-                  <h:panelGroup layout="block" styleClass="resultqryheader">
-                    <h:panelGroup layout="block" styleClass="resultqryheader1">
-                      <h:outputText value="#{msg.query1} #{qryStatus.index + 1}"   />  
-                    </h:panelGroup>
-                    <h:panelGroup layout="block" styleClass="resultqryheader2">
-                      <h:outputText value=" : " /> 
-                    </h:panelGroup>    
-                    <h:panelGroup layout="block" styleClass="resultqryheader3">   
-                      <h:outputText value="#{blastMetada.query}"  /> 
-                    </h:panelGroup>
-                  </h:panelGroup>   
-
-                  <h:panelGroup layout="block" styleClass="resultqryheader">
-                    <h:panelGroup layout="block" styleClass="resultqryheader1">
-                      <h:outputText value="#{msg.length}"  />   
-                    </h:panelGroup>
-                    <h:panelGroup layout="block" styleClass="resultqryheader2">
-                      <h:outputText value=" : " /> 
-                    </h:panelGroup>    
-                    <h:panelGroup layout="block" styleClass="resultqryheader3">   
-                      <h:outputText value="#{blastMetada.queryLen}"   /> 
-                    </h:panelGroup>
-                  </h:panelGroup>   
-
-                  <h:panelGroup layout="block" styleClass="resultspacer">
-                    <p:spacer width="10" />
-                  </h:panelGroup>   
-
-                  <h:panelGroup layout="black" styleClass="highmatch"  rendered="#{blastMetada.hasHit}">
-                    <h:outputText value="#{msg.sequencealignment}:" />  
-                  </h:panelGroup>
-                  <h:panelGroup layout="black" styleClass="resultspacer">
-                    <p:spacer width="10" /> 
-                  </h:panelGroup>
-                  
-                  <!-- ************************************** no hits ************************************* --> 
-                  <ui:include src="#{navigate.noHits}" />   
- 
-                  <!-- ************************************** has hits ************************************* -->
-                  <h:panelGroup style="width: 960px; float: left; "  rendered="#{blastMetada.hasHit}" >
-
-                    <!-- ************************************** no high match ************************************* -->
-                    <ui:include src="#{navigate.noHighMatch}" />  
-                    <!-- ************************************** high hits ************************************* -->
-                    <ui:include src="#{navigate.highHits}" /> 
-               
-                    <!-- ************************************** low hits ************************************* -->
-                    <ui:include src="#{navigate.lowHits}" />
- 
-                    <h:panelGroup  style="width: 930px; float: left; padding-bottom: 10px;"  rendered="#{blastMetada.hasHit}">
-                      <hr />
-                    </h:panelGroup>  
-                  </h:panelGroup>
-                </ui:repeat> 
-              </h:panelGroup>
- 
-              <h:panelGroup layout="block" styleClass="resultbtns"> 
-                <h:commandLink styleClass="csvbtn"   >      
-                  <p:commandButton value="#{msg.saveresult} (csv)"  global="false"  />  
-                  <p:dataExporter type="csv" target="exportDataTable"  fileName="blast_data"   />  
-                </h:commandLink> 
-
-                <p:commandButton actionListener="#{blast.newblast()}"   
-                                 title="#{msg.btnewsequence}" value="#{msg.btnewsequence}" 
-                                 oncomplete="drawVisualization();"  global="false"  />
-              </h:panelGroup> 
-            </h:panelGroup>
- 
-            <ui:include src="#{navigate.export}" />   
-            <ui:include src="#{navigate.alignmentView}" />   
-            <ui:include src="#{navigate.mapView}" />   
-            <ui:include src="#{navigate.imageView}" />   
-          </h:form> 
-        </h:panelGroup>
-      </ui:define>
-    </ui:composition>
-  </body>
+            </ui:define>
+        </ui:composition>
+    </body>
 </html>
 
 
@@ -138,4 +140,3 @@
 
 
 
-  

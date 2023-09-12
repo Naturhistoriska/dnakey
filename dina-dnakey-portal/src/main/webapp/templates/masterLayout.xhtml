@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets" 
@@ -7,124 +7,125 @@
       xmlns:c="http://java.sun.com/jsp/jstl/core" 
       xmlns:p="http://primefaces.org/ui">
 
-  <h:head > 
-    <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon-default.ico']}"/> 
-    <title>
-      #{msg.headername} 
-    </title>   
+    <h:head > 
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon-default.ico']}"/> 
+        <title>
+            #{msg.headername} 
+        </title>   
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=#{geoMap.mapKey}" type="text/javascript"></script>  
+        <script src="https://maps.googleapis.com/maps/api/js?key=#{geoMap.mapKey}" type="text/javascript"></script>  
 
-    <script type='text/javascript' src='https://www.google.com/jsapi'></script> 
-    <script type='text/javascript'>
-      google.load('visualization', '1', {'packages': ['geochart']});
-      google.setOnLoadCallback(drawVisualizationMap);
+        <script type='text/javascript' src='https://www.google.com/jsapi'></script> 
+        <script type='text/javascript'>
+            google.load('visualization', '1', {'packages': ['geochart']});
+            google.setOnLoadCallback(drawVisualizationMap);
 
-      function drawVisualizationMap() {
-        var data = google.visualization.arrayToDataTable([
-          ['Latitude', 'Longitude', 'Value'],
-          <c:forEach var = "geoMapData" items = "${geoMap.geoMap}" > 
-            [${geoMapData.latitude},${geoMapData.longitude},${geoMapData.count}],
-          </c:forEach>
-        ]);
+            function drawVisualizationMap() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Latitude', 'Longitude', 'Value'],
+                    <c:forEach var = "geoMapData" items = "${geoMap.geoMap}" > 
+        [${geoMapData.latitude},${geoMapData.longitude},${geoMapData.count}],
+            </c:forEach>
+                ]);
 
 
-        var options = {
-          region: '154', // Northern Europe 
-          displayMode: 'markers',
-          datalessRegionColor: '#F7F8E0',
-          legend: {position: 'none'},
-          tooltip: {trigger: 'none'},
-          enableRegionInteractivity: false,
-          magnifyingGlass: {enable: false, zoomFactor: 5.0},
-          colorAxis: {colors: ['#D4B9DA', '#980043']}
-        };
+                var options = {
+                    region: '154', // Northern Europe 
+                    displayMode: 'markers',
+                    datalessRegionColor: '#F7F8E0',
+                    legend: {position: 'none'},
+                    tooltip: {trigger: 'none'},
+                    enableRegionInteractivity: false,
+                    magnifyingGlass: {enable: false, zoomFactor: 5.0},
+                    colorAxis: {colors: ['#D4B9DA', '#980043']}
+                };
 
-        var container = document.getElementById('map_canvas');
-        var geomap = new google.visualization.GeoChart(container);
-        geomap.draw(data, options);
-      };
-    </script>  
-        
-        
+                var container = document.getElementById('map_canvas');
+                var geomap = new google.visualization.GeoChart(container);
+                geomap.draw(data, options);
+            }
+            ;
+        </script>  
+
+
         <!-- piwik disabled because piwik is moved. Will looking into another solution -->
-                  <!-- Start: Piwik -->  
-<!--              <script type="text/javascript">
-                                  var _paq = _paq || [];
-                                  _paq.push(['trackPageView']);
-                                  _paq.push(['enableLinkTracking']);
-                                  (function () {
-                                      var u = "//monitor.dina-web.net/";
-                                      _paq.push(['setTrackerUrl', u + 'piwik.php']);
-                                      _paq.push(['setSiteId', 1]);
-                                      var d = document, g = d.createElement('script'),
-                                              s = d.getElementsByTagName('script')[0];
-                                      g.type = 'text/javascript';
-                                      g.async = true;
-                                      g.defer = true;
-                                      g.src = u + 'piwik.js';
-                                      s.parentNode.insertBefore(g, s);
-                                  })();
-                          </script>
-                          <noscript>
-                              <p>
-                                  <img src="//monitor.dina-web.net/piwik.php?idsite=700" style="border:0;" alt="" />
-                              </p>
-                          </noscript>-->
+        <!-- Start: Piwik -->  
+        <!--              <script type="text/javascript">
+                                          var _paq = _paq || [];
+                                          _paq.push(['trackPageView']);
+                                          _paq.push(['enableLinkTracking']);
+                                          (function () {
+                                              var u = "//monitor.dina-web.net/";
+                                              _paq.push(['setTrackerUrl', u + 'piwik.php']);
+                                              _paq.push(['setSiteId', 1]);
+                                              var d = document, g = d.createElement('script'),
+                                                      s = d.getElementsByTagName('script')[0];
+                                              g.type = 'text/javascript';
+                                              g.async = true;
+                                              g.defer = true;
+                                              g.src = u + 'piwik.js';
+                                              s.parentNode.insertBefore(g, s);
+                                          })();
+                                  </script>
+                                  <noscript>
+                                      <p>
+                                          <img src="//monitor.dina-web.net/piwik.php?idsite=700" style="border:0;" alt="" />
+                                      </p>
+                                  </noscript>-->
 
-       <!-- End: Piwik -->
-    
-  </h:head> 
+        <!-- End: Piwik -->
 
-  <f:view locale="#{languages.locale}"  > 
-    <h:body styleClass="background"> 	
-      <!-- ************************************** progress status ***************************************** -->
-      <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
-      <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">   
-        <h:panelGrid columns="3"  >  
-          <p:graphicImage value="/resources/images/loaderA32.gif"   alt="#{msg.progress}" title="#{msg.progress}" styleClass="images" /> 
-          <p:spacer width="10" />
-          <p:outputLabel value="#{msg.wait}" styleClass="inprocess" /> 
-        </h:panelGrid>  
-      </p:dialog>
+    </h:head> 
 
-      <!-- ************************************** session control ***************************************** -->
-      <h:form id="idelForm">
-        <p:idleMonitor id="idleMonitor" timeout="1800000000" > 
-          <p:ajax id="idleEvent" event="idle" listener="#{idleMonitorController.idleListener}"  /> 
-        </p:idleMonitor>
-      </h:form>
+    <f:view locale="#{languages.locale}" encoding="UTF-8" > 
+        <h:body styleClass="background"> 	
+            <!-- ************************************** progress status ***************************************** -->
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">   
+                <h:panelGrid columns="3"  >  
+                    <p:graphicImage value="/resources/images/loaderA32.gif"   alt="#{msg.progress}" title="#{msg.progress}" styleClass="images" /> 
+                    <p:spacer width="10" />
+                    <p:outputLabel value="#{msg.wait}" styleClass="inprocess" /> 
+                </h:panelGrid>  
+            </p:dialog>
 
-      <h:outputStylesheet library="css" name="dnakey.css"  />
-      <div style="width: 960px; margin: auto;"> 
-        <div id="header" style="width: 960px; ">
-          <ui:insert name="header" >
-            <ui:include src="/pages/header.xhtml" />
-          </ui:insert> 
-        </div> 
+            <!-- ************************************** session control ***************************************** -->
+            <h:form id="idelForm">
+                <p:idleMonitor id="idleMonitor" timeout="1800000000" > 
+                    <p:ajax id="idleEvent" event="idle" listener="#{idleMonitorController.idleListener}"  /> 
+                </p:idleMonitor>
+            </h:form>
 
-        <div id="topmenu" style="width: 960px; float: left; ">
-          <ui:insert name="topmenu" >
-            <ui:include src="/pages/topmenu.xhtml" />
-          </ui:insert> 
-        </div> 
+            <h:outputStylesheet library="css" name="dnakey.css"  />
+            <div style="width: 960px; margin: auto;"> 
+                <div id="header" style="width: 960px; ">
+                    <ui:insert name="header" >
+                        <ui:include src="/pages/header.xhtml" />
+                    </ui:insert> 
+                </div> 
 
-        <div id="mainimages" style="width: 960px; float: left;  ">
-          <ui:insert name="mainimages" >
-            <ui:include src="/pages/images.xhtml" />
-          </ui:insert> 
-        </div> 
+                <div id="topmenu" style="width: 960px; float: left; ">
+                    <ui:insert name="topmenu" >
+                        <ui:include src="/pages/topmenu.xhtml" />
+                    </ui:insert> 
+                </div> 
 
-        <div id="main" style="width: 960px; float: left;  ">
-          <ui:insert name="content"/>
-        </div>  
+                <div id="mainimages" style="width: 960px; float: left;  ">
+                    <ui:insert name="mainimages" >
+                        <ui:include src="/pages/images.xhtml" />
+                    </ui:insert> 
+                </div> 
 
-        <div id="footer" >
-          <ui:insert name="footer" >
-            <ui:include src="/pages/footer.xhtml" />
-          </ui:insert>
-        </div> 
-      </div> 
-    </h:body>
-  </f:view>
+                <div id="main" style="width: 960px; float: left;  ">
+                    <ui:insert name="content"/>
+                </div>  
+
+                <div id="footer" >
+                    <ui:insert name="footer" >
+                        <ui:include src="/pages/footer.xhtml" />
+                    </ui:insert>
+                </div> 
+            </div> 
+        </h:body>
+    </f:view>
 </html>

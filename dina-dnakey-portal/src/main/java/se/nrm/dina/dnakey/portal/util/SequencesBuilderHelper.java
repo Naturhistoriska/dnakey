@@ -44,7 +44,8 @@ public class SequencesBuilderHelper {
     
     String[] strings = sequence.split(REGEX);
  
-    return Arrays.stream(strings, 0, Util.getInstance().getMaxCount(strings))
+    return Arrays.stream(strings, 0, 
+            Util.getInstance().getMaxCount(strings))
             .filter(string -> !Util.getInstance().isEmptyLine(string))
             .map(s -> addSequenceHeader(s.trim()))
             .collect(Collectors.toList());

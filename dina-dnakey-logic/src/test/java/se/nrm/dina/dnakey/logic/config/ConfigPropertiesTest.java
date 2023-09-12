@@ -24,6 +24,8 @@ public class ConfigPropertiesTest {
   private String thumbPath;
   private String imagePath;
   private String mapKey;
+  private String username;
+  private String password;
   
   public ConfigPropertiesTest() {
   }
@@ -41,6 +43,8 @@ public class ConfigPropertiesTest {
     thumbPath = "http://images.morphbank.nrm.se/?id=";
     imagePath = "http://morphbank.nrm.se/Browse/ByImage/?specimenId=";
     mapKey = "map_key"; 
+    username = "user";
+    password = "password";
   }
   
   @After
@@ -142,7 +146,8 @@ public class ConfigPropertiesTest {
     System.out.println("getGeoDataFilePath");  
        
     instance = new ConfigProperties(geoDataFilePath, blastBasePath, dbPath, binPath, 
-            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, imagePath, mapKey);
+            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, 
+            imagePath, mapKey, username, password);
     String result = instance.getGeoDataFilePath(); 
     assertEquals(geoDataFilePath, result); 
   }
@@ -154,7 +159,8 @@ public class ConfigPropertiesTest {
   public void testGetBlastBasePath() {
     System.out.println("getBlastBasePath"); 
     instance = new ConfigProperties(geoDataFilePath, blastBasePath, dbPath, binPath, 
-            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, imagePath, mapKey); 
+            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, 
+            imagePath, mapKey, username, password); 
     String result = instance.getBlastBasePath();
     assertEquals(blastBasePath, result); 
   }
@@ -166,7 +172,8 @@ public class ConfigPropertiesTest {
   public void testGetDbPath() {
     System.out.println("getDbPath");
    instance = new ConfigProperties(geoDataFilePath, blastBasePath, dbPath, binPath, 
-            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, imagePath, mapKey);
+            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, 
+           imagePath, mapKey, username, password);
  
     String result = instance.getDbPath();
     assertEquals(dbPath, result);  
@@ -179,7 +186,8 @@ public class ConfigPropertiesTest {
   public void testGetBinPath() {
     System.out.println("getBinPath");
     instance = new ConfigProperties(geoDataFilePath, blastBasePath, dbPath, binPath, 
-            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, imagePath, mapKey);
+            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, 
+            imagePath, mapKey, username, password);
  
     String result = instance.getBinPath();
     assertEquals(binPath, result); 
@@ -192,7 +200,8 @@ public class ConfigPropertiesTest {
   public void testGetDbinfoPath() {
     System.out.println("getDbinfoPath");
     instance = new ConfigProperties(geoDataFilePath, blastBasePath, dbPath, binPath, 
-            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, imagePath, mapKey);
+            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, 
+            imagePath, mapKey, username, password);
  
     String result = instance.getDbinfoPath();
     assertEquals(dbinfoPath, result); 
@@ -205,7 +214,8 @@ public class ConfigPropertiesTest {
   public void testGetBlastnPath() {
     System.out.println("getBlastnPath");
     instance = new ConfigProperties(geoDataFilePath, blastBasePath, dbPath, binPath, 
-            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, imagePath, mapKey);
+            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, 
+            imagePath, mapKey, username, password);
  
     String result = instance.getBlastnPath();
     assertEquals(blastnPath, result); 
@@ -218,7 +228,8 @@ public class ConfigPropertiesTest {
   public void testGetFastaFilePath() {
     System.out.println("getFastaFilePath");
     instance = new ConfigProperties(geoDataFilePath, blastBasePath, dbPath, binPath, 
-            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, imagePath, mapKey);
+            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, 
+            imagePath, mapKey, username, password);
     String result = instance.getFastaFilePath();
     assertEquals(fastaFilePath, result); 
   }
@@ -230,7 +241,8 @@ public class ConfigPropertiesTest {
   public void testGetSolrPath() {
     System.out.println("getSolrPath");
     instance = new ConfigProperties(geoDataFilePath, blastBasePath, dbPath, binPath, 
-            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, imagePath, mapKey);
+            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, 
+            imagePath, mapKey, username, password);
     String result = instance.getSolrPath();
     assertEquals(solrPath, result); 
   }
@@ -242,7 +254,8 @@ public class ConfigPropertiesTest {
   public void testGetMapKey() {
     System.out.println("getMapKey");
     instance = new ConfigProperties(geoDataFilePath, blastBasePath, dbPath, binPath, 
-            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, imagePath, mapKey);
+            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, 
+            imagePath, mapKey, username, password);
     
     String result = instance.getMapKey();
     assertEquals(mapKey, result); 
@@ -255,7 +268,8 @@ public class ConfigPropertiesTest {
   public void testGetThumbPath() {
     System.out.println("getThumbPath");
     instance = new ConfigProperties(geoDataFilePath, blastBasePath, dbPath, binPath, 
-            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, imagePath, mapKey);
+            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, 
+            imagePath, mapKey, username, password);
     String result = instance.getThumbPath();
     assertEquals(thumbPath, result); 
   }
@@ -267,7 +281,8 @@ public class ConfigPropertiesTest {
   public void testGetImagePath() {
     System.out.println("getImagePath");
     instance = new ConfigProperties(geoDataFilePath, blastBasePath, dbPath, binPath, 
-            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, imagePath, mapKey);
+            dbinfoPath, blastnPath, fastaFilePath, solrPath, thumbPath, 
+            imagePath, mapKey, username, password);
     String result = instance.getImagePath();
     assertEquals(imagePath, result); 
   }

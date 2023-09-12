@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map; 
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import org.primefaces.event.FileUploadEvent;
@@ -12,7 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
-import lombok.extern.slf4j.Slf4j; 
+import lombok.extern.slf4j.Slf4j;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.UploadedFile;
@@ -22,11 +22,12 @@ import se.nrm.dina.dnakey.logic.metadata.BlastMetadata;
 import se.nrm.dina.dnakey.logic.metadata.BlastSubjectHsp;
 import se.nrm.dina.dnakey.logic.metadata.BlastSubjectMetadata;
 import se.nrm.dina.dnakey.logic.vo.NrmData;
-import se.nrm.dina.dnakey.portal.beans.MessageBean; 
+import se.nrm.dina.dnakey.portal.beans.MessageBean;
 import se.nrm.dina.dnakey.portal.logic.SequenceBuilder;
 import se.nrm.dina.dnakey.portal.util.ConstantString;
 import se.nrm.dina.dnakey.portal.logic.SequenceValidation;
-import se.nrm.dina.dnakey.portal.solr.SolrClient;
+//import se.nrm.dina.dnakey.portal.solr.SolrClient;
+import se.nrm.dina.dnakey.portal.solr.SolrWithAuth;
 import se.nrm.dina.dnakey.portal.vo.SolrRecord;
 import se.nrm.dina.dnakey.portal.util.FastaFiles;
 
@@ -38,447 +39,460 @@ import se.nrm.dina.dnakey.portal.util.FastaFiles;
 @Named("blast")
 @Slf4j
 public class BlastBean implements Serializable {
+    
+    private final String emptyString = "";
 
-  private String sequenceList;                                                    // sequence or sequences are listed in tab1
-  private String testSequences;                                                   // list of sequences in tab3 
+    private String sequenceList;                                                    // sequence or sequences are listed in tab1
+    private String testSequences;                                                   // list of sequences in tab3 
 
-  private List<UploadedFile> uploadedFiles = new ArrayList<>();                   // upload fasta files in tab2
-  private Map<String, List<String>> sequencesMap = new HashMap();
+    private List<UploadedFile> uploadedFiles = new ArrayList<>();                   // upload fasta files in tab2
+    private Map<String, List<String>> sequencesMap = new HashMap();
 
-  private List<String> sequences;
+    private List<String> sequences;
 
-  private int numOfTestSeqs = 0;
-  private final int MAX_UPLOADED_FILES = 5;
-  private int activeIndex = 0;                                                    // active tab in sequence page
+    private int numOfTestSeqs = 0;
+    private final int MAX_UPLOADED_FILES = 5;
+    private int activeIndex = 0;                                                    // active tab in sequence page
 
-  private Map<BlastMetadata, String> ridMap = new HashMap<>();
-  private String database;
+    private Map<BlastMetadata, String> ridMap = new HashMap<>();
+    private String database;
 
-  // Result
-  private BlastMetadata metadata; 
-  private int totalSequences = 0;
-  // End of result
+    // Result
+    private BlastMetadata metadata;
+    private int totalSequences = 0;
+    // End of result
 
-  private String errorTitle;
-  private String message;
+    private String errorTitle;
+    private String message;
 
-  @Inject
-  private Languages languages;
+    @Inject
+    private Languages languages;
 
-  @Inject
-  private Navigator navigator;
+    @Inject
+    private Navigator navigator;
 
-  @Inject
-  private MessageBean msg;
+    @Inject
+    private MessageBean msg;
 
-  @Inject
-  private SequenceBuilder sequenceBuilder;
+    @Inject
+    private SequenceBuilder sequenceBuilder;
 
-  @Inject
-  private FileHandler fileHandler;
+    @Inject
+    private FileHandler fileHandler;
 
-  @Inject
-  private SequenceValidation validation;
+    @Inject
+    private SequenceValidation validation;
 
-  @Inject
-  private SolrClient solr;
+//    @Inject
+//    private SolrClient solr;
+    @Inject
+    private SolrWithAuth solr;
 
-  @Inject
-  private BlastQueue serviceQueue;
+    @Inject
+    private BlastQueue serviceQueue;
 
-  @Inject
-  private GenbankBlaster blaster;
+    @Inject
+    private GenbankBlaster blaster;
 
-  private BlastMetadata blastMetadata;
-  private BlastSubjectMetadata selectedMetadata;
-  private BlastSubjectMetadata selectedSubMetadata;
-  private List<BlastSubjectHsp> selectedHsps;
+    private BlastMetadata blastMetadata;
+    private BlastSubjectMetadata selectedMetadata;
+    private BlastSubjectMetadata selectedSubMetadata;
+    private List<BlastSubjectHsp> selectedHsps;
 
-  private List<BlastMetadata> listMetadata = new ArrayList<>();
+    private List<BlastMetadata> listMetadata = new ArrayList<>();
 
-  private String urlEncode;
+    private String urlEncode;
 
-  private SolrRecord selectedRecord;
-  private NrmData data;
- 
-  private FacesContext context;
+    private SolrRecord selectedRecord;
+    private NrmData data;
+
+    private FacesContext context;
 //  RequestContext requestContext;
 
-  public BlastBean() {
-    log.info("BlastBean");
+    public BlastBean() {
+        log.info("BlastBean");
 
-    ridMap = new HashMap<>();
-    sequences = new ArrayList<>();
-    sequencesMap = new HashMap();
-    database = ConstantString.getInstance().getDefaultBlastDb();
-    urlEncode = ConstantString.getInstance().getNaturarvUrlEncode();
+        ridMap = new HashMap<>();
+        sequences = new ArrayList<>();
+        sequencesMap = new HashMap();
+        database = ConstantString.getInstance().getDefaultBlastDb();
+        urlEncode = ConstantString.getInstance().getNaturarvUrlEncode();
 
-    totalSequences = 0;
-  }
-  
-  public BlastBean(SequenceBuilder sequenceBuilder, MessageBean msg,
-          Languages languages, BlastQueue serviceQueue, SequenceValidation validation, 
-          Navigator navigator, FileHandler fileHander, GenbankBlaster blaster, SolrClient solr) {
-    this.sequenceBuilder = sequenceBuilder; 
-    this.msg = msg;
-    this.languages = languages;
-    this.serviceQueue = serviceQueue;
-    this.validation = validation;
-    this.navigator = navigator;
-    this.fileHandler = fileHander;
-    this.blaster = blaster; 
-    this.solr = solr;
-  }
+        totalSequences = 0;
+    }
 
-  @PostConstruct
-  public void init() {
-    log.info("init");
+    public BlastBean(SequenceBuilder sequenceBuilder, MessageBean msg,
+            Languages languages, BlastQueue serviceQueue, SequenceValidation validation,
+            Navigator navigator, FileHandler fileHander, GenbankBlaster blaster, SolrWithAuth solr) {
+        this.sequenceBuilder = sequenceBuilder;
+        this.msg = msg;
+        this.languages = languages;
+        this.serviceQueue = serviceQueue;
+        this.validation = validation;
+        this.navigator = navigator;
+        this.fileHandler = fileHander;
+        this.blaster = blaster;
+        this.solr = solr;
+    }
 
-    context = FacesContext.getCurrentInstance();
-    boolean isPostBack = context.isPostback();        // false if page is start up or reloaded by browser  
+    @PostConstruct
+    public void init() {
+        log.info("init");
+
+        context = FacesContext.getCurrentInstance();
+        boolean isPostBack = context.isPostback();        // false if page is start up or reloaded by browser  
 
 //    requestContext = RequestContext.getCurrentInstance();
-    log.info("isPostBack : {}", isPostBack);
+        log.info("isPostBack : {}", isPostBack);
 
-    if (!isPostBack) {
-      sequences = new ArrayList<>();
-      sequencesMap = new HashMap();
-      sequenceList = "";
-      testSequences = "";
-      database = ConstantString.getInstance().getDefaultBlastDb(); 
-      totalSequences = 0;
+        if (!isPostBack) {
+            sequences = new ArrayList<>();
+            sequencesMap = new HashMap();
+            sequenceList = emptyString;
+            testSequences = emptyString;
+            database = ConstantString.getInstance().getDefaultBlastDb();
+            totalSequences = 0;
 
-      clear();
+            clear();
+        }
     }
-  }
 
-  /**
-   * Disable upload file if uploaded file size is big than max uploaded file
-   * size. Max uploaded files is 5
-   *
-   * @return boolean
-   */
-  public boolean isIsMax() {
-    return uploadedFiles.size() >= MAX_UPLOADED_FILES;
-  }
-
-  /**
-   * onTabChange event fires when user click tab.
-   *
-   * @param event
-   */
-  public void onTabChange(TabChangeEvent event) {
-    log.info("onTabChange : {} ", activeIndex);
-
-    if (testSequences == null || testSequences.trim().isEmpty()) {
-      numOfTestSeqs = 0;
+    /**
+     * Disable upload file if uploaded file size is big than max uploaded file
+     * size. Max uploaded files is 5
+     *
+     * @return boolean
+     */
+    public boolean isIsMax() {
+        return uploadedFiles.size() >= MAX_UPLOADED_FILES;
     }
-  }
 
-  /**
-   * Upload file
-   *
-   * @param event
-   */
-  public void handleFileUpload(FileUploadEvent event) {
-    log.info("handleFileUpload");
-    UploadedFile uploadedFile = event.getFile(); 
-    if (uploadedFile != null) {
-      if (!sequencesMap.containsKey(uploadedFile.getFileName())) {
-        uploadedFiles.add(uploadedFile);
-        List<String> strings = sequenceBuilder.buildSequencesFromUploadFile(uploadedFile);
-        sequencesMap.put(uploadedFile.getFileName(), strings);
-      } else {
-        message = ConstantString.getInstance().getText("file_uploaded_" + languages.getLocale());
-        msg.addWarning(message, message);
-      }
+    /**
+     * onTabChange event fires when user click tab.
+     *
+     * @param event
+     */
+    public void onTabChange(TabChangeEvent event) {
+        log.info("onTabChange : {} ", activeIndex);
+
+        if (testSequences == null || testSequences.trim().isEmpty()) {
+            numOfTestSeqs = 0;
+        }
     }
-  }
 
-  /**
-   * changeTestNumber -- event when number of test sequences changed
-   */
-  public void changeTestNumber() {
-    log.info("changeTestNumber : {}", numOfTestSeqs); 
-    testSequences = FastaFiles.getInstance().getSequences(numOfTestSeqs); 
-  }
-
-  /**
-   * submit sequences to blast
-   */
-  public void submit() {
-    log.info("submit : {}", activeIndex); 
-     
-    switch (activeIndex) {
-      case 0:
-        sequences = sequenceBuilder.prepareSequenceList(sequenceList); 
-        break;
-      case 1:
-        sequences = sequenceBuilder.convertSequencesMapToList(sequencesMap);
-        break;
-      case 2:
-        sequences = sequenceBuilder.prepareSequenceList(testSequences);
-        break;
-      default:
-        break;
-    } 
-    if (sequences == null) {
-      errorTitle = ConstantString.getInstance().getText("blastfailed_" + languages.getLocale());
-      message = ConstantString.getInstance().getText("inputdata_" + languages.getLocale());
-      msg.addError(errorTitle, message);
-    } else {
-      run();
+    /**
+     * Upload file
+     *
+     * @param event
+     */
+    public void handleFileUpload(FileUploadEvent event) {
+        log.info("handleFileUpload");
+        UploadedFile uploadedFile = event.getFile();
+        if (uploadedFile != null) {
+            if (!sequencesMap.containsKey(uploadedFile.getFileName())) {
+                uploadedFiles.add(uploadedFile);
+                List<String> strings = sequenceBuilder.buildSequencesFromUploadFile(uploadedFile);
+                sequencesMap.put(uploadedFile.getFileName(), strings);
+            } else {
+                message = ConstantString.getInstance().getText("file_uploaded_" + languages.getLocale());
+                msg.addWarning(message, message);
+            }
+        }
     }
-  }
 
-  /**
-   * remove uploaded file
-   *
-   * @param file
-   */
-  public void removefile(UploadedFile file) {
-    log.info("removefile : {}", file.getFileName()); 
-    uploadedFiles.remove(file);
-    sequencesMap.remove(file.getFileName()); 
-  }
-
-  /**
-   * run blast
-   */
-  private void run() {
-    if (validation.validate(sequences)) {
-      blast();
-      navigator.result();
-    } else {
-      errorTitle = ConstantString.getInstance().getText("validationfailed_" + languages.getLocale());
-      msg.createErrorMsgs(errorTitle, validation.getErrorMsgs());
+    /**
+     * changeTestNumber -- event when number of test sequences changed
+     */
+    public void changeTestNumber() {
+        log.info("changeTestNumber : {}", numOfTestSeqs);
+        testSequences = FastaFiles.getInstance().getSequences(numOfTestSeqs);
     }
-  }
 
-  /**
-   * Blasts a single sequence
-   */
-  private void blast() {
-    log.info("blast : {}", sequences.size());
+    /**
+     * submit sequences to blast
+     */
+    public void submit() {
+        log.info("submit : {}", activeIndex);
 
-    ridMap = new HashMap<>();
-    totalSequences = sequences.size();                                      // display in result page
-
-    List<String> fastaFilesPath = fileHandler.createFastaFiles(sequences);
-    listMetadata = serviceQueue.run(fastaFilesPath, database);
-    fileHandler.deleteTempFiles(fastaFilesPath);                            // remove temp fasta files
- 
-    metadata = listMetadata.get(0); 
-    int count = 0; 
-    for (BlastMetadata bm : listMetadata) {
-      bm.setSequence(sequences.get(count)); 
-      count++;
+        switch (activeIndex) {
+            case 0:
+                sequences = sequenceBuilder.prepareSequenceList(sequenceList);
+                break;
+            case 1:
+                sequences = sequenceBuilder.convertSequencesMapToList(sequencesMap);
+                break;
+            case 2:
+                sequences = sequenceBuilder.prepareSequenceList(testSequences);
+                break;
+            default:
+                break;
+        }
+        if (sequences == null) {
+            errorTitle = ConstantString.getInstance().getText("blastfailed_" + languages.getLocale());
+            message = ConstantString.getInstance().getText("inputdata_" + languages.getLocale());
+            msg.addError(errorTitle, message);
+        } else {
+            run();
+        }
     }
-  }
 
-  /**
-   * Blast sequence from remote genbank service
-   *
-   *
-   * @param metadata
-   */
-  public void remotBlast(BlastMetadata metadata) {
-    log.info("remotBlast : {}", metadata.getSequence());
-
-    String seq = metadata.getSequence();
-    String rid = blaster.remoteGenbankBlast(seq); 
-    ridMap.remove(metadata);
-    ridMap.put(metadata, rid);
-  }
-
-  /**
-   * Toggle result table row to open expand content
-   *
-   * @param event - ToggleEvent
-   */
-  public void onRowToggleSingle(ToggleEvent event) {
-    log.info("onRowToggleSingle : {}", event);
-
-    selectedRecord = null;
-    selectedMetadata = (BlastSubjectMetadata) event.getData();
-    String catalognumber = selectedMetadata.getCatalogNumber();
- 
-    if (selectedMetadata.isNrm() && selectedMetadata.getNrmData() == null) {
-      selectedRecord = solr.getRecordByCollectionObjectCatalognumber(catalognumber, database); 
-      data = new NrmData(selectedRecord.getCatalogNumber(), selectedRecord.getTxFullName(),
-              selectedRecord.getCollectionName(), selectedRecord.getCommonNames(),
-              selectedRecord.getLocalityWithCountryAndContinent(), selectedRecord.getCoordinateString(),
-              selectedRecord.getStartDate(), selectedRecord.getCollectors(), selectedRecord.isImage(),
-              selectedRecord.getMorphbankImageId(), selectedRecord.getMorphbankId(),
-              selectedRecord.getCountry(), selectedRecord.getContinent());
-      selectedMetadata.setNrmData(data);
+    /**
+     * remove uploaded file
+     *
+     * @param file
+     */
+    public void removefile(UploadedFile file) {
+        log.info("removefile : {}", file.getFileName());
+        uploadedFiles.remove(file);
+        sequencesMap.remove(file.getFileName());
     }
-  }
 
-  /**
-   * Clear all the sequences in tabs
-   */
-  public void clear() {
-    sequenceList = null;
-    uploadedFiles = new ArrayList<>();
-    testSequences = null;
-
-    sequencesMap.clear();
-
-    numOfTestSeqs = 0;
-    database = ConstantString.getInstance().getDefaultBlastDb();
-    ridMap.clear();
-  }
-
-  /**
-   * newblast
-   */
-  public void newblast() {
-    log.info("newblast : {}", activeIndex);
-
-    totalSequences = 0;
-    ridMap.clear();
-    sequencesMap.clear();
-    uploadedFiles.clear();
-
-    navigator.home();
-  }
-
-  public int getActiveIndex() {
-    return activeIndex;
-  }
-
-  public void setActiveIndex(int activeIndex) {
-    this.activeIndex = activeIndex;
-  }
-
-  public String getSequenceList() {
-    return sequenceList;
-  }
-
-  public void setSequenceList(String sequenceList) {
-    this.sequenceList = sequenceList;
-  }
-
-  public BlastMetadata getMetadata() {
-    return metadata;
-  }
-
-  /**
-   * Description of blast database
-   *
-   * @return
-   */
-  public String getDbFullName() {
-    boolean isSwedish = languages.isIsSwedish();
-    switch (database) {
-      case "nrm":
-        return ConstantString.getInstance().getNrmDbName(isSwedish);
-      case "bold":
-        return ConstantString.getInstance().getBoldDbName(isSwedish);
-      default:
-        return ConstantString.getInstance().getGenbankDbName(isSwedish);
+    /**
+     * run blast
+     */
+    private void run() {
+        if (validation.validate(sequences)) {
+            blast();
+            navigator.result();
+        } else {
+            errorTitle = ConstantString.getInstance().getText("validationfailed_" + languages.getLocale());
+            msg.createErrorMsgs(errorTitle, validation.getErrorMsgs());
+        }
     }
-  }
 
-  public void openLowMatchList(BlastMetadata metadata) {
-    log.info("openLowMatchList : {}", metadata);
-    metadata.setOpenLowMatch(true);
-  }
+    /**
+     * Blasts a single sequence
+     */
+    private void blast() {
+        log.info("blast : {}", sequences.size());
 
-  public void getAlignment(BlastSubjectMetadata subjectMetadata) {
-    log.info("getAlignment {}", subjectMetadata);
+        ridMap = new HashMap<>();
+        totalSequences = sequences.size();                                      // display in result page
 
-    selectedSubMetadata = subjectMetadata;
-    selectedHsps = selectedSubMetadata.getSubjectHspList();
-  }
+        List<String> fastaFilesPath = fileHandler.createFastaFiles(sequences);
+        listMetadata = serviceQueue.run(fastaFilesPath, database);
+        fileHandler.deleteTempFiles(fastaFilesPath);                            // remove temp fasta files
 
-  public List<BlastSubjectHsp> getSelectedHsps() {
-    return selectedHsps;
-  }
+        metadata = listMetadata.get(0);
+        int count = 0;
+        for (BlastMetadata bm : listMetadata) {
+            bm.setSequence(sequences.get(count));
+            count++;
+        }
+    }
 
-  public BlastSubjectMetadata getSelectedMetadata() {
-    return selectedMetadata;
-  }
+    /**
+     * Blast sequence from remote genbank service
+     *
+     *
+     * @param metadata
+     */
+    public void remotBlast(BlastMetadata metadata) {
+        log.info("remotBlast : {}", metadata.getSequence());
 
-  public BlastSubjectMetadata getSelectedSubMetadata() {
-    return selectedSubMetadata;
-  }
- 
-  public void databaseChanged(final AjaxBehaviorEvent event) {
-    log.info("databaseChanged : {}", database);
-  }
- 
-  public List<BlastMetadata> getListMetadata() {
-    return listMetadata;
-  }
+        String seq = metadata.getSequence();
+        String rid = blaster.remoteGenbankBlast(seq);
+        ridMap.remove(metadata);
+        ridMap.put(metadata, rid);
+    }
 
-  public String getUrlEncode() {
-    return urlEncode;
-  }
+    /**
+     * Toggle result table row to open expand content
+     *
+     * @param event - ToggleEvent
+     */
+    public void onRowToggleSingle(ToggleEvent event) {
+        log.info("onRowToggleSingle : {}", event);
 
-  public BlastMetadata getBlastMetadata() {
-    return blastMetadata;
-  }
+        selectedRecord = null;
+        selectedMetadata = (BlastSubjectMetadata) event.getData();
+        String catalognumber = selectedMetadata.getCatalogNumber();
+        
+        log.info("catalogNumber : {}", catalognumber);
 
-  public String getBlastportalUrl() {
-    return "https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn&PAGE_TYPE=BlastSearch&LINK_LOC=blasthome";
-  }
+        if (selectedMetadata.isNrm() && selectedMetadata.getNrmData() == null) {
+            selectedRecord = solr.getRecordByDataByCatalognumber(catalognumber, database);
+            
+            if(selectedRecord != null) {
+                data = new NrmData(selectedRecord.getCatalogNumber(), selectedRecord.getTxFullName(),
+                    selectedRecord.getCollectionName(), selectedRecord.getCommonNames(),
+                    selectedRecord.getLocalityWithCountryAndContinent(), selectedRecord.getCoordinateString(),
+                    selectedRecord.getStartDate(), selectedRecord.getCollectors(), selectedRecord.isImage(),
+                    selectedRecord.getMorphbankImageId(), selectedRecord.getMorphbankId(),
+                    selectedRecord.getCountry(), selectedRecord.getContinent());
+                selectedMetadata.setNrmData(data);
+            }  
+        }
+    }
 
-  public int getNumOfTestSeqs() {
-    return numOfTestSeqs;
-  }
+    /**
+     * Clear all the sequences in tabs
+     */
+    public void clear() {
+        sequenceList = null;
+        uploadedFiles = new ArrayList<>();
+        testSequences = null;
 
-  public void setNumOfTestSeqs(int numOfTestSeqs) {
-    this.numOfTestSeqs = numOfTestSeqs;
-  }
+        sequencesMap.clear();
 
-  public List<UploadedFile> getUploadedFiles() {
-    return uploadedFiles;
-  }
+        numOfTestSeqs = 0;
+        database = ConstantString.getInstance().getDefaultBlastDb();
+        ridMap.clear();
+    }
 
-  public void setUploadedFiles(List<UploadedFile> uploadedFiles) {
-    this.uploadedFiles = uploadedFiles;
-  }
+    /**
+     * newblast
+     */
+    public void newblast() {
+        log.info("newblast : {}", activeIndex);
 
-  public String getDatabase() {
-    return database;
-  }
+        totalSequences = 0;
+        ridMap.clear();
+        sequencesMap.clear();
+        uploadedFiles.clear();
 
-  public void setDatabase(String database) {
-    this.database = database;
-  }
+        navigator.home();
+    }
 
-  public String getTestSequences() {
-    return testSequences;
-  }
+    public int getActiveIndex() {
+        return activeIndex;
+    }
 
-  public void setTestSequences(String testSequences) {
-    this.testSequences = testSequences;
-  }
+    public void setActiveIndex(int activeIndex) {
+        this.activeIndex = activeIndex;
+    }
 
-  public String getBlastdocument() {
-    return "http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs";
-  }
+    public String getSequenceList() {
+        return sequenceList;
+    }
 
-  public String getBlastPlus() {
-    return "http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=Download";
-  }
+    public void setSequenceList(String sequenceList) {
+        this.sequenceList = sequenceList;
+    }
 
-  public String getGenbankRidUrl() {
-    return "http://www.ncbi.nlm.nih.gov/blast/Blast.cgi?CMD=Get&RID=";
-  }
+    public BlastMetadata getMetadata() {
+        return metadata;
+    }
 
-  public String ridByMetadata(BlastMetadata metadata) {
-    log.info("ridByMetadata" );  
-    return ridMap.get(metadata);
-  }
+    /**
+     * Description of blast database
+     *
+     * @return
+     */
+    public String getDbFullName() {
+        boolean isSwedish = languages.isIsSwedish();
+        switch (database) {
+            case "nrm":
+                return ConstantString.getInstance().getNrmDbName(isSwedish);
+            case "bold":
+                return ConstantString.getInstance().getBoldDbName(isSwedish);
+            default:
+                return ConstantString.getInstance().getGenbankDbName(isSwedish);
+        }
+    }
 
-  public void setRidMap(Map<BlastMetadata, String> ridMap) {
-    this.ridMap = ridMap;
-  }
-   
-  public int getTotalSequences() {
-    return totalSequences;
-  } 
+    public void openLowMatchList(BlastMetadata metadata) {
+        log.info("openLowMatchList : {}", metadata);
+        
+        if(metadata != null && metadata.getLowMatchsubjectMetadataList() != null) {
+            log.info("low match size : {}", metadata.getLowMatchsubjectMetadataList().size()); 
+            metadata.setOpenLowMatch(true);
+        } 
+    }
+
+    public void getAlignment(BlastSubjectMetadata subjectMetadata) {
+        log.info("getAlignment {}", subjectMetadata);
+
+        selectedSubMetadata = subjectMetadata;
+        selectedHsps = selectedSubMetadata.getSubjectHspList();
+    }
+
+    public List<BlastSubjectHsp> getSelectedHsps() {
+        return selectedHsps;
+    }
+
+    public BlastSubjectMetadata getSelectedMetadata() {
+        return selectedMetadata;
+    }
+
+    public BlastSubjectMetadata getSelectedSubMetadata() {
+        return selectedSubMetadata;
+    }
+
+    public void databaseChanged(final AjaxBehaviorEvent event) {
+        log.info("databaseChanged : {}", database);
+    }
+
+    public List<BlastMetadata> getListMetadata() {
+        return listMetadata;
+    }
+
+    public String getUrlEncode() {
+        return urlEncode;
+    }
+
+    public BlastMetadata getBlastMetadata() {
+        return blastMetadata;
+    }
+
+    public String getBlastportalUrl() {
+        return "https://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn&PAGE_TYPE=BlastSearch&LINK_LOC=blasthome";
+    }
+
+    public int getNumOfTestSeqs() {
+        return numOfTestSeqs;
+    }
+
+    public void setNumOfTestSeqs(int numOfTestSeqs) {
+        this.numOfTestSeqs = numOfTestSeqs;
+    }
+
+    public List<UploadedFile> getUploadedFiles() {
+        return uploadedFiles;
+    }
+
+    public void setUploadedFiles(List<UploadedFile> uploadedFiles) {
+        this.uploadedFiles = uploadedFiles;
+    }
+
+    public String getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(String database) {
+        this.database = database;
+    }
+
+    public String getTestSequences() {
+        return testSequences;
+    }
+
+    public void setTestSequences(String testSequences) {
+        this.testSequences = testSequences;
+    }
+
+    public String getBlastdocument() {
+        return "http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs";
+    }
+
+    public String getBlastPlus() {
+        return "http://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=Download";
+    }
+
+    public String getGenbankRidUrl() {
+        return "http://www.ncbi.nlm.nih.gov/blast/Blast.cgi?CMD=Get&RID=";
+    }
+
+    public String ridByMetadata(BlastMetadata metadata) {
+        log.info("ridByMetadata");
+        return ridMap.get(metadata);
+    }
+
+    public void setRidMap(Map<BlastMetadata, String> ridMap) {
+        this.ridMap = ridMap;
+    }
+
+    public int getTotalSequences() {
+        return totalSequences;
+    }
 }

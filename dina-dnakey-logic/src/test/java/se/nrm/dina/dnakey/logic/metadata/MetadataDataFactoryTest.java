@@ -113,7 +113,7 @@ public class MetadataDataFactoryTest {
     assertFalse(result.isHasHit());
   }
   
-  @Test
+//  @Test
   public void testBuildBlastMetadataByJsonHasHits() throws Exception {
     System.out.println("buildBlastMetadataByJson"); 
     

@@ -17,6 +17,7 @@ public class Languages implements Serializable {
 
   private String locale = "sv";
   private RequestContext requestContext;
+   
  
   public Languages() {
     log.info("Languages");
